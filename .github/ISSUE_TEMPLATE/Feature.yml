@@ -21,11 +21,11 @@ body:
   - type: textarea
     attributes:
       label: 📢 Prepare Issue (Optional)
-      description: 왜 해당 기능이 필요한지, 어떤 방식으로 구현할지, 무엇을 참고했는지 작성해주세요! (회의내용 또는 레퍼런스)
-      placeholder: 예: 회의 기록에 따라 해당 기능이 필요하며, 기존 서비스 A를 참고함
+      description: 왜 해당기능이 필요한지, 어떤 방식으로 구현할지, 무엇을 참고했는지 작성해주세요! (회의내용 또는 레퍼런스)
+      placeholder: 예) 회의 기록에 따라 해당 기능이 필요하며, 기존 플랫폼 A를 참고함
 
   - type: textarea
     attributes:
       label: 📢 Related View (Optional)
       description: 어떤 페이지와 관련있는지 적어주세요!
-      placeholder: ex ) 상품 상세 페이지 (ProductDetail)
+      placeholder: ex) 상품 상세 페이지 (ProductDetail)
