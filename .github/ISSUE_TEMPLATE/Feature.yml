@@ -1,0 +1,31 @@
+name: "✨ Feature"
+description: "새로운 기능 추가"
+labels: ["feature"]
+body:
+  - type: textarea
+    attributes:
+      label: 📄 설명
+      description: 구현할 기능에 대한 설명을 작성해 주세요.
+      placeholder: 자세히 적을수록 좋습니다!
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: ✅ 작업할 세부 내용
+      description: 할 일을 체크박스 형태로 작성해주세요.
+      placeholder: 최대한 세분화 해서 적어주세요!
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 📢 Prepare Issue (Optional)
+      description: 왜 해당기능이 필요한지, 어떤 방식으로 구현할지, 무엇을 참고했는지 작성해주세요! (회의내용 또는 레퍼런스)
+      placeholder: 예) 회의 기록에 따라 해당 기능이 필요하며, 기존 플랫폼 A를 참고함
+
+  - type: textarea
+    attributes:
+      label: 📢 Related View (Optional)
+      description: 어떤 페이지와 관련있는지 적어주세요!
+      placeholder: ex) 상품 상세 페이지 (ProductDetail)
