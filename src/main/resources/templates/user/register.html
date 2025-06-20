@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <title>Grabit - Multipurpose eCommerce HTML Template.</title>
+    <meta name="keywords"
+        content="Bootstrap 5.x, ecommerce, farming, food market, grocery market, grocery shop, grocery store, grocery supper market, multi vendor, organic food, supermarket, supermarket grocery">
+    <meta name="description" content="Multipurpose eCommerce HTML Template">
+    <meta name="author" content="Maraviya Infotech">
+
+    <!-- site Favicon -->
+    <link rel="icon" href="/assets/img/favicon/favicon.png" sizes="32x32">
+
+    <!-- css Icon Font -->
+    <link rel="stylesheet" href="/assets/css/vendor/gicons.css">
+
+    <!-- css All Plugins Files -->
+    <link rel="stylesheet" href="/assets/css/plugins/animate.css">
+    <link rel="stylesheet" href="/assets/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/plugins/bootstrap-select.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/slick.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/nouislider.css">
+
+    <!-- Main Style -->
+    <link rel="stylesheet" id="main_style" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="gi-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header start  -->
+    <div th:replace="fragments/user/header :: header"></div>
+    <!-- Header End  -->
+
+    <!-- Cart sidebar Start -->
+    <div class="gi-side-cart-overlay"></div>
+    <div id="gi-side-cart" class="gi-side-cart">
+        <div class="gi-cart-inner">
+            <div class="gi-cart-top">
+                <div class="gi-cart-title">
+                    <span class="cart_title">My Cart</span>
+                    <a href="javascript:void(0)" class="gi-cart-close">
+                        <i class="fi-rr-cross-small"></i>
+                    </a>
+                </div>
+                <ul class="gi-cart-pro-items">
+                    <li>
+                        <a href="product-left-sidebar.html" class="gi-pro-img"><img
+                          src="/assets/img/product-images/25_1.jpg" alt="product"></a>
+                        <div class="gi-pro-content">
+                            <a href="product-left-sidebar.html" class="cart-pro-title">Fresh Lichi</a>
+                            <span class="cart-price"><span>$25.00</span> x 1 kg</span>
+                            <div class="qty-plus-minus">
+                                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+                            </div>
+                            <a href="javascript:void(0)" class="remove">×</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="product-left-sidebar.html" class="gi-pro-img"><img
+                          src="/assets/img/product-images/17_1.jpg" alt="product"></a>
+                        <div class="gi-pro-content">
+                            <a href="product-left-sidebar.html" class="cart-pro-title">Ginger - Organic</a>
+                            <span class="cart-price"><span>$5.00</span> x 1 250g</span>
+                            <div class="qty-plus-minus">
+                                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+                            </div>
+                            <a href="javascript:void(0)" class="remove">×</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="product-left-sidebar.html" class="gi-pro-img"><img
+                          src="/assets/img/product-images/2_1.jpg" alt="product"></a>
+                        <div class="gi-pro-content">
+                            <a href="product-left-sidebar.html" class="cart-pro-title">Dates Value Pack Pouch</a>
+                            <span class="cart-price"><span>$59.00</span> x 1 pack</span>
+                            <div class="qty-plus-minus">
+                                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+                            </div>
+                            <a href="javascript:void(0)" class="remove">×</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="gi-cart-bottom">
+                <div class="cart-sub-total">
+                    <table class="table cart-table">
+                        <tbody>
+                            <tr>
+                                <td class="text-left">Sub-Total :</td>
+                                <td class="text-right">$300.00</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">VAT (20%) :</td>
+                                <td class="text-right">$60.00</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Total :</td>
+                                <td class="text-right primary-color">$360.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cart_btn">
+                    <a href="cart.html" class="gi-btn-1">View Cart</a>
+                    <a href="checkout.html" class="gi-btn-2">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart sidebar End -->
+
+    <!-- Breadcrumb start -->
+    <div class="gi-breadcrumb m-b-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row gi_breadcrumb_inner">
+                        <div class="col-md-6 col-sm-12">
+                            <h2 class="gi-breadcrumb-title">Register Page</h2>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <!-- gi-breadcrumb-list start -->
+                            <ul class="gi-breadcrumb-list">
+                                <li class="gi-breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="gi-breadcrumb-item active">Register Page</li>
+                            </ul>
+                            <!-- gi-breadcrumb-list end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb end -->
+
+    <!-- Register section -->
+    <section class="gi-register padding-tb-40">
+        <div class="container">
+            <div class="section-title-2">
+                <h2 class="gi-title">Register<span></span></h2>
+                <p>Best place to buy and sell digital products.</p>
+            </div>
+            <div class="row">
+                <div class="gi-register-wrapper">
+                    <div class="gi-register-container">
+                        <div class="gi-register-form">
+                            <form action="#" method="post">
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>First Name*</label>
+                                    <input type="text" name="firstname" placeholder="Enter your first name" required>
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>Last Name*</label>
+                                    <input type="text" name="lastname" placeholder="Enter your last name" required>
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>Email*</label>
+                                    <input type="email" name="email" placeholder="Enter your email add..." required>
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>Phone Number*</label>
+                                    <input type="text" name="phonenumber" placeholder="Enter your phone number"
+                                        required>
+                                </span>
+                                <span class="gi-register-wrap">
+                                    <label>Address</label>
+                                    <input type="text" name="address" placeholder="Address Line 1">
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>City *</label>
+                                    <span class="gi-rg-select-inner">
+                                        <select name="gi_select_city" id="gi-select-city" class="gi-register-select">
+                                            <option selected disabled>City</option>
+                                            <option value="1">City 1</option>
+                                            <option value="2">City 2</option>
+                                            <option value="3">City 3</option>
+                                            <option value="4">City 4</option>
+                                            <option value="5">City 5</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>Post Code</label>
+                                    <input type="text" name="postalcode" placeholder="Post Code">
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>Country *</label>
+                                    <span class="gi-rg-select-inner">
+                                        <select name="gi_select_country" id="gi-select-country"
+                                            class="gi-register-select">
+                                            <option selected disabled>Country</option>
+                                            <option value="1">Country 1</option>
+                                            <option value="2">Country 2</option>
+                                            <option value="3">Country 3</option>
+                                            <option value="4">Country 4</option>
+                                            <option value="5">Country 5</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="gi-register-wrap gi-register-half">
+                                    <label>Region State</label>
+                                    <span class="gi-rg-select-inner">
+                                        <select name="gi_select_state" id="gi-select-state" class="gi-register-select">
+                                            <option selected disabled>Region/State</option>
+                                            <option value="1">Region/State 1</option>
+                                            <option value="2">Region/State 2</option>
+                                            <option value="3">Region/State 3</option>
+                                            <option value="4">Region/State 4</option>
+                                            <option value="5">Region/State 5</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="gi-register-wrap gi-recaptcha">
+                                    <span class="g-recaptcha" data-sitekey="6LfKURIUAAAAAO50vlwWZkyK_G2ywqE52NU7YO0S"
+                                        data-callback="verifyRecaptchaCallback"
+                                        data-expired-callback="expiredRecaptchaCallback"></span>
+                                    <input class="form-control d-none" data-recaptcha="true" required
+                                        data-error="Please complete the Captcha">
+                                    <span class="help-block with-errors"></span>
+                                </span>
+                                <span class="gi-register-wrap gi-register-btn">
+                                    <span>Already have an account?<a href="login.html">Login</a></span>
+                                    <button class="gi-btn-1" type="submit">Register</button>
+                                </span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Sample section End -->
+    <!-- Footer Start -->
+    <div th:replace="fragments/user/footer :: footer"></div>
+    <!-- Footer End -->
+
+    <!-- Quickview Modal -->
+    <div class="modal fade quickview-modal" id="gi_quickview_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close qty_close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12 mb-767">
+                            <div class="single-pro-img single-pro-img-no-sidebar">
+                                <div class="single-product-scroll">
+                                    <div class="single-slide zoom-image-hover">
+                                        <img class="img-responsive" src="/assets/img/product-images/10_1.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="quickview-pro-content">
+                                <h5 class="gi-quick-title"><a href="product-left-sidebar.html">Mix nuts premium quality
+                                        organic
+                                        dried fruit 250g pack</a>
+                                </h5>
+                                <div class="gi-quickview-rating">
+                                    <i class="gicon gi-star fill"></i>
+                                    <i class="gicon gi-star fill"></i>
+                                    <i class="gicon gi-star fill"></i>
+                                    <i class="gicon gi-star fill"></i>
+                                    <i class="gicon gi-star"></i>
+                                </div>
+
+                                <div class="gi-quickview-desc">Lorem Ipsum is simply dummy text of the printing and
+                                    typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+                                    since the 1900s,</div>
+                                <div class="gi-quickview-price">
+                                    <span class="new-price">$50.00</span>
+                                    <span class="old-price">$62.00</span>
+                                </div>
+
+                                <div class="gi-pro-variation">
+                                    <div class="gi-pro-variation-inner gi-pro-variation-size gi-pro-size">
+                                        <div class="gi-pro-variation-content">
+                                            <ul class="gi-opt-size">
+                                                <li class="active"><a href="javascript:void(0)" class="gi-opt-sz"
+                                                        data-tooltip="Small">250g</a></li>
+                                                <li><a href="javascript:void(0)" class="gi-opt-sz"
+                                                        data-tooltip="Medium">500g</a></li>
+                                                <li><a href="javascript:void(0)" class="gi-opt-sz"
+                                                        data-tooltip="Large">1kg</a></li>
+                                                <li><a href="javascript:void(0)" class="gi-opt-sz"
+                                                        data-tooltip="Extra Large">2kg</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gi-quickview-qty">
+                                    <div class="qty-plus-minus">
+                                        <input class="qty-input" type="text" name="gi_qtybtn" value="1">
+                                    </div>
+                                    <div class="gi-quickview-cart ">
+                                        <button class="gi-btn-1"><i class="fi-rr-shopping-basket"></i> Add To
+                                            Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quickview Modal end -->
+
+    <!-- Back to top  -->
+    <a class="gi-back-to-top"></a>
+
+    <!-- Feature tools -->
+    <div class="gi-tools-sidebar-overlay"></div>
+    <div class="gi-tools-sidebar">
+        <a href="javascript:void(0)" class="gi-tools-sidebar-toggle in-out">
+            <i class="fi fi-rr-settings"></i>
+        </a>
+        <div class="gi-bar-title">
+            <h6>Tools</h6>
+            <a href="#" class="close-tools"><i class="ri-close-line"></i></a>
+        </div>
+        <div class="gi-tools-detail">
+            <div class="gi-tools-block">
+                <h3>Select Color</h3>
+                <ul class="gi-color">
+                    <li class="color-primary active-variant">
+                    </li>
+                    <li class="color-1">
+                    </li>
+                    <li class="color-2">
+                    </li>
+                    <li class="color-3">
+                    </li>
+                    <li class="color-4">
+                    </li>
+                    <li class="color-5">
+                    </li>
+                    <li class="color-6">
+                    </li>
+                    <li class="color-7">
+                    </li>
+                    <li class="color-8">
+                    </li>
+                    <li class="color-9">
+                    </li>
+                </ul>
+            </div>
+            <div class="gi-tools-block">
+                <h3>Modes</h3>
+                <div class="gi-tools-rtl">
+                    <div class="mode-primary gi-tools-item rtl-mode mode active-mode ltr" data-gi-mode-tool="ltr">
+                        <img src="/assets/img/tools/ltr.png" alt="ltr">
+                        <p>LTR</p>
+                    </div>
+                    <div class="gi-tools-item rtl-mode mode rtl" data-gi-mode-tool="rtl">
+                        <img src="/assets/img/tools/rtl.png" alt="rtl">
+                        <p>RTL</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gi-tools-block">
+                <h3>Dark Modes</h3>
+                <div class="gi-tools-dark">
+                    <div class="mode-primary gi-tools-item mode-dark active-mode light" data-gi-mode-dark="light">
+                        <img src="/assets/img/tools/light.png" alt="light">
+                        <p>Light</p>
+                    </div>
+                    <div class="gi-tools-item mode-dark dark" data-gi-mode-dark="dark">
+                        <img src="/assets/img/tools/dark.png" alt="dark">
+                        <p>Dark</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plugins JS -->
+    <script src="/assets/js/plugins/jquery-3.5.1.min.js"></script>
+    <script src="/assets/js/plugins/popper.min.js"></script>
+    <script src="/assets/js/plugins/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/plugins/bootstrap-select.min.js"></script>
+    <script src="/assets/js/plugins/swiper-bundle.min.js"></script>
+    <script src="/assets/js/plugins/fontawesome.js"></script>
+    <script src="/assets/js/plugins/owl.carousel.min.js"></script>
+    <script src="/assets/js/plugins/infiniteslidev2.js"></script>
+    <script src="/assets/js/plugins/jquery.zoom.min.js"></script>
+    <script src="/assets/js/plugins/slick.min.js"></script>
+    <script src="/assets/js/plugins/nouislider.js"></script>
+    <script src="/assets/js/plugins/wow.js"></script>
+    <script src="/assets/js/plugins/smoothscroll.min.js"></script>
+
+    <!-- Main Js -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
