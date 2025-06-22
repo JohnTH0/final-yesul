@@ -1,7 +1,7 @@
 spring:
   # 개발 서버용 데이터베이스 설정
   datasource:
-    url: ${DEV_DATABASE_URL:jdbc:mysql://localhost:3306/yesul_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true}
-    username: ${DEV_DB_USERNAME:root}
-    password: ${DEV_DB_PASSWORD:deft}
+    url: ${DEV_DATABASE_URL}
+    username: ${DEV_DB_USERNAME}
+    password: ${DEV_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
