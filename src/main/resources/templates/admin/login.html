@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="admin, dashboard, crm, analytics, ecommerce, team, vendor, ai chat bot, backend, panel" />
+  <meta name="description" content="Traditional Alcohol E-commerce Platform">
+  <meta name="author" content="YeSul Company - GY">
+
+  <title>YeSul - Admin Page</title>
+
+  <!-- App favicon -->
+  <link rel="shortcut icon" th:href="@{/asserts/img/favicon/favicon.ico}">
+
+  <!-- Icon CSS -->
+  <link th:href="@{/asserts/css/vendor/materialdesignicons.min.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/remixicon.css}" rel="stylesheet">
+
+  <!-- Vendor CSS -->
+  <link th:href="@{/asserts/css/vendor/datatables.bootstrap5.min.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/responsive.datatables.min.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/daterangepicker.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/simplebar.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/apexcharts.css}" rel="stylesheet">
+  <link th:href="@{/asserts/css/vendor/jquery-jvectormap-1.2.2.css}" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link id="main-css" th:href="@{/asserts/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+<main class="wrapper sb-default">
+  <section class="auth-section anim">
+    <div class="gi-login-page">
+      <div class="container-fluid no-gutters">
+        <div class="row">
+          <div class="offset-lg-6 col-lg-6">
+            <div class="content-detail">
+              <div class="main-info">
+                <div class="hero-container">
+                  <!-- Login form -->
+                  <form class="login-form" th:action="@{/admin/login}" method="post"> <!-- 해당 요청은 Spring Security 필터에서 처리-->
+                    <div class="imgcontainer">
+                      <a th:href="@{/admin/dashboard}"><img th:src="@{/asserts/img/logo/full-logo-2.png}" alt="logo" class="logo"></a>
+                    </div>
+                    <div class="input-control">
+                      <input type="text" placeholder="Enter Username" name="username" required>
+                      <span class="password-field-show">
+                        <input type="password" placeholder="Enter Password" name="password" class="password-field" required>
+                        <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                      </span>
+                      <label class="label-container">Remember me
+                        <input type="checkbox" name="remember-me">
+                        <span class="checkmark"></span>
+                      </label>
+                      <span class="psw">
+                        <a th:href="@{/forgot}" class="forgot-btn">Forgot password?</a>
+                      </span>
+                      <div class="login-btns">
+                        <button type="submit">Login</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Vendor Custom JS -->
+<script th:src="@{/asserts/js/vendor/jquery-3.6.4.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/simplebar.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/apexcharts.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/jquery-jvectormap-world-mill-en.js}"></script>
+
+<!-- Data Tables JS -->
+<script th:src="@{/asserts/js/vendor/jquery.datatables.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/datatables.bootstrap5.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/datatables.responsive.min.js}"></script>
+
+<!-- Calendar & Date Range -->
+<script th:src="@{/asserts/js/vendor/jquery.simple-calendar.js}"></script>
+<script th:src="@{/asserts/js/vendor/moment.min.js}"></script>
+<script th:src="@{/asserts/js/vendor/daterangepicker.js}"></script>
+<script th:src="@{/asserts/js/vendor/date-range.js}"></script>
+
+<!-- Main JS -->
+<script th:src="@{/asserts/js/main.js}"></script>
+</body>
+
+</html>
