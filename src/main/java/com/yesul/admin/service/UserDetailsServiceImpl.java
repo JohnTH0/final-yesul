@@ -2,7 +2,6 @@ package com.yesul.admin.service;
 
 import com.yesul.admin.model.dto.AdminDto;
 import com.yesul.admin.model.dto.auth.LoginAdminDto;
-import com.yesul.admin.repository.AdminRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
