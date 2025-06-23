@@ -1,0 +1,68 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "dev" ]
+
+# jobs : 작업 내용 
+jobs: 
+  # 1. CI - 통합 (build)
+  build:
+    # ubuntu 환경에서 진행
+    runs-on: ubuntu-latest
+    # 스텝별로 진행
+    steps:
+      # step1. 저장소의 dev 브랜치 내려받기 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+      # step2. JDK 17 설치
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      # step3. Gradle 실행 권한 부여
+      - name: Grant permission for gradlew
+        run: chmod +x ./gradlew
+      # step4. Gradle Build (jar 생성)
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+      # step5. Dockerfile 가지고 도커이미지로 빌드 및 Dockerhub에 발행(푸쉬)
+      - name: Docker build and publish
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }} ./
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
+    
+  # 2. CD - 배포 (deploy)
+  deploy:
+    # build job이 성공 시에만 deploy가 수행되도록
+    needs: build
+    # ubuntu 환경에서 진행
+    runs-on: ubuntu-latest
+    steps:
+      # step1. NCP SSH 접속 / Docker image pull & container run 
+      - name: NCP SSH Login and Docker Image pull and Container run
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.NCP_HOST }}
+          username: ${{ secrets.NCP_USERNAME }}
+          password: ${{ secrets.NCP_PASSWORD }}
+          key: ${{ secrets.NCP_KEY }}
+          port: ${{ secrets.NCP_PORT }}
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+            docker stop ${{ vars.APP_NAME }}
+            docker rm ${{ vars.APP_NAME }}
+            docker image rm -f ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
+            docker run -d \
+            -p 8080:8080 \
+            --name ${{ vars.APP_NAME }} \
+            -e SPRING_PROFILES_ACTIVE=dev \
+            -e DEV_DATABASE_URL=${{ secrets.DEV_DATABASE_URL }} \
+            -e DEV_DB_USERNAME=${{ secrets.DEV_DB_USERNAME }} \
+            -e DEV_DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }} \
+            ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
+            
