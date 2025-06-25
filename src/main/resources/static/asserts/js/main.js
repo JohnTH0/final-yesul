@@ -6,7 +6,7 @@
     $("#gi-overlay").fadeOut("slow");
   });
 
-    $(document).ready(function () {jr
+    $(document).ready(function () {
 
         $("body").attr("data-gi-mode", "light");
 

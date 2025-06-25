@@ -1,0 +1,64 @@
+<div th:fragment="adminHeader">
+    <header class="gi-header">
+        <div class="container-fluid">
+            <div class="gi-header-items">
+                <div class="left-header">
+                    <a href="javascript:void(0)" class="gi-toggle-sidebar">
+                        <span class="outer-ring">
+                            <span class="inner-ring"></span>
+                        </span>
+                    </a>
+                </div>
+                <div class="right-header">
+                    <div class="gi-right-tool apps">
+                        <div class="gi-hover-drop">
+                            <!-- app 지원 삭제 -->
+                        </div>
+                    </div>
+                    <div class="gi-right-tool display-screen">
+                        <a class="gi-screen full" href="javascript:void(0)">
+                            <i class="ri-fullscreen-line"></i>
+                        </a>
+                        <a class="gi-screen reset" href="javascript:void(0)">
+                            <i class="ri-fullscreen-exit-line"></i>
+                        </a>
+                    </div>
+                    <div class="gi-right-tool">
+                        <a class="gi-notify" href="javascript:void(0)">
+                            <i class="ri-notification-2-line"></i>
+                            <span class="label">0</span>
+                        </a>
+                    </div>
+                    <div class="gi-right-tool display-dark">
+                        <a class="gi-mode dark" href="javascript:void(0)">
+                            <i class="ri-moon-clear-line"></i>
+                        </a>
+                        <a class="gi-mode light" href="javascript:void(0)">
+                            <i class="ri-sun-line"></i>
+                        </a>
+                    </div>
+                    <div class="gi-right-tool gi-user-drop">
+                        <div class="gi-hover-drop">
+                            <div class="gi-hover-tool">
+                                <img class="user" th:src="@{/asserts/img/user/1.png}" alt="user">
+                            </div>
+                            <div class="gi-hover-drop-panel right">
+                                <div class="details">
+                                    <h6 th:text="${adminName}">YeSul</h6>
+                                    <p th:text="${adminEmail}">admin1@yesul.com</p>
+                                </div>
+                                <ul class="border-top">
+                                    <li>
+                                        <a th:href="@{/admin/logout}">
+                                            <i class="ri-logout-circle-r-line"></i>Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- right-header -->
+            </div> <!-- gi-header-items -->
+        </div> <!-- container-fluid -->
+    </header>
+</div>

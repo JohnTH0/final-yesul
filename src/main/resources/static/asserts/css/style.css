@@ -1304,7 +1304,7 @@ button.btn.btn-outline-success.dropdown-toggle.dropdown-toggle-split {
   display: block;
 }
 .sb-collapse .gi-sidebar:hover .gi-sb-logo .sb-full img {
-  width: 100px;
+  width: 250px;
 }
 .sb-collapse .gi-sidebar:hover .gi-sb-logo .sb-collapse {
   display: none;
@@ -1352,7 +1352,7 @@ button.btn.btn-outline-success.dropdown-toggle.dropdown-toggle-split {
   overflow: hidden;
 }
 .gi-sidebar .gi-sb-logo .sb-full img {
-  width: 100px;
+  width: 250px;
 }
 .gi-sidebar .gi-sb-logo .sb-collapse img {
   width: 33px;

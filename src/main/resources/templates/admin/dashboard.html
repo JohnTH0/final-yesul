@@ -1,11 +1,198 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/head :: adminHead"></head>
 <body>
-  <h2>대시보드입니다.</h2>
+    <main class="wrapper sb-default ecom">
+        <div th:replace="fragments/admin/header :: adminHeader"></div>
+        <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
 
+        <!-- Notify sidebar -->
+        <div class="gi-notify-bar-overlay"></div>
+        <div class="gi-notify-bar">
+            <div class="gi-bar-title">
+                <!--            <h6>Notifications<span class="label" th:text="${alerts.size()}">0</span></h6>-->
+                <!-- TODO: 알림 표시 (개수 넣기) -->
+                <h6>Notifications</h6>
+                <a href="javascript:void(0)" class="close-notify"><i class="ri-close-line"></i></a>
+            </div>
+            <div class="gi-bar-content">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="alert-tab" data-bs-toggle="tab" data-bs-target="#alert"
+                                type="button" role="tab" aria-controls="alert" aria-selected="true">알림</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages"
+                                type="button" role="tab" aria-controls="messages" aria-selected="false">1:1 문의</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <!-- Alerts -->
+                    <div class="tab-pane fade show active" id="alert" role="tabpanel" aria-labelledby="alert-tab">
+                        <div class="gi-alert-list">
+                            <ul>
+                                <li> <!--th:each="alert : ${alerts}"-->
+                                    <div class="icon gi-success">
+                                        <i th:class="ri-check-double-line"></i>
+                                    </div>
+                                    <div class="detail">
+                                        <div class="title">커뮤니티 이름</div> <!-- th:text="${alert.title}"-->
+                                        <p class="time">생성일 출력</p> <!--th:text="${alert.time}"-->
+                                        <p class="message">게시글 제목</p> <!--  th:text="${alert.message}"-->
+                                    </div>
+                                </li>
+                                <!-- TODO -->
+                                <li class="check"><a class="gi-primary-btn" th:href="@{/review/list}">View all</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 1:1 문의 -->
+                    <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                        <div class="gi-message-list">
+                            <ul>
+                                <li> <!-- th:each="msg : ${messages}" -->
+                                    <div class="icon gi-success">
+                                        <i th:class="ri-check-double-line"></i>
+                                    </div>
+                                    <div class="detail">
+                                        <a href="/chat/list" class="name">사용자이름</a>  <!--  th:text="${msg.sender}"-->
+                                        <p class="time" >전송시각</p> <!-- th:text="${msg.time}" -->
+                                        <p class="message" >메시지 내용</p> <!-- th:text="${msg.content}"-->
+                                    </div>
+                                </li>
+                                <li class="check"><a class="gi-primary-btn" href="/chat/list">View all</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: adminFooter"></div>
+
+        <!-- Feature tools -->
+        <div class="gi-tools-sidebar-overlay"></div>
+        <div class="gi-tools-sidebar">
+            <a href="javascript:void(0)" class="gi-tools-sidebar-toggle in-out">
+                <i class="ri-settings-4-line"></i>
+            </a>
+            <div class="gi-bar-title">
+                <h6>Tools</h6>
+                <a href="javascript:void(0)" class="close-tools"><i class="ri-close-line"></i></a>
+            </div>
+            <div class="gi-tools-detail">
+                <div class="gi-tools-block">
+                    <h3>Modes</h3>
+                    <div class="gi-tools-info">
+                        <div class="gi-tools-item mode active" data-gi-mode-tool="light">
+                            <img src="assets/img/tools/light.png" alt="light">
+                            <p>light</p>
+                        </div>
+                        <div class="gi-tools-item mode" data-gi-mode-tool="dark">
+                            <img src="assets/img/tools/dark.png" alt="dark">
+                            <p>dark</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gi-tools-block">
+                    <h3>Sidebar</h3>
+                    <div class="gi-tools-info">
+                        <div class="gi-tools-item sidebar" data-sidebar-mode-tool="light">
+                            <img src="assets/img/tools/side-light.png" alt="light">
+                            <p>light</p>
+                        </div>
+                        <div class="gi-tools-item sidebar active" data-sidebar-mode-tool="dark">
+                            <img src="assets/img/tools/side-dark.png" alt="dark">
+                            <p>dark</p>
+                        </div>
+                        <div class="gi-tools-item sidebar" data-sidebar-mode-tool="bg-1">
+                            <img src="assets/img/tools/side-bg-1.png" alt="background">
+                            <p>Bg-1</p>
+                        </div>
+                        <div class="gi-tools-item sidebar" data-sidebar-mode-tool="bg-2">
+                            <img src="assets/img/tools/side-bg-2.png" alt="background">
+                            <p>Bg-2</p>
+                        </div>
+                        <div class="gi-tools-item sidebar" data-sidebar-mode-tool="bg-3">
+                            <img src="assets/img/tools/side-bg-3.png" alt="background">
+                            <p>Bg-3</p>
+                        </div>
+                        <div class="gi-tools-item sidebar" data-sidebar-mode-tool="bg-4">
+                            <img src="assets/img/tools/side-bg-4.png" alt="background">
+                            <p>Bg-4</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gi-tools-block">
+                    <h3>Header</h3>
+                    <div class="gi-tools-info">
+                        <div class="gi-tools-item header active" data-header-mode="light">
+                            <img src="assets/img/tools/header-light.png" alt="light">
+                            <p>light</p>
+                        </div>
+                        <div class="gi-tools-item header" data-header-mode="dark">
+                            <img src="assets/img/tools/header-dark.png" alt="dark">
+                            <p>dark</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gi-tools-block">
+                    <h3>Backgrounds</h3>
+                    <div class="gi-tools-info">
+                        <div class="gi-tools-item bg active" data-bg-mode="default">
+                            <img src="assets/img/tools/bg-0.png" alt="default">
+                            <p>Default</p>
+                        </div>
+                        <div class="gi-tools-item bg" data-bg-mode="bg-1">
+                            <img src="assets/img/tools/bg-1.png" alt="bg-1">
+                            <p>Bg-1</p>
+                        </div>
+                        <div class="gi-tools-item bg" data-bg-mode="bg-2">
+                            <img src="assets/img/tools/bg-2.png" alt="bg-2">
+                            <p>Bg-2</p>
+                        </div>
+                        <div class="gi-tools-item bg" data-bg-mode="bg-3">
+                            <img src="assets/img/tools/bg-3.png" alt="bg-3">
+                            <p>Bg-3</p>
+                        </div>
+                        <div class="gi-tools-item bg" data-bg-mode="bg-4">
+                            <img src="assets/img/tools/bg-4.png" alt="bg-4">
+                            <p>Bg-4</p>
+                        </div>
+                        <div class="gi-tools-item bg" data-bg-mode="bg-5">
+                            <img src="assets/img/tools/bg-5.png" alt="bg-5">
+                            <p>Bg-5</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gi-tools-block">
+                    <h3>Box Design</h3>
+                    <div class="gi-tools-info">
+                        <div class="gi-tools-item box active" data-box-mode-tool="default">
+                            <img src="assets/img/tools/box-0.png" alt="default">
+                            <p>Default</p>
+                        </div>
+                        <div class="gi-tools-item box" data-box-mode-tool="box-1">
+                            <img src="assets/img/tools/box-1.png" alt="box-1">
+                            <p>Box-1</p>
+                        </div>
+                        <div class="gi-tools-item box" data-box-mode-tool="box-2">
+                            <img src="assets/img/tools/box-2.png" alt="box-2">
+                            <p>Box-2</p>
+                        </div>
+                        <div class="gi-tools-item box" data-box-mode-tool="box-3">
+                            <img src="assets/img/tools/box-3.png" alt="box-3">
+                            <p>Box-3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/script :: common-scripts"></div>
+    </main>
 </body>
 </html>
