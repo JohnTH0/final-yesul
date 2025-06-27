@@ -3,6 +3,7 @@ package com.yesul.user.service;
 import java.util.List;
 import java.util.UUID;
 
+import com.yesul.user.auth.NaverUserInfo;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -27,9 +28,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(request);
         OauthUserInfo userInfo;
-        String regId = request.getClientRegistration().getRegistrationId();
-        if ("kakao".equals(regId)) {
+        String registrationId = request.getClientRegistration().getRegistrationId();
+        if ("kakao".equals(registrationId)) {
             userInfo = new KakaoUserInfo(oAuth2User.getAttributes());
+        } else if ("naver".equals(registrationId)) {
+            userInfo = new NaverUserInfo(oAuth2User.getAttributes());
         } else {
             throw new OAuth2AuthenticationException("지원하지 않는 소셜 로그인입니다.");
         }
