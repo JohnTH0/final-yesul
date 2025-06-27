@@ -53,6 +53,9 @@ dependencies {
 	// SMTP
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	// SocialLogin
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 }
 
 tasks.named('test') {

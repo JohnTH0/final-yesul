@@ -46,6 +46,12 @@ public class User extends BaseTimeEntity {
     @Column(name = "profile", columnDefinition = "TEXT") // img_url
     private String profile;
 
+    @Column(name = "provider")
+    private String provider;
+
+    @Column(name = "provider_id")
+    private String providerId;
+
     @Column(name = "email_check_token")
     private String emailCheckToken;
 
@@ -74,8 +80,22 @@ public class User extends BaseTimeEntity {
         this.status = status;
     }
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    // 이메일 업데이트 메서드
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    // 프로필 이미지 URL 업데이트 메서드 (필요하다면)
+    public void updateProfile(String profile) {
+        this.profile = profile;
+    }
+
     @Builder
-    public User(Long id, String email, String password, String name, String nickname, String birthday, String address, Character type, Character status, String profile) {
+    public User(Long id, String email, String password, String name, String nickname, String birthday, String address, Character type, Character status, String profile, String provider, String providerId) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -86,5 +106,7 @@ public class User extends BaseTimeEntity {
         this.type = type;
         this.status = status;
         this.profile = profile;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 }
