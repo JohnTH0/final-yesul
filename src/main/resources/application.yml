@@ -8,10 +8,11 @@ spring:
   jpa:
     database: mysql
     show-sql: true
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-        ddl-auto: update
         jdbc:
           batch_size: 20
         order_inserts: true
