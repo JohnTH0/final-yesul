@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Community - Recipe Posts</title>
+    <link rel="icon" th:href="@{/assets/img/favicon/favicon.png}" sizes="32x32">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/animate.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/slick.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/nouislider.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
+    <link rel="stylesheet" th:href="@{/assets/css/responsive.css}">
+</head>
+
+<body>
+<div th:replace="fragments/user/header :: header"></div>
+
+<br>
+<br>
+
+<div class="gi-breadcrumb m-b-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <nav class="gi-board-tab d-inline-block">
+                    <a th:href="@{/community/recipe}" class="mx-3">레시피 게시판</a>
+                    <span>|</span>
+                    <a th:href="@{/community/info}" class="mx-3">정보 게시판</a>
+                    <span>|</span>
+                    <a th:href="@{/community/free}" class="mx-3">자유 게시판</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .gi-board-tab a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .gi-board-tab a:hover {
+        text-decoration: underline;
+    }
+
+    .gi-board-tab span {
+        margin: 0 4px;
+        color: #aaa;
+    }
+
+</style>
+
+<br>
+
+
+<section class="gi-blog padding-tb-40">
+    <div class="container">
+        <div class="row">
+            <div class="gi-blogs-rightside col-md-12">
+                <div class="gi-blogs-content">
+                    <div class="gi-blogs-inner">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-6 gi-blog-block" th:each="post : ${postList}">
+                                <div class="gi-blog-item">
+                                    <div class="blog-info">
+                                        <figure class="blog-img">
+                                            <a th:href="@{/community/recipe/{id}(id=${post.id})}">
+                                                <img th:if="${post.imageUrls != null and !post.imageUrls.isEmpty()}"
+                                                     th:src="${post.imageUrls[0]}" alt="대표 이미지"
+                                                     style="width: 100%; height: 200px; object-fit: cover;">
+                                            </a>
+                                        </figure>
+                                        <div class="detail">
+                                            <label th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')} + ' - ' + ${post.category}"></label>
+                                            <h3>
+                                                <a th:href="@{/community/recipe/{id}(id=${post.id})}" th:text="${post.title}"></a>
+                                            </h3>
+                                            <div class="more-info">
+                                                <a th:href="@{/community/recipe/{id}(id=${post.id})}">Read More<i class="gicon gi-angle-double-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Pagination Placeholder -->
+                    <div class="gi-pro-pagination">
+                        <span>Showing 1-6 of 20 items</span>
+
+                        <ul class="gi-pro-pagination-inner">
+                            <!-- 검색창 Start -->
+                            <div class="gi-blog-search mb-2" style="width: 100%; max-width: 500px; margin-top: 0; margin-bottom: 8px;">
+                                <form class="gi-blog-search-form d-flex justify-content-end align-items-center" action="#">
+                                    <input class="form-control form-control-sm me-2" type="text" placeholder="게시글 검색" style="height: 32px; max-width: 400px;">
+                                    <button class="btn btn-sm btn-outline-dark" type="submit" style="height: 32px;"><i class="gicon gi-search"></i></button>
+                                </form>
+                            </div>
+                            <!-- 검색창 End -->
+                            <li><a class="active" href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><span>...</span></li>
+                            <li><a href="#">8</a></li>
+                            <li><a class="next" href="#">Next <i class="gicon gi-angle-right"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="fragments/user/footer :: footer"></div>
+
+<script th:src="@{/assets/js/plugins/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/fontawesome.js}"></script>
+<script th:src="@{/assets/js/plugins/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/js/plugins/infiniteslidev2.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery.zoom.min.js}"></script>
+<script th:src="@{/assets/js/plugins/slick.min.js}"></script>
+<script th:src="@{/assets/js/plugins/nouislider.js}"></script>
+<script th:src="@{/assets/js/plugins/wow.js}"></script>
+<script th:src="@{/assets/js/plugins/smoothscroll.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>

@@ -18,6 +18,11 @@ spring:
         order_inserts: true
         order_updates: true
 
+        servlet:
+          multipart:
+            max-file-size: 50MB
+            max-request-size: 50MB
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -94,3 +99,9 @@ springdoc:
     path: /v3/api-docs
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
+
+app:
+  image-upload:
+    mode: local
+    local-dir: upload-dir
+    base-url: /images/

@@ -30,8 +30,8 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
 	//Websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -58,6 +58,13 @@ dependencies {
 
 	// SocialLogin
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// Jsoup HTML parser
+	implementation 'org.jsoup:jsoup:1.17.2'
+
+	// NCP 오브젝트 스토리지용 SDK
+	implementation 'software.amazon.awssdk:s3:2.25.23'
+
 
 }
 

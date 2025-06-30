@@ -90,11 +90,13 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/main", "/user/**", "/user/assets/**", "/community/**", "/error",
                                 "/assets/**",
+                                "/images/**",
                                 "/login",
                                 "/login/**",
                                 "/logout",
                                 "/login/oauth2/**",
-                                "/oauth2/**"
+                                "/oauth2/**",
+                                "/post-images/upload"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

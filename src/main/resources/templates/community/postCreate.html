@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 작성</title>
+
+  <!-- Toast UI Editor CSS -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+
+  <!-- 외부 플러그인 CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+  <!-- 기본 CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<div th:replace="fragments/user/header :: header"></div>
+
+<section class="gi-blog padding-tb-40">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h2 class="mb-4 text-center">게시글 작성</h2>
+
+        <!-- id="postForm" -->
+        <form id="postForm" th:action="@{/community/create}" method="post" th:object="${postRequestDto}" enctype="multipart/form-data">
+          <!-- 게시판 선택 -->
+          <div class="form-group mb-3">
+            <label for="boardName">게시판 선택</label>
+            <select id="boardName" name="boardName" th:field="*{boardName}" class="form-control" required>
+              <option value="recipe">레시피</option>
+              <option value="info">정보</option>
+              <option value="free">자유</option>
+            </select>
+          </div>
+
+          <!-- 제목 -->
+          <div class="form-group mb-3">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required />
+          </div>
+
+          <!-- Toast UI Editor -->
+          <div class="form-group mb-3">
+            <label for="editor">내용</label>
+            <div id="editor"></div>
+            <input type="hidden" id="hiddenContent" name="content" />
+          </div>
+
+          <!-- 썸네일 -->
+          <div class="form-group mb-3">
+            <label for="thumbnail">썸네일 URL</label>
+            <input type="text" id="thumbnail" name="thumbnail" class="form-control" />
+          </div>
+
+          <!-- 등록 버튼 -->
+          <div class="text-end mt-4">
+            <button type="submit" class="btn btn-success px-4">등록하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 공통 푸터 -->
+<div th:replace="fragments/user/footer :: footer"></div>
+
+<!-- jQuery + 외부 JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+<!-- Toast UI Editor JS -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<!-- Editor 초기화 -->
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    console.log("DOM fully loaded");
+
+    const editorContainer = document.querySelector('#editor');
+    if (!editorContainer) {
+      console.error("에디터 컨테이너(#editor)를 찾을 수 없습니다!");
+      return;
+    }
+
+    const editor = new toastui.Editor({
+      el: editorContainer,
+      height: '500px',
+      initialEditType: 'wysiwyg',
+      previewStyle: 'vertical'
+    });
+
+    // id로 폼 선택
+    const form = document.querySelector('#postForm');
+    if (!form) {
+      console.error("form을 찾을 수 없습니다!");
+      return;
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // 기본 제출 막기
+      console.log("submit 이벤트 발생");
+
+      const htmlContent = editor.getHTML();
+      console.log("htmlContent:", htmlContent);
+
+      document.querySelector('#hiddenContent').value = htmlContent;
+
+      const tempDoc = document.createElement('div');
+      tempDoc.innerHTML = htmlContent;
+      const firstImg = tempDoc.querySelector('img');
+      if (firstImg) {
+        document.querySelector('#thumbnail').value = firstImg.getAttribute('src');
+      }
+
+      form.submit(); // 실제 제출
+    });
+  });
+</script>
+
+<!-- 기본 JS -->
+<script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+</html>
