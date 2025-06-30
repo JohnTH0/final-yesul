@@ -2,7 +2,9 @@ package com.yesul.alcohol.model.entity;
 
 import com.yesul.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "alcohol")
 @NoArgsConstructor
 public class Alcohol extends BaseTimeEntity {
@@ -44,4 +48,7 @@ public class Alcohol extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "alcohol", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AlcoholTaste> alcoholTastes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "alcohol", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AlcoholRegion> alcoholRegions = new ArrayList<>();
 }
