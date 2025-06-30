@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Chat Page</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h1>채팅방 입장</h1>
+<div id="chat-message-list">
+  <ul th:each="msg : ${messages}">
+    <li th:text="${msg.content}">메시지 내용</li>
+  </ul>
+</div>
+<input type="hidden" id="lastMessageId" th:value="${lastMessageId}">
+</body>
+</html>
