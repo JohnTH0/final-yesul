@@ -1,22 +1,17 @@
 package com.yesul.admin;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+class PasswordEncodeTest {
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-public class PasswordEncodingTest {
-    public static void main(String[] args) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    @Test
+    void printEncodedPassword() {
         String rawPassword = "password123";
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         String encodedPassword = passwordEncoder.encode(rawPassword);
 
-        System.out.println("Raw Password    : " + rawPassword);
-        System.out.println("Encoded Password: " + encodedPassword);
+        System.out.println("Encoded password: " + encodedPassword);
     }
 }

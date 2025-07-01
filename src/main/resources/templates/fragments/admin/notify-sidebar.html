@@ -1,0 +1,65 @@
+<div th:fragment="adminNotifySidebar">
+    <div class="gi-notify-bar-overlay"></div>
+    <div class="gi-notify-bar">
+        <div class="gi-bar-title">
+            <!--            <h6>Notifications<span class="label" th:text="${alerts.size()}">0</span></h6>-->
+            <!-- TODO: 알림 표시 (개수 넣기) -->
+            <h6>Notifications</h6>
+            <a href="javascript:void(0)" class="close-notify"><i class="ri-close-line"></i></a>
+        </div>
+        <div class="gi-bar-content">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="alert-tab" data-bs-toggle="tab" data-bs-target="#alert"
+                            type="button" role="tab" aria-controls="alert" aria-selected="true">알림</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages"
+                            type="button" role="tab" aria-controls="messages" aria-selected="false">1:1 문의</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <!-- Alerts -->
+                <div class="tab-pane fade show active" id="alert" role="tabpanel" aria-labelledby="alert-tab">
+                    <div class="gi-alert-list">
+                        <ul>
+                            <li> <!--th:each="alert : ${alerts}"-->
+                                <div class="icon gi-success">
+                                    <i th:class="ri-check-double-line"></i>
+                                </div>
+                                <div class="detail">
+                                    <div class="title">커뮤니티 이름</div> <!-- th:text="${alert.title}"-->
+                                    <p class="time">생성일 출력</p> <!--th:text="${alert.time}"-->
+                                    <p class="message">게시글 제목</p> <!--  th:text="${alert.message}"-->
+                                </div>
+                            </li>
+                            <!-- TODO -->
+                            <li class="check"><a class="gi-primary-btn" th:href="@{/review/list}">View all</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 1:1 문의 -->
+                <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                    <div class="gi-message-list">
+                        <ul>
+                            <li> <!-- th:each="msg : ${messages}" -->
+                                <div class="icon gi-success">
+                                    <i th:class="ri-check-double-line"></i>
+                                </div>
+                                <div class="detail">
+                                    <a href="/chat/list" class="name">사용자이름</a>  <!--  th:text="${msg.sender}"-->
+                                    <p class="time" >전송시각</p> <!-- th:text="${msg.time}" -->
+                                    <p class="message" >메시지 내용</p> <!-- th:text="${msg.content}"-->
+                                </div>
+                            </li>
+                            <li class="check"><a class="gi-primary-btn" href="/chat/list">View all</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

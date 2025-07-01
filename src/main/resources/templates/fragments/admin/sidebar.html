@@ -1,7 +1,7 @@
 <div th:fragment="adminSidebar" class="gi-sidebar-overlay">
   <div class="gi-sidebar" data-mode="light">
   <div class="gi-sb-logo">
-    <a th:href="@{/dashboard}" class="sb-full">
+    <a th:href="@{dashboard}" class="sb-full">
       <img th:src="@{/asserts/img/logo/full-logo.png}" alt="logo">
     </a>
   </div>
@@ -10,14 +10,14 @@
       <ul class="gi-sb-list">
 
         <li class="gi-sb-item">
-          <a th:href="@{/dashboard}" class="gi-page-link">
+          <a th:href="@{dashboard}" class="gi-page-link">
             <i class="ri-bar-chart-grouped-line"></i>
             <span class="condense"><span class="hover-title">Dashboard</span></span>
           </a>
         </li> <!-- dashboard -->
 
         <li class="gi-sb-item">
-          <a th:href="@{/board}" class="gi-page-link">
+          <a th:href="@{board}" class="gi-page-link">
             <i class="ri-todo-line"></i>
             <span class="condense"><span class="hover-title">공지사항</span></span>
           </a>
@@ -27,14 +27,14 @@
         <li class="gi-sb-title condense">Management</li>
 
         <li class="gi-sb-item">
-          <a th:href="@{/product/list}" class="gi-page-link">
+          <a th:href="@{alcohol}" class="gi-page-link">
             <i class="ri-play-list-add-line"></i>
             <span class="condense"><span class="hover-title">상품관리</span></span>
           </a>
         </li> <!-- 상품관리 -->
 
         <li class="gi-sb-item">
-          <a th:href="@{/sale/list}" class="gi-page-link">
+          <a th:href="@{sale}" class="gi-page-link">
             <i class="ri-shopping-cart-line"></i>
             <span class="condense"><span class="hover-title">판매관리</span></span>
           </a>
@@ -48,7 +48,7 @@
         </li> <!-- 재고관리 -->
 
         <li class="gi-sb-item">
-          <a th:href="@{/userInfo/list}" class="gi-page-link">
+          <a th:href="@{userInfo}" class="gi-page-link">
             <i class="ri-todo-line"></i>
             <span class="condense"><span class="hover-title">회원정보관리</span></span>
           </a>
