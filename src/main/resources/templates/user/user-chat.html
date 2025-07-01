@@ -3,14 +3,120 @@
 <head>
   <title>Chat Page</title>
   <meta charset="UTF-8">
+  <style>
+    #chat-message-list {
+      height: 400px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
 <h1>채팅방 입장</h1>
+
 <div id="chat-message-list">
-  <ul th:each="msg : ${messages}">
-    <li th:text="${msg.content}">메시지 내용</li>
+  <ul id="messageList">
+    <!-- 서버사이드 렌더링된 메시지 -->
+    <li th:each="msg : ${messages}" th:text="${msg.messageContext}">메시지 내용</li>
   </ul>
 </div>
+
+<!-- 메시지 입력창 -->
+<input type="text" id="messageInput" placeholder="메시지를 입력하세요">
+<button onclick="sendMessage()">전송</button>
+
+<!-- 히든 필드 -->
 <input type="hidden" id="lastMessageId" th:value="${lastMessageId}">
+<input type="hidden" id="chatRoomId" th:value="${roomId}">
+<input type="hidden" id="receiverId" th:value="${receiverId}">
+<input type="hidden" id="userId" th:value="${userId}">
+
+<script th:inline="javascript">
+  const socket = new WebSocket("ws://" + window.location.host + "/ws/chat");
+
+  socket.onopen = function() {
+    console.log("✅ WebSocket 연결 성공!");
+  };
+
+  socket.onmessage = function(event) {
+    const msg = JSON.parse(event.data);
+    appendMessage(msg.messageContext);
+    scrollToBottom();
+  };
+
+  function sendMessage() {
+    const messageInput = document.getElementById("messageInput");
+    const message = messageInput.value.trim();
+    if (!message) return;
+
+    const payload = {
+      chatRoomId: document.getElementById("chatRoomId").value,
+      userId: document.getElementById("userId").value,
+      senderType: "USER",
+      messageContext: message,
+      messageType: "TEXT"
+    };
+
+    socket.send(JSON.stringify(payload));
+    messageInput.value = "";
+  }
+
+
+  function appendMessage(content) {
+    const messageList = document.getElementById("messageList");
+    const li = document.createElement("li");
+    li.textContent = content;
+    messageList.appendChild(li);
+  }
+
+  function prependMessage(content) {
+    const messageList = document.getElementById("messageList");
+    const li = document.createElement("li");
+    li.textContent = content;
+    messageList.insertBefore(li, messageList.firstChild);
+  }
+
+  function scrollToBottom() {
+    const chatList = document.getElementById("chat-message-list");
+    chatList.scrollTop = chatList.scrollHeight;
+  }
+
+  // 초기 진입 시 맨 아래로 스크롤
+  scrollToBottom();
+
+  // 무한 스크롤: 위로 올릴 때 더 가져오기
+  const chatList = document.getElementById("chat-message-list");
+  chatList.addEventListener("scroll", function() {
+    if (chatList.scrollTop === 0) {
+      loadMoreMessages();
+    }
+  });
+
+  function loadMoreMessages() {
+    const roomId = document.getElementById("chatRoomId").value;
+    const lastMessageId = document.getElementById("lastMessageId").value;
+
+    fetch(`/api/users/chatroom/${roomId}/messages?lastMessageId=${lastMessageId}&size=20`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.content && data.content.length > 0) {
+          data.content.reverse().forEach(msg => {
+            prependMessage(msg.messageContext);
+          });
+
+          document.getElementById("lastMessageId").value = data.content[data.content.length - 1].messageId;
+        }
+
+        if (!data.hasNext) {
+          console.log("📌 더 이상 가져올 메시지가 없습니다.");
+        }
+      })
+      .catch(err => {
+        console.error("메시지 불러오기 실패:", err);
+      });
+  }
+</script>
+
 </body>
 </html>

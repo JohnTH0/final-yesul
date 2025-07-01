@@ -2,7 +2,8 @@ package com.yesul.chatroom.model.entity;
 
 import com.yesul.admin.model.entity.Admin;
 import com.yesul.chatroom.model.entity.enums.MessageType;
-import com.yesul.chatroom.model.entity.enums.ReceiverType;
+import com.yesul.chatroom.model.entity.enums.Type;
+import com.yesul.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,18 +25,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Message {
+public class Message extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "receiver_type", nullable = false)
-    private ReceiverType receiverType;
-
-    @Column(name = "receiver_id", nullable = false)
-    private Long receiverId;
+    @Column(name = "sender_type", nullable = false)
+    private Type senderType;
 
     @Column(name = "message_context",length = 5000, nullable = false)
     private String messageContext;
@@ -45,13 +43,7 @@ public class Message {
     private MessageType messageType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id", nullable = false)
+    @JoinColumn(name = "chatRoom_id", nullable = false)
     private ChatRoom chatRoom;
-
-    @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
-    private Admin admin;
-
-
 
 }

@@ -4,11 +4,13 @@ import com.yesul.chatroom.model.dto.ChatRoomResult;
 import com.yesul.chatroom.model.entity.Message;
 import com.yesul.chatroom.service.ChatRoomService;
 import com.yesul.chatroom.service.MessageService;
+import com.yesul.user.service.PrincipalDetails;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,12 @@ public class ChatController {
     private final MessageService messageService;
 
     // 채팅방 생성 or 재사용
-    @PostMapping
-    public String createOrFindChatRoom(@RequestParam Long userId) {
-        ChatRoomResult result = chatRoomService.findOrCreateRoom(userId);
+    @GetMapping
+    public String createOrFindChatRoom(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam Long adminId
+    ) {
+        ChatRoomResult result = chatRoomService.findOrCreateRoom(principalDetails.getUser().getId(),adminId);
         return "redirect:/users/chatroom/" + result.getChatRoom().getId() + "?new=" + result.isNewlyCreated();
     }
 
@@ -59,12 +64,6 @@ public class ChatController {
             model.addAttribute("lastMessageId", lastMessageId);
         }
 
-        return "user-chat";
+        return "user/user-chat";
     }
-
-
-
-
-
-
 }
