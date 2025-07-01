@@ -13,6 +13,7 @@ import lombok.Setter;
 @Table(name = "alcohol_taste")
 @NoArgsConstructor
 public class AlcoholTaste {
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;

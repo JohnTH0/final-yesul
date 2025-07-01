@@ -28,11 +28,17 @@ public class Alcohol extends BaseTimeEntity {
     @Column(nullable = false, length = 255)
     private String brand;
 
-    @Column(length = 255)
-    private String manufacturer;
+    @Column(nullable = false, length = 255)
+    private String type;
+
+    @Column(name = "volume_ml", nullable = false)
+    private Integer volumeMl;
 
     @Column(precision = 4, scale = 2, nullable = false)
     private BigDecimal abv;
+
+    @Column(name = "ingredients", length = 1024)
+    private String ingredients;  // 예: "사과, 오크칩, 이스트"
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -40,8 +46,39 @@ public class Alcohol extends BaseTimeEntity {
     @Column(name = "taste_description", columnDefinition = "TEXT")
     private String tasteDescription;
 
+    // 단맛 정도
+    @Column(name = "sweetness_level", nullable = true)
+    private Integer sweetnessLevel;
+
+    // 산미 정도
+    @Column(name = "acidity_level", nullable = true)
+    private Integer acidityLevel;
+
+    // 바디감
+    @Column(name = "body_level", nullable = true)
+    private Integer bodyLevel;
+
+    // 향의 강도
+    @Column(name = "aroma_level", nullable = true)
+    private Integer aromaLevel;
+
+    // 탄닌감
+    @Column(name = "tannin_level", nullable = true)
+    private Integer tanninLevel;
+
+    // 끝맛 지속
+    @Column(name = "finish_level", nullable = true)
+    private Integer finishLevel;
+
+    // 탄산감
+    @Column(name = "sparkling_level", nullable = true)
+    private Integer sparklingLevel;
+
     @Column(nullable = false)
     private Integer price;
+
+    @Column(name = "pairing_foods", length = 255)
+    private String pairingFoods; // 예: "흑돼지, 전복구이, 옥돔구이"
 
     @Column(length = 500)
     private String image;

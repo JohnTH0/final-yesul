@@ -10,6 +10,5 @@ import java.util.List;
 public class AlcoholDetailDto {
     private Long alcoholId;
     private String alcoholName;
-    private List<FoodDto> foods;
     private List<RegionDto> regions;
 }
