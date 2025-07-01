@@ -7,16 +7,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@ToString
 public class Admin extends BaseTimeEntity {
 
     @Id
@@ -26,7 +24,7 @@ public class Admin extends BaseTimeEntity {
     @Column(name = "login_id", length = 20, nullable = false)
     private String loginId;
 
-    @Column(name = "login_password", length = 20, nullable = false)
-    private String loginPassword;
+    @Column(name = "login_pwd", length = 60, nullable = false)
+    private String loginPwd;
 
 }

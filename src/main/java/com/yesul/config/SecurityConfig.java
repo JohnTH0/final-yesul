@@ -1,5 +1,7 @@
 package com.yesul.config;
 
+import com.yesul.user.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,10 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.yesul.user.service.CustomOAuth2UserService;
-import com.yesul.user.service.CustomUserDetailsService;
 
 @Configuration
 @EnableMethodSecurity
@@ -51,7 +51,10 @@ public class SecurityConfig {
                         .loginPage("/admin/login")
                         .loginProcessingUrl("/admin/login")
                         .defaultSuccessUrl("/admin/dashboard", true)
-                        .failureUrl("/admin/login?error")
+                        .failureHandler((request, response, exception) -> {
+                            exception.printStackTrace();
+                            response.sendRedirect("/admin/login?error");
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout
