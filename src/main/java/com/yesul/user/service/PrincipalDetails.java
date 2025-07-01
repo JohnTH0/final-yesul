@@ -58,7 +58,6 @@ public class PrincipalDetails implements OAuth2User, UserDetails {
         return user.getStatus() == '1';
     }
 
-    // OAuth2User
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
@@ -67,5 +66,10 @@ public class PrincipalDetails implements OAuth2User, UserDetails {
     @Override
     public String getName() {
         return user.getName();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 }

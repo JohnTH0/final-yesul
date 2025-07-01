@@ -163,4 +163,15 @@ public class UserServiceImpl implements UserService {
         log.info("이메일 인증 완료 및 계정 활성화: {}", user.getEmail());
         return true;
     }
+
+    /**
+     * 이메일로 사용자 조회
+     *
+     * @param email 사용자 이메일
+     * @return User 엔티티 (Optional)
+     */
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

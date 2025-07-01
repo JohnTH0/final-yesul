@@ -1,7 +1,10 @@
 package com.yesul.user.service;
 
+import java.util.Optional;
+
 import com.yesul.user.model.dto.UserRegisterDto;
-import com.yesul.user.model.entity.User; // User 엔티티 import 추가
+import com.yesul.user.model.entity.User;
+
 
 public interface UserService {
     /**
@@ -39,4 +42,11 @@ public interface UserService {
      * @return 인증 성공 시 true, 실패 시 false
      */
     boolean verifyEmail(String email, String token);
+
+    /**
+     * 이메일로 사용자 조회
+     * @param email 사용자 이메일
+     * @return User 엔티티 (Optional)
+     */
+    Optional<User> findUserByEmail(String email);
 }

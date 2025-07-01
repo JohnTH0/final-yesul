@@ -88,11 +88,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/main", "/user/**", "/user/assets/**", "/community/**", "/error",
+                                "/user/verify-email",
+                                "/user/regist",
+                                "/user/regist-process",
+                                "/", "/main", "/user/assets/**", "/community/**", "/error",
                                 "/assets/**",
                                 "/images/**",
                                 "/login",
-                                "/login/**",
                                 "/logout",
                                 "/login/oauth2/**",
                                 "/oauth2/**",
@@ -109,12 +111,12 @@ public class SecurityConfig {
                             exception.printStackTrace();
                             response.sendRedirect("/login?error");
                         })
-                        .defaultSuccessUrl("/main")
+                        .defaultSuccessUrl("/user/profile")
                         .permitAll()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/main")
+                        .defaultSuccessUrl("/user/profile")
                         .failureHandler((request, response, exception) -> {
                             exception.printStackTrace();
                             response.sendRedirect("/login?error");

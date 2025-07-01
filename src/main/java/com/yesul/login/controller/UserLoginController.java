@@ -13,18 +13,13 @@ public class UserLoginController {
     public String loginForm() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null
-                && auth.isAuthenticated()
-                && !(auth instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/main";
+        // 로그인 확인
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            return "redirect:/user/profile";
         }
+        // 로그인 상태가 아닐 시
         return "/user/login";
     }
-
-//    @PostMapping("/login-process")
-//    public String loginProcess() {
-//        return "redirect:/";
-//    }
 
     @GetMapping("/logout")
     public String logout() {

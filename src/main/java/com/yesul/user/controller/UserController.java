@@ -1,5 +1,7 @@
 package com.yesul.user.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.yesul.exception.handler.EntityNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ public class UserController {
 
     private final UserService userService;
 
+    // Regist Start
     @GetMapping("/regist")
     public String registForm(Model model) {
         model.addAttribute("userRegisterDto", new UserRegisterDto());
@@ -65,4 +68,18 @@ public class UserController {
             return "redirect:/user/regist";
         }
     }
+    // Regist End
+
+    // Mypage Start
+    @GetMapping("/profile")
+    public String userProfile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+            String username = authentication.getName();
+            userService.findUserByEmail(username).ifPresent(user -> model.addAttribute("user", user));
+        }
+        return "user/user-profile";
+    }
+    // Mypage End
+
 }
