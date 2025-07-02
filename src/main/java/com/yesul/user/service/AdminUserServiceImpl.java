@@ -1,10 +1,9 @@
-package com.yesul.admin.service;
+package com.yesul.user.service;
 
-import com.yesul.admin.model.dto.userInfo.UserInfoListAdminDto;
-import com.yesul.admin.repository.UserInfoAdminRepository;
+import com.yesul.user.model.dto.UserListDto;
 import com.yesul.exception.handler.UpdateFailedException;
+import com.yesul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +13,13 @@ import static com.yesul.admin.model.enums.StatusType.*;
 
 @RequiredArgsConstructor
 @Service
-public class AdminService {
+public class AdminUserServiceImpl implements AdminUserService {
+    private final UserRepository userRepository;
 
-    private final UserInfoAdminRepository userInfoAdminRepository;
-    private final ModelMapper modelMapper;
+    public List<UserListDto> getAllUsersInfo() {
+        List<UserListDto> userList = userRepository.findAllUserInfoDto();
 
-    public List<UserInfoListAdminDto> getAllUsersInfo() {
-        List<UserInfoListAdminDto> userList = userInfoAdminRepository.findAllUserInfoDto();
-
-        for (UserInfoListAdminDto dto : userList) {
+        for (UserListDto dto : userList) {
 
             String displayStatus = statusToDisplayStatus(dto.getStatus());
             dto.setDisplayStatus(displayStatus);
@@ -33,13 +30,13 @@ public class AdminService {
 
     @Transactional
     public void updateUserStatus(Long userId, String displayStatus) {
+
         char status = displayStatusToStatus(displayStatus);
 
-        int updatedCount = userInfoAdminRepository.updateUserStatus(userId, status);
+        int updatedCount = userRepository.updateUserStatus(userId, status);
 
         if(updatedCount == 0) {
             throw new UpdateFailedException("회원상태변경에 실패하였습니다.");
         }
     }
-
 }

@@ -17,14 +17,4 @@ public class LoginAdmin extends User {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "LoginAdmin{" +
-                "id=" + id +
-                ", username=" + getUsername() +
-                ", password=" + getPassword() +
-                ", authorities=" + getAuthorities() +
-                '}';
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.yesul.admin.model.dto.review;
+package com.yesul.community.model.dto;
 
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ReviewDetailAdminDto {
+public class ReviewDto {
     private Long id;
     private String alcoholName;
     private String userName;

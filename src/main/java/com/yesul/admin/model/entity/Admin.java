@@ -14,7 +14,6 @@ import lombok.ToString;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class Admin extends BaseTimeEntity {
 
     @Id

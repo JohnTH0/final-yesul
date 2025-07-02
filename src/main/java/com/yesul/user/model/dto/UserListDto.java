@@ -1,18 +1,15 @@
-package com.yesul.admin.model.dto.userInfo;
+package com.yesul.user.model.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class UserInfoListAdminDto {
+public class UserListDto {
     private Long id;
     private String nickname;
     private String email;
@@ -22,7 +19,7 @@ public class UserInfoListAdminDto {
 
     private String displayStatus;
 
-    public UserInfoListAdminDto(Long id, String email, String nickname, String birthday,Character status, LocalDateTime createdAt) {
+    public UserListDto(Long id, String email, String nickname, String birthday, Character status, LocalDateTime createdAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;

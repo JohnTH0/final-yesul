@@ -1,4 +1,4 @@
-package com.yesul.admin.model.entity;
+package com.yesul.notice.model.entity;
 
 import com.yesul.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Board extends BaseTimeEntity {
+public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
