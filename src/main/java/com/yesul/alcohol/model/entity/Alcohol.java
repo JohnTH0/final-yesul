@@ -28,6 +28,12 @@ public class Alcohol extends BaseTimeEntity {
     @Column(nullable = false, length = 255)
     private String brand;
 
+    @Column(nullable = false, length = 50)
+    private String province;
+
+    @Column(nullable = false, length = 50)
+    private String city;
+
     @Column(nullable = false, length = 255)
     private String type;
 
@@ -38,7 +44,7 @@ public class Alcohol extends BaseTimeEntity {
     private BigDecimal abv;
 
     @Column(name = "ingredients", length = 1024)
-    private String ingredients;  // 예: "사과, 오크칩, 이스트"
+    private String ingredients;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -46,31 +52,31 @@ public class Alcohol extends BaseTimeEntity {
     @Column(name = "taste_description", columnDefinition = "TEXT")
     private String tasteDescription;
 
-    // 단맛 정도
+    // 단맛
     @Column(name = "sweetness_level", nullable = true)
     private Integer sweetnessLevel;
 
-    // 산미 정도
+    // 산미
     @Column(name = "acidity_level", nullable = true)
     private Integer acidityLevel;
 
-    // 바디감
+    // 바디
     @Column(name = "body_level", nullable = true)
     private Integer bodyLevel;
 
-    // 향의 강도
+    // 향
     @Column(name = "aroma_level", nullable = true)
     private Integer aromaLevel;
 
-    // 탄닌감
+    // 탄닌
     @Column(name = "tannin_level", nullable = true)
     private Integer tanninLevel;
 
-    // 끝맛 지속
+    // 끝맛
     @Column(name = "finish_level", nullable = true)
     private Integer finishLevel;
 
-    // 탄산감
+    // 탄산
     @Column(name = "sparkling_level", nullable = true)
     private Integer sparklingLevel;
 
@@ -82,10 +88,4 @@ public class Alcohol extends BaseTimeEntity {
 
     @Column(length = 500)
     private String image;
-
-    @OneToMany(mappedBy = "alcohol", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AlcoholTaste> alcoholTastes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "alcohol", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AlcoholRegion> alcoholRegions = new ArrayList<>();
 }

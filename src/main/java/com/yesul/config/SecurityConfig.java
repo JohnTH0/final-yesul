@@ -91,7 +91,8 @@ public class SecurityConfig {
                                 "/logout",
                                 "/login/oauth2/**",
                                 "/oauth2/**",
-                                "/post-images/upload"
+                                "/post-images/upload",
+                                "/alcohols/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
