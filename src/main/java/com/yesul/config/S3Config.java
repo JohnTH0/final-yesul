@@ -15,9 +15,9 @@ public class S3Config {
 
     @Value("${ncp.objectstorage.endpoint}")
     private String endpoint;
-    @Value("${ncp.objectstorage.access-key}")
+    @Value("${ncp.objectstorage.access_key}")
     private String accessKey;
-    @Value("${ncp.objectstorage.secret-key}")
+    @Value("${ncp.objectstorage.secret_key}")
     private String secretKey;
     @Value("${ncp.objectstorage.region}")
     private String region;
