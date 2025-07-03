@@ -105,3 +105,11 @@ app:
     mode: local
     local-dir: upload-dir
     base-url: /images/
+
+ncp:
+  objectstorage:
+    endpoint: https://kr.object.ncloudstorage.com
+    region: kr-standard
+    bucket: {NCP_BUCKET}
+    access-key: {NCP_ACCESS_KEY}
+    secret-key: {NCP_SECRET_KEY}
