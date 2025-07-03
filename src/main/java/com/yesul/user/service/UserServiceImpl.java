@@ -7,6 +7,7 @@ import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,6 +90,7 @@ public class UserServiceImpl implements UserService {
      * @param user 인증 메일을 받을 사용자 엔티티
      */
     @Override
+    @Async("asyncExecutor")
     public void sendVerificationEmail(User user) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {

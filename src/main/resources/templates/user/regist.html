@@ -102,9 +102,12 @@
 
               <span class="gi-register-wrap">
                     <label for="address">주소</label>
-                    <input type="text" id="address" name="address" placeholder="주소 입력">
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" id="address" name="address" placeholder="주소 입력" readonly required>
+                        <button type="button" class="gi-btn-1" onclick="openPostcode()">주소 검색</button>
+                    </div>
                     <span id="addressFeedback" class="error-message"></span>
-                </span>
+              </span>
 
               <span class="gi-register-wrap gi-register-btn">
                     <span>이미 계정이 있으신가요?<a th:href="@{/login}">로그인</a></span>
@@ -150,6 +153,22 @@
 <script th:src="@{/assets/js/plugins/smoothscroll.min.js}"></script>
 <script th:src="@{/assets/js/register-validation.js}"></script>
 <script th:src="@{/assets/js/main.js}"></script>
+<script th:src="'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'"></script>
+
 </body>
 
 </html>
+
+<script>
+    function openPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // data.address: 최종 주소 문자열
+                // data.zonecode: 우편번호
+                document.getElementById('address').value = data.address;
+                // 필요하다면 우편번호 hidden field에 저장
+                // document.getElementById('zonecode').value = data.zonecode;
+            }
+        }).open();
+    }
+</script>

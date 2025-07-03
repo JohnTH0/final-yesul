@@ -1,5 +1,6 @@
 package com.yesul.user.controller;
 
+import com.yesul.user.service.RegistrationAsyncService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.yesul.exception.handler.EntityNotFoundException;
@@ -21,6 +22,8 @@ import com.yesul.user.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final RegistrationAsyncService asyncRegService;
+
 
     // Regist Start
     @GetMapping("/regist")
@@ -29,13 +32,17 @@ public class UserController {
         return "user/regist";
     }
 
+/*
+    동기화 API 보존, 비동기 정상 동작 확인 후 제거
     @PostMapping("/regist-process")
     @ResponseBody
-    public String registProcess(@RequestBody UserRegisterDto userRegisterDto) {
+    public String registProcess(@RequestBody UserRegisterDto userRegisterDto, RedirectAttributes attr) {
         try {
             userService.registerUser(userRegisterDto);
             log.info("회원가입 요청 성공, 이메일 발송 대기: {}", userRegisterDto.getEmail());
             return "{\"success\": true, \"message\": \"회원가입을 위한 인증 메일을 발송했습니다. 이메일을 확인하여 인증을 완료해주세요.\"}";
+            attr.addFlashAttribute("message", "인증 메일을 발송했습니다. 메일함을 확인해주세요.");
+            return "redirect:/user/user-regist-mail";
         } catch (IllegalArgumentException e) {
             log.warn("회원가입 실패 (입력 오류): {}", e.getMessage());
             return "{\"success\": false, \"message\": \"" + e.getMessage() + "\"}";
@@ -43,6 +50,20 @@ public class UserController {
             log.error("회원가입 중 오류 발생: {}", e.getMessage(), e);
             return "{\"success\": false, \"message\": \"회원가입 중 시스템 오류가 발생했습니다. 다시 시도해주세요.\"}";
         }
+
+ */
+
+    @GetMapping("/user-regist-mail")
+    public String userRegistMail() {
+        return "user/user-regist-mail";
+    }
+
+    @PostMapping("/regist-process")
+    public String registProcess(@ModelAttribute UserRegisterDto dto,
+                                RedirectAttributes attr) {
+        asyncRegService.registerInBackground(dto);
+        attr.addFlashAttribute("message", "회원가입 요청을 접수했습니다. 잠시 후 이메일을 확인해주세요.");
+        return "redirect:/user/user-regist-mail";
     }
 
     @GetMapping("/verify-email")

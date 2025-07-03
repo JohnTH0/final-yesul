@@ -18,10 +18,10 @@ spring:
         order_inserts: true
         order_updates: true
 
-        servlet:
-          multipart:
-            max-file-size: 50MB
-            max-request-size: 50MB
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
   mail:
     host: smtp.gmail.com
@@ -51,14 +51,16 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
             scope: profile_nickname, account_email
+            provider: kakao
 
           naver:
             client-id: ${NAVER_REST_KEY}
             client-secret: ${NAVER_REST_SECRET}
-            scope: name, email
-            client-name: Naver
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            scope: name, email
+            client-name: Naver
+            provider: naver
 
         provider:
           kakao:
@@ -110,6 +112,6 @@ ncp:
   objectstorage:
     endpoint: https://kr.object.ncloudstorage.com
     region: kr-standard
-    bucket: {NCP_BUCKET}
-    access-key: {NCP_ACCESS_KEY}
-    secret-key: {NCP_SECRET_KEY}
+    bucket: ${NCP_BUCKET}
+    access-key: ${NCP_ACCESS_KEY}
+    secret-key: ${NCP_SECRET_KEY}

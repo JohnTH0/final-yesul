@@ -83,6 +83,7 @@ public class SecurityConfig {
                                 "/user/verify-email",
                                 "/user/regist",
                                 "/user/regist-process",
+                                "/user/user-regist-mail",
                                 "/", "/main", "/user/assets/**", "/community/**", "/error",
                                 "/assets/**",
                                 "/asserts/**",
