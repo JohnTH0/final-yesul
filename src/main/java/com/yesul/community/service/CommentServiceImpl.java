@@ -1,0 +1,37 @@
+package com.yesul.community.service;
+
+import com.yesul.community.model.dto.CommentRequestDto;
+import com.yesul.community.model.entity.Comment;
+import com.yesul.community.model.entity.Post;
+import com.yesul.community.repository.CommentRepository;
+import com.yesul.community.repository.PostRepository;
+import com.yesul.user.model.entity.User;
+import com.yesul.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class CommentServiceImpl implements CommentService {
+
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+
+    @Override
+    public void save(CommentRequestDto dto, long userId) {
+        Post post = postRepository.findById(dto.getPostId())
+                .orElseThrow(() -> new RuntimeException("해당 게시글을 찾을 수 없습니다."));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        Comment comment = Comment.builder()
+                .post(post)
+                .user(user)
+                .content(dto.getContent())
+                .build();
+
+        commentRepository.save(comment);
+    }
+}

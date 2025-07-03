@@ -1,7 +1,9 @@
 package com.yesul.community.model.dto;
 
+import com.yesul.community.model.entity.Post;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,21 +13,38 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-
 public class PostResponseDto {
+
     private Long id;
-    private String boardName;
     private String title;
     private String content;
     private String thumbnail;
-    private Integer viewCount;
-    private List<String> imageUrls;
     private String nickname;
-    private String createdAt;
+    private String boardName;
+    private List<String> imageUrls;
 
-    private Integer likeCount;
-    private Boolean likedByMe;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    private Integer viewCount;
+    private Integer likeCount;         // 좋아요 수
+    private Boolean likedByMe;         // 로그인 유저가 좋아요 눌렀는지 여부
+
     @Builder.Default
-    private List<CommentResponseDto> comments = new ArrayList<>(); // 아직 미구현. 타입 선언만(작동위해)
-}
+    private List<CommentResponseDto> comments = new ArrayList<>();  // 댓글 리스트
 
+    // Post → PostResponseDto 변환 메서드 (기본값만 설정)
+    public static PostResponseDto from(Post post) {
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .boardName(post.getBoardName())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .thumbnail(post.getThumbnail())
+                .nickname(post.getUser().getNickname())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
+                .viewCount(post.getViewCount())
+                .build();
+    }
+}

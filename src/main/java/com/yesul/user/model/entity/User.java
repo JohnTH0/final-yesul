@@ -1,12 +1,15 @@
 package com.yesul.user.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.*;
 
 import com.yesul.common.BaseTimeEntity;
+import com.yesul.community.model.entity.Like;
 
 @Entity
 @Table(name = "user")
@@ -93,6 +96,10 @@ public class User extends BaseTimeEntity {
     public void updateProfile(String profile) {
         this.profile = profile;
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude // 양방향 연관관계에서 ToString 순환 참조 방지
+    private List<Like> likes = new ArrayList<>();
 
     @Builder
     public User(Long id, String email, String password, String name, String nickname, String birthday, String address, Character type, Character status, String profile, String provider, String providerId) {

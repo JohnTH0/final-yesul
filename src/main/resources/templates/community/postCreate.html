@@ -15,12 +15,21 @@
   <!-- 기본 CSS -->
   <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
   <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
-</head>
 
+  <!-- ✅ 에디터 이미지 스타일 추가 -->
+  <style>
+    .toastui-editor-contents img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
 <body>
 
 <!-- 공통 헤더 -->
-<div th:replace="fragments/user/header :: header"></div>
+<div th:insert="~{fragments/user/header :: header}"></div>
 
 <section class="gi-blog padding-tb-40">
   <div class="container">
@@ -50,13 +59,13 @@
           <div class="form-group mb-3">
             <label for="editor">내용</label>
             <div id="editor"></div>
-            <input type="hidden" id="hiddenContent" name="content" />
+            <input type="hidden" id="hiddenContent" name="content" th:field="*{content}" />
           </div>
 
           <!-- 썸네일 -->
           <div class="form-group mb-3">
             <label for="thumbnail">썸네일 URL</label>
-            <input type="text" id="thumbnail" name="thumbnail" class="form-control" />
+            <input type="text" id="thumbnail" name="thumbnail" class="form-control" th:field="*{thumbnail}" />
           </div>
 
           <!-- 등록 버튼 -->
@@ -70,7 +79,7 @@
 </section>
 
 <!-- 공통 푸터 -->
-<div th:replace="fragments/user/footer :: footer"></div>
+<div th:insert="~{fragments/user/footer :: footer}"></div>
 
 <!-- jQuery + 외부 JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -82,38 +91,68 @@
 <!-- Toast UI Editor JS -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
-<!-- Editor 초기화 -->
+<!-- 에디터 초기화 -->
 <script>
   window.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM fully loaded");
-
     const editorContainer = document.querySelector('#editor');
-    if (!editorContainer) {
-      console.error("에디터 컨테이너(#editor)를 찾을 수 없습니다!");
-      return;
-    }
+    if (!editorContainer) return;
 
     const editor = new toastui.Editor({
       el: editorContainer,
       height: '500px',
       initialEditType: 'wysiwyg',
-      previewStyle: 'vertical'
+      previewStyle: 'vertical',
+      hooks: {
+        addImageBlobHook: async (blob, callback) => {
+          try {
+            // 1. 리사이즈 처리
+            const resizedBlob = await resizeImage(blob);
+
+            // 2. 업로드 요청
+            const formData = new FormData();
+            formData.append('image', resizedBlob);
+
+            const res = await fetch('/post-images/upload', {
+              method: 'POST',
+              body: formData
+            });
+
+            const result = await res.json();
+            callback(result.url, '이미지');
+          } catch (error) {
+            console.error("이미지 업로드 실패:", error);
+            alert("이미지 업로드 중 문제가 발생했습니다.");
+          }
+        }
+      }
     });
 
-    // id로 폼 선택
-    const form = document.querySelector('#postForm');
-    if (!form) {
-      console.error("form을 찾을 수 없습니다!");
-      return;
+    // 사이즈 리사이징
+    function resizeImage(file, maxWidth = 1024) {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, maxWidth / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(blob => {
+            const fileName = `${Date.now()}.jpg`;  // 간단한 파일명
+            const fileWithName = new File([blob], fileName, { type: 'image/jpeg' });
+            resolve(fileWithName);
+          }, 'image/jpeg', 0.8);
+        };
+        img.src = URL.createObjectURL(file);
+      });
     }
 
+    // 제출 처리
+    const form = document.querySelector('#postForm');
     form.addEventListener('submit', function (event) {
-      event.preventDefault(); // 기본 제출 막기
-      console.log("submit 이벤트 발생");
-
+      event.preventDefault();
       const htmlContent = editor.getHTML();
-      console.log("htmlContent:", htmlContent);
-
       document.querySelector('#hiddenContent').value = htmlContent;
 
       const tempDoc = document.createElement('div');
@@ -123,7 +162,7 @@
         document.querySelector('#thumbnail').value = firstImg.getAttribute('src');
       }
 
-      form.submit(); // 실제 제출
+      form.submit();
     });
   });
 </script>

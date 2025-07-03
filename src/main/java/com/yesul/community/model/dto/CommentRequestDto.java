@@ -1,7 +1,6 @@
 package com.yesul.community.model.dto;
 
 import lombok.*;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -9,10 +8,8 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-public class PostRequestDto {
+public class CommentRequestDto {
+    private Long postId;
     private String boardName;
-    private String title;
     private String content;
-    private String thumbnail;
-    private List<String> imageUrls;
 }

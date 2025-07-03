@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Community - Recipe Posts</title>
     <link rel="icon" th:href="@{/assets/img/favicon/favicon.png}" sizes="32x32">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
     <link rel="stylesheet" th:href="@{/assets/css/plugins/animate.css}">
     <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
@@ -19,7 +20,7 @@
 </head>
 
 <body>
-<div th:replace="fragments/user/header :: header"></div>
+<div th:insert="~{fragments/user/header :: header}"></div>
 
 <br>
 <br>
@@ -64,66 +65,71 @@
 <section class="gi-blog padding-tb-40">
     <div class="container">
         <div class="row">
-            <div class="gi-blogs-rightside col-md-12">
-                <div class="gi-blogs-content">
-                    <div class="gi-blogs-inner">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-6 gi-blog-block" th:each="post : ${postList}">
-                                <div class="gi-blog-item">
-                                    <div class="blog-info">
-                                        <figure class="blog-img">
-                                            <a th:href="@{/community/recipe/{id}(id=${post.id})}">
-                                                <img th:if="${post.imageUrls != null and !post.imageUrls.isEmpty()}"
-                                                     th:src="${post.imageUrls[0]}" alt="대표 이미지"
-                                                     style="width: 100%; height: 200px; object-fit: cover;">
-                                            </a>
-                                        </figure>
-                                        <div class="detail">
-                                            <label th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')} + ' - ' + ${post.category}"></label>
-                                            <h3>
-                                                <a th:href="@{/community/recipe/{id}(id=${post.id})}" th:text="${post.title}"></a>
-                                            </h3>
-                                            <div class="more-info">
-                                                <a th:href="@{/community/recipe/{id}(id=${post.id})}">Read More<i class="gicon gi-angle-double-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <!-- 게시글이 없을 때 안내문구 -->
+            <div th:if="${postList == null or #lists.isEmpty(postList)}" class="text-center text-muted" style="width:100%;">
+                등록된 게시글이 없습니다.
+            </div>
+            <!-- 카드형 게시글 반복 출력 -->
+            <div class="col-md-4 mb-4" th:each="post : ${postList}" th:if="${postList != null and !#lists.isEmpty(postList)}">
+                <a th:href="@{/community/{board}/{id}(board='info', id=${post.id})}" style="text-decoration: none; color: inherit;">
+                    <div class="card h-100">
+                        <img class="card-img-top"
+                             th:src="${post.thumbnail != null and !post.thumbnail.isEmpty() ? post.thumbnail : '/assets/img/community/mainLogo.jpg'}"
+                             alt="썸네일 이미지"
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${post.title != null ? post.title : '제목없음'}">제목</h5>
+                            <p class="card-text text-muted" style="font-size: 0.95em;">
+                                <span th:text="${post.nickname != null ? post.nickname : '익명'}">작성자</span> ·
+                                <span th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
+                            </p>
+                            <div class="d-flex align-items-center mt-2">
+                                <span class="me-3">조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
+                                <span class="like-btn"
+                                      th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
+                                      th:data-post-id="${post.id}">
+                                    <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                                </span>
+                                <span class="ms-1" th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
                             </div>
                         </div>
                     </div>
-
-
-                    <!-- Pagination Placeholder -->
-                    <div class="gi-pro-pagination">
-                        <span>Showing 1-6 of 20 items</span>
-
-                        <ul class="gi-pro-pagination-inner">
-                            <!-- 검색창 Start -->
-                            <div class="gi-blog-search mb-2" style="width: 100%; max-width: 500px; margin-top: 0; margin-bottom: 8px;">
-                                <form class="gi-blog-search-form d-flex justify-content-end align-items-center" action="#">
-                                    <input class="form-control form-control-sm me-2" type="text" placeholder="게시글 검색" style="height: 32px; max-width: 400px;">
-                                    <button class="btn btn-sm btn-outline-dark" type="submit" style="height: 32px;"><i class="gicon gi-search"></i></button>
-                                </form>
-                            </div>
-                            <!-- 검색창 End -->
-                            <li><a class="active" href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><span>...</span></li>
-                            <li><a href="#">8</a></li>
-                            <li><a class="next" href="#">Next <i class="gicon gi-angle-right"></i></a></li>
-                        </ul>
-                    </div>
-
-                </div>
+                </a>
             </div>
+        </div>
+
+        <!-- 검색창 -->
+        <div class="d-flex justify-content-end mb-3">
+            <form class="d-flex" method="get" th:action="@{/community/info}">
+                <input class="form-control form-control-sm me-2" type="text" name="keyword"
+                       th:value="${param.keyword}" placeholder="게시글 검색" style="height: 36px; max-width: 400px;">
+                <button class="btn btn-sm btn-outline-dark" type="submit" style="height: 36px;">
+                    <i class="gicon gi-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination">
+                <li th:if="${!postPage.first}" class="page-item">
+                    <a class="page-link" th:href="@{/community/info(page=${postPage.number - 1}, keyword=${param.keyword})}">이전</a>
+                </li>
+                <li th:each="num : ${#numbers.sequence(0, postPage.totalPages - 1)}" class="page-item">
+                    <a class="page-link" th:href="@{/community/info(page=${num}, keyword=${param.keyword})}"
+                       th:classappend="${num == postPage.number} ? 'active'"
+                       th:text="${num + 1}">1</a>
+                </li>
+                <li th:if="${!postPage.last}" class="page-item">
+                    <a class="page-link" th:href="@{/community/info(page=${postPage.number + 1}, keyword=${param.keyword})}">다음</a>
+                </li>
+            </ul>
         </div>
     </div>
 </section>
 
 
-<div th:replace="fragments/user/footer :: footer"></div>
+<div th:insert="~{fragments/user/footer :: footer}"></div>
 
 <script th:src="@{/assets/js/plugins/jquery-3.5.1.min.js}"></script>
 <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
@@ -139,6 +145,30 @@
 <script th:src="@{/assets/js/plugins/wow.js}"></script>
 <script th:src="@{/assets/js/plugins/smoothscroll.min.js}"></script>
 <script th:src="@{/assets/js/main.js}"></script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.like-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                const postId = btn.getAttribute('data-post-id');
+                fetch('/likes/toggle/' + postId, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ ''
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        btn.classList.toggle('liked', data.liked);
+                        const icon = btn.querySelector('i');
+                        icon.className = data.liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+                        btn.nextElementSibling.textContent = data.likeCount;
+                    });
+            });
+        });
+    });
+</script>
 </body>
 
 </html>
