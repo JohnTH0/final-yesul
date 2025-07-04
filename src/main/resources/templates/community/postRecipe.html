@@ -57,9 +57,15 @@
                                 <span th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
                             </div>
                         </div>
-                        <div class="oh-card-bottom">
-                            <span style="color:#888; font-size:0.98em;">조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
-                            <span class="oh-like-count" th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
+                        <div class="oh-card-bottom" style="display:flex; align-items:center; gap:10px; font-size: 1rem; color: #555;">
+                            <span>조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
+                            <span class="oh-like-btn"
+                                  th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
+                                  th:data-post-id="${post.id}"
+                                  style="font-size: 1.2rem; cursor: pointer;">
+        <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+    </span>
+                            <span th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
                         </div>
                     </div>
                 </div>

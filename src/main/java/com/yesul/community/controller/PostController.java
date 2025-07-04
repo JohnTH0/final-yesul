@@ -5,7 +5,6 @@ import com.yesul.community.model.dto.PostResponseDto;
 import com.yesul.community.service.PostImageService;
 import com.yesul.community.service.PostService;
 import com.yesul.user.service.PrincipalDetails;
-import com.yesul.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -113,5 +112,37 @@ public class PostController {
         model.addAttribute("post", post);
         model.addAttribute("boardName", boardName);
         return "community/postDetail";
+    }
+
+    @GetMapping("/{boardName}/{id}/edit")
+    public String editForm(@PathVariable String boardName,
+                           @PathVariable Long id,
+                           Model model,
+                           @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        if (principalDetails == null) {
+            return "redirect:/login";
+        }
+
+        Long userId = principalDetails.getUser().getId();
+        model.addAttribute("postRequestDto", postService.findById(id, userId));
+        model.addAttribute("boardName", boardName);
+        model.addAttribute("isLoggedIn", true);  // postDetail.html 에서 사용하니까 추가
+
+        return "community/postEdit";
+    }
+
+    @PostMapping("/{boardName}/{id}/edit")
+    public String updatePost(@ModelAttribute PostRequestDto postRequestDto, // 수정 데이터
+                             @PathVariable String boardName,
+                             @PathVariable Long id,
+                             Model model,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        Long userId = (principalDetails != null) ? principalDetails.getUser().getId() : null;
+
+        postService.updatePost(id, postRequestDto, userId);
+
+        return "redirect:/community/" + boardName + "/" + id;
     }
 }

@@ -106,13 +106,8 @@
       <span th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">2025년 07월 02일</span> |
       <span th:text="'조회수: ' + ${post.viewCount}">0</span>
     </div>
-    <!-- 썸네일 -->
-    <div th:if="${post.thumbnail}" class="mb-3">
-      <img th:src="${post.thumbnail}" class="img-fluid rounded" alt="썸네일" style="max-height:320px; object-fit:cover;">
-    </div>
     <!-- 내용 -->
-    <div class="mb-4" th:utext="${post.content}" style="font-size:1.1em; line-height:1.7;"></div>
-    <!-- 좋아요 -->
+    <div class="toastui-editor-contents mb-4" th:utext="${post.content}" style="font-size:1.1em; line-height:1.7;"></div>
     <div class="mb-4 d-flex align-items-center gap-2" style="font-size:1.2em;">
       <span id="likeBtn" th:classappend="${post.likedByMe} ? 'liked' : ''" class="like-btn">
         <i th:class="${post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>

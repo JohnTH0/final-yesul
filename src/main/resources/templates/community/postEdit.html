@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+
+    <!-- Toast UI Editor CSS -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+
+    <!-- 외부 플러그인 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- 기본 CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
+
+    <style>
+        .toastui-editor-contents img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="~{fragments/user/header :: header}"></div>
+
+<section class="gi-blog padding-tb-40">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4 text-center">게시글 수정</h2>
+
+                <form id="postForm" th:action="@{/community/{boardName}/{id}/edit(boardName=${boardName}, id=${postRequestDto.id})}" method="post" th:object="${postRequestDto}" enctype="multipart/form-data">
+
+                    <div class="form-group mb-3">
+                        <label for="boardName">게시판 선택</label>
+                        <select id="boardName" name="boardName" th:field="*{boardName}" class="form-control" required>
+                            <option value="recipe">레시피</option>
+                            <option value="info">정보</option>
+                            <option value="free">자유</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="title">제목</label>
+                        <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editor">내용</label>
+                        <div id="editor"></div>
+                        <input type="hidden" id="hiddenContent" name="content" th:field="*{content}" />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="thumbnail">썸네일 URL</label>
+                        <input type="text" id="thumbnail" name="thumbnail" class="form-control" th:field="*{thumbnail}" />
+                    </div>
+
+                    <div class="text-end mt-4">
+                        <button type="submit" class="btn btn-primary px-4">수정하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="~{fragments/user/footer :: footer}"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        const editorContainer = document.querySelector('#editor');
+        if (!editorContainer) return;
+
+        const editor = new toastui.Editor({
+            el: editorContainer,
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical'
+        });
+
+        // 수정할 때 기존 content 넣기
+        const initialContent = document.querySelector('#hiddenContent').value;
+        editor.setHTML(initialContent);
+
+        const form = document.querySelector('#postForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const htmlContent = editor.getHTML();
+            document.querySelector('#hiddenContent').value = htmlContent;
+
+            const tempDoc = document.createElement('div');
+            tempDoc.innerHTML = htmlContent;
+            const firstImg = tempDoc.querySelector('img');
+            if (firstImg) {
+                document.querySelector('#thumbnail').value = firstImg.getAttribute('src');
+            }
+
+            form.submit();
+        });
+    });
+</script>
+
+<script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+
+</body>
+</html>

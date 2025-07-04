@@ -113,6 +113,19 @@ public class PostServiceImpl implements PostService {
         return dto;
     }
 
+    // 게시글 수정
+    @Transactional
+    public void updatePost(Long postId, PostRequestDto postRequestDto, Long userId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+
+        if (!post.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
+        }
+
+        post.update(postRequestDto);
+    }
+
     @Override
     public boolean isLikedByUser(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
