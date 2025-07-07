@@ -1,15 +1,17 @@
 package com.yesul.alcohol.model.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlcoholDto {
-
-    private Long id;
+public class AlcoholSearchDto {
     private String province;
     private String city;
     private String name;
@@ -18,10 +20,15 @@ public class AlcoholDto {
     private Integer volumeMl;
     private BigDecimal abv;
     private String ingredients;
-    private String description;
-    private String tasteDescription;
+
+    private Integer sweetnessLevel;
+    private Integer acidityLevel;
+    private Integer bodyLevel;
+    private Integer aromaLevel;
+    private Integer tanninLevel;
+    private Integer finishLevel;
+    private Integer sparklingLevel;
 
     private Integer price;
     private String pairingFoods;
-    private String image;
 }

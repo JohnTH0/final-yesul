@@ -2,7 +2,11 @@ package com.yesul.alcohol.controller;
 
 import com.yesul.alcohol.model.dto.AlcoholDetailDto;
 import com.yesul.alcohol.model.dto.AlcoholDto;
+import com.yesul.alcohol.model.dto.AlcoholSearchDto;
+
+import com.yesul.alcohol.model.dto.ClovaAskRequestDto;
 import com.yesul.alcohol.service.AlcoholService;
+import com.yesul.alcohol.service.ClovaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,19 +15,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @Slf4j
 @RestController
-@RequestMapping("/alcohols")
 @RequiredArgsConstructor
+@RequestMapping("/alcohols")
 public class AlcoholController {
 
     private final AlcoholService alcoholService;
+    private final ClovaService clovaService;
+
+    @PostMapping("/clova")
+    @ResponseBody
+    public ResponseEntity<String> ask(@RequestBody ClovaAskRequestDto dto) {
+        String response = clovaService.callClovaAPI(dto);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/{id}")
     public AlcoholDetailDto getAlcoholDetail(@PathVariable Long id) {
@@ -34,10 +43,12 @@ public class AlcoholController {
     @GetMapping("")
     @ResponseBody
     public Page<AlcoholDetailDto> getAlcohols(
-            @RequestParam(defaultValue = "0") int page
+            AlcoholSearchDto condition,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        Pageable pageable = PageRequest.of(page, 10); // 페이지 크기 10개 고정
-        return alcoholService.getAlcohols(pageable);
+        Pageable pageable = PageRequest.of(page, size);
+        return alcoholService.searchAlcohols(condition, pageable);
     }
 
     @GetMapping("/detail")

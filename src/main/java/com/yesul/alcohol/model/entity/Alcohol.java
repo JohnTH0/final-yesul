@@ -4,18 +4,13 @@ import com.yesul.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Entity
 @Getter
-@Setter
-@Table(name = "alcohol")
 @NoArgsConstructor
+@Table(name = "alcohol")
 public class Alcohol extends BaseTimeEntity {
 
     @Id
