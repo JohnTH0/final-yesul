@@ -13,6 +13,8 @@ public interface PostService {
     List<PostResponseDto> findAllByBoardName(String boardName);
     Page<PostResponseDto> searchByBoardNameAndKeyword(String boardName, String keyword, Pageable pageable);
     PostResponseDto findById(Long id, Long userId);
+    PostRequestDto findPostForEdit(Long postId, Long userId);
     void updatePost(Long postId, PostRequestDto postRequestDto, Long userId);
+    void deletePost(Long postId, Long userId);
     boolean isLikedByUser(Long postId, Long userId);
 }

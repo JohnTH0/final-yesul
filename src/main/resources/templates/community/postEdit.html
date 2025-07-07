@@ -27,6 +27,7 @@
 </head>
 <body>
 
+<!-- 공통 헤더 -->
 <div th:insert="~{fragments/user/header :: header}"></div>
 
 <section class="gi-blog padding-tb-40">
@@ -35,8 +36,13 @@
             <div class="col-md-8">
                 <h2 class="mb-4 text-center">게시글 수정</h2>
 
-                <form id="postForm" th:action="@{/community/{boardName}/{id}/edit(boardName=${boardName}, id=${postRequestDto.id})}" method="post" th:object="${postRequestDto}" enctype="multipart/form-data">
+                <!-- 에러 메시지 표시 -->
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
+                <!-- 게시글 수정 폼 -->
+                <form id="postForm" th:action="@{/community/{boardName}/{id}/edit(boardName=${boardName}, id=${postRequestDto.id})}" method="post" th:object="${postRequestDto}">
+
+                    <!-- 게시판 선택 -->
                     <div class="form-group mb-3">
                         <label for="boardName">게시판 선택</label>
                         <select id="boardName" name="boardName" th:field="*{boardName}" class="form-control" required>
@@ -46,22 +52,37 @@
                         </select>
                     </div>
 
+                    <!-- 제목 입력 -->
                     <div class="form-group mb-3">
                         <label for="title">제목</label>
                         <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required />
                     </div>
 
+                    <!-- 내용 입력 (Toast UI Editor) -->
                     <div class="form-group mb-3">
                         <label for="editor">내용</label>
                         <div id="editor"></div>
                         <input type="hidden" id="hiddenContent" name="content" th:field="*{content}" />
                     </div>
 
+                    <!-- 썸네일 URL -->
                     <div class="form-group mb-3">
                         <label for="thumbnail">썸네일 URL</label>
                         <input type="text" id="thumbnail" name="thumbnail" class="form-control" th:field="*{thumbnail}" />
                     </div>
 
+                    <!-- 현재 이미지 목록 -->
+                    <div th:if="${postRequestDto.imageUrls != null and !postRequestDto.imageUrls.isEmpty()}">
+                        <label>현재 이미지들:</label>
+                        <div class="mb-3">
+                            <div th:each="imageUrl, iterStat : ${postRequestDto.imageUrls}" class="mb-2">
+                                <img th:src="${imageUrl}" style="max-width: 100px; max-height: 100px; margin-right: 10px;" />
+                                <input type="hidden" name="imageUrls" th:value="${imageUrl}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 제출 버튼 -->
                     <div class="text-end mt-4">
                         <button type="submit" class="btn btn-primary px-4">수정하기</button>
                     </div>
@@ -71,8 +92,10 @@
     </div>
 </section>
 
+<!-- 공통 푸터 -->
 <div th:insert="~{fragments/user/footer :: footer}"></div>
 
+<!-- JavaScript 라이브러리 로드 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
@@ -81,39 +104,90 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 <script>
+    let editor;
+
     window.addEventListener("DOMContentLoaded", function () {
         const editorContainer = document.querySelector('#editor');
         if (!editorContainer) return;
 
-        const editor = new toastui.Editor({
+        const initialContent = document.querySelector('#hiddenContent').value || '';
+
+        // Toast UI Editor 초기화
+        editor = new toastui.Editor({
             el: editorContainer,
             height: '500px',
             initialEditType: 'wysiwyg',
-            previewStyle: 'vertical'
+            previewStyle: 'vertical',
+            initialValue: initialContent,
+            hooks: {
+                addImageBlobHook: async (blob, callback) => {
+                    try {
+                        const formData = new FormData();
+                        formData.append('image', blob);
+
+                        const res = await fetch('/post-images/upload', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await res.json();
+                        callback(result.url, '이미지');
+                    } catch (error) {
+                        alert('이미지 업로드 실패');
+                    }
+                }
+            }
         });
 
-        // 수정할 때 기존 content 넣기
-        const initialContent = document.querySelector('#hiddenContent').value;
-        editor.setHTML(initialContent);
-
         const form = document.querySelector('#postForm');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // 기본 제출 동작 중단
+
+            // 에디터 내용 가져오기
             const htmlContent = editor.getHTML();
+
+            // content가 비어있으면 경고
+            if (!htmlContent || htmlContent.trim() === '') {
+                alert('내용을 입력해주세요.');
+                return;
+            }
+
             document.querySelector('#hiddenContent').value = htmlContent;
 
+            // 썸네일 자동 설정 (본문 첫 번째 이미지)
             const tempDoc = document.createElement('div');
             tempDoc.innerHTML = htmlContent;
             const firstImg = tempDoc.querySelector('img');
-            if (firstImg) {
+            if (firstImg && !document.querySelector('#thumbnail').value.trim()) {
                 document.querySelector('#thumbnail').value = firstImg.getAttribute('src');
             }
 
+            // 이미지 URL 추출 및 히든 필드 추가
+            const imgElements = tempDoc.querySelectorAll('img');
+            const imageUrls = Array.from(imgElements).map(img => img.getAttribute('src'));
+
+            // 기존 이미지 URL 히든 필드 제거
+            const existingImageInputs = document.querySelectorAll('input[name="imageUrls"]');
+            existingImageInputs.forEach(input => input.remove());
+
+            // 새 이미지 URL 히든 필드 추가
+            imageUrls.forEach(url => {
+                if (url && url.trim()) {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'imageUrls';
+                    hiddenInput.value = url.trim();
+                    form.appendChild(hiddenInput);
+                }
+            });
+
+            // 폼 제출
             form.submit();
         });
     });
 </script>
 
+<!-- 부트스트랩 및 사용자 정의 JS -->
 <script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/assets/js/main.js}"></script>
 

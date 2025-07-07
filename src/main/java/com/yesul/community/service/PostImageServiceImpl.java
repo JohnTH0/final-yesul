@@ -27,37 +27,18 @@ public class PostImageServiceImpl implements PostImageService {
 
     private final ImageUpload imageUpload;
 
-    @Value("${app.image-upload.mode}")
-    private String uploadMode;
-
-    @Value("${app.image-upload.local-dir}")
-    private String localDir;
-
-    @Value("${app.image-upload.base-url}")
-    private String baseUrl;
-
     @Override
     public String uploadImage(MultipartFile image) {
-        if ("ncp".equalsIgnoreCase(uploadMode)) {
-            return imageUpload.uploadAndGetUrl("community", image); // 도메인 커뮤니티 고정
-        } else {
-            throw new UnsupportedOperationException("로컬로 던져지는중?");
-        }
+        return imageUpload.uploadAndGetUrl("community", image);
     }
 
     @Override
     public void deleteImage(String imageUrl) {
-        if ("ncp".equalsIgnoreCase(uploadMode)) {
-            // 나중에 NCP 삭제 구현
-            System.out.println("NCP에서 삭제: " + imageUrl);
-        } else {
-            String fileName = imageUrl.replace(baseUrl, "");
-            Path deletePath = Paths.get(localDir, fileName);
-            try {
-                Files.deleteIfExists(deletePath);
-            } catch (IOException e) {
-                System.err.println("로컬 이미지 삭제 실패: " + fileName);
-            }
+        try {
+            imageUpload.delete(imageUrl, "community"); // 올바른 순서: imageUrl, domain
+            System.out.println("NCP에서 삭제 완료: " + imageUrl);
+        } catch (Exception e) {
+            System.err.println("NCP 이미지 삭제 실패: " + imageUrl + " (" + e.getMessage() + ")");
         }
     }
 
@@ -79,12 +60,23 @@ public class PostImageServiceImpl implements PostImageService {
 
     @Override
     public List<String> getImageUrlsByPost(Post post) {
-        if (post.getImages() == null || post.getImages().isEmpty()) {
+        if (post == null || post.getImages() == null || post.getImages().isEmpty()) {
             return new ArrayList<>();
         }
 
         return post.getImages().stream()
+                .filter(image -> image != null && image.getImageUrl() != null)
                 .map(PostImage::getImageUrl)
                 .toList();
+    }
+
+    @Override
+    public List<String> extractImageUrlsFromContent(String content) {
+        List<String> urls = new ArrayList<>();
+        Document doc = Jsoup.parse(content);
+        for (Element img : doc.select("img")) {
+            urls.add(img.attr("src"));
+        }
+        return urls;
     }
 }

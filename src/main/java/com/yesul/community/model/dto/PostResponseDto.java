@@ -16,6 +16,7 @@ import java.util.List;
 public class PostResponseDto {
 
     private Long id;
+    private Long userId;  // 작성자 ID 추가
     private String title;
     private String content;
     private String thumbnail;
@@ -29,6 +30,7 @@ public class PostResponseDto {
     private Integer viewCount;
     private Integer likeCount;         // 좋아요 수
     private Boolean likedByMe;         // 로그인 유저가 좋아요 눌렀는지 여부
+    private Boolean isAuthor;          // 현재 사용자가 작성자인지 여부
 
     @Builder.Default
     private List<CommentResponseDto> comments = new ArrayList<>();  // 댓글 리스트
@@ -37,6 +39,7 @@ public class PostResponseDto {
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
                 .id(post.getId())
+                .userId(post.getUser().getId())  // 작성자 ID 설정
                 .boardName(post.getBoardName())
                 .title(post.getTitle())
                 .content(post.getContent())

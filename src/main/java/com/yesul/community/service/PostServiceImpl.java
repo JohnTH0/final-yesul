@@ -95,11 +95,17 @@ public class PostServiceImpl implements PostService {
                         .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저가 없습니다."));
                 boolean likedByMe = likeRepository.findByPostAndUser(post, user).isPresent();
                 dto.setLikedByMe(likedByMe);
+
+                // 현재 사용자가 작성자인지 확인
+                boolean isAuthor = post.getUser().getId().equals(userId);
+                dto.setIsAuthor(isAuthor);
             } catch (Exception e) {
                 dto.setLikedByMe(false);
+                dto.setIsAuthor(false);
             }
         } else {
             dto.setLikedByMe(false);
+            dto.setIsAuthor(false);
         }
 
         // 댓글 변환
@@ -113,8 +119,26 @@ public class PostServiceImpl implements PostService {
         return dto;
     }
 
+    @Override
+    public PostRequestDto findPostForEdit(Long postId, Long userId) {
+        Post post = postRepository.findByIdWithImages(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        if (!post.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
+        }
+        return PostRequestDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .thumbnail(post.getThumbnail())
+                .boardName(post.getBoardName())
+                .imageUrls(postImageService.getImageUrlsByPost(post))
+                .build();
+    }
+
     // 게시글 수정
     @Transactional
+    @Override
     public void updatePost(Long postId, PostRequestDto postRequestDto, Long userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
@@ -123,9 +147,78 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }
 
+        if (postRequestDto.getContent() == null || postRequestDto.getContent().trim().isEmpty()) {
+            throw new IllegalArgumentException("내용을 입력해주세요.");
+        }
+
+        if (postRequestDto.getTitle() == null || postRequestDto.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("제목을 입력해주세요.");
+        }
+
+        // 1. 본문에 포함된 이미지 추출
+        List<String> contentImageUrls = postImageService.extractImageUrlsFromContent(postRequestDto.getContent());
+
+        // 2. 기존 이미지 중 본문에 없는 이미지 삭제 (NCP + DB)
+        List<PostImage> existingImages = new ArrayList<>(post.getImages());
+        for (PostImage image : existingImages) {
+            if (!contentImageUrls.contains(image.getImageUrl())) {
+                postImageService.deleteImage(image.getImageUrl());
+                post.getImages().remove(image);
+                postImageRepository.delete(image);
+            }
+        }
+
+        // 3. 본문에 있는데 아직 등록 안 된 이미지 추가
+        List<String> existingImageUrls = post.getImages().stream()
+                .map(PostImage::getImageUrl)
+                .toList();
+
+        for (String imageUrl : contentImageUrls) {
+            if (!existingImageUrls.contains(imageUrl)) {
+                PostImage newImage = PostImage.builder()
+                        .imageUrl(imageUrl.trim())
+                        .build();
+                post.addImage(newImage);
+                postImageRepository.save(newImage);
+            }
+        }
+
+        // 4. 게시글 본문/제목 수정
         post.update(postRequestDto);
+
+        // 5. 썸네일 없을 경우 첫 번째 이미지 자동 설정
+        if ((postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().trim().isEmpty())
+                && postRequestDto.getContent() != null) {
+            String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
+            if (extractedThumbnail != null && !extractedThumbnail.trim().isEmpty()) {
+                post.setThumbnail(extractedThumbnail);
+            }
+        }
     }
 
+    // 게시글 삭제
+    @Transactional
+    public void deletePost(Long postId, Long userId){
+        // 1. 게시글 가져오기
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+
+        // 2. 작성자 확인
+        if (!post.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+        }
+
+        // 3. 이미지 삭제
+        for (PostImage image : post.getImages()) {
+            postImageService.deleteImage(image.getImageUrl());
+        }
+
+        // 4. 게시글 삭제 (PostImage, Like 등도 같이 삭제)
+        postRepository.delete(post);
+    }
+
+
+    // 좋아요
     @Override
     public boolean isLikedByUser(Long postId, Long userId) {
         Post post = postRepository.findById(postId)

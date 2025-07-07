@@ -54,15 +54,31 @@ public class Post extends BaseTimeEntity {
     @ToString.Exclude
     private List<Like> likes = new ArrayList<>();
 
-    // 연관관계 메서드 추가
-    public void addImage(PostImage postImage) {
-        this.images.add(postImage);
-        postImage.setPost(this);
+    public void update(PostRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.thumbnail = dto.getThumbnail();
     }
 
-    public void update(PostRequestDto postRequestDto) {
-        this.title = postRequestDto.getTitle();
-        this.content = postRequestDto.getContent();
-        this.thumbnail = postRequestDto.getThumbnail();
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    // 이미지 삭제후 재생성
+    public void clearImages() {
+        if (images != null) {
+            new ArrayList<>(images).forEach(image -> {
+                image.setPost(null);  // 연관관계 끊기
+            });
+            images.clear();  // 한 번에 비우기
+        }
+    }
+
+    public void addImage(PostImage image) {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+        images.add(image);
+        image.setPost(this);
     }
 }

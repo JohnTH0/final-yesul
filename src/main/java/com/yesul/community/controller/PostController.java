@@ -5,6 +5,7 @@ import com.yesul.community.model.dto.PostResponseDto;
 import com.yesul.community.service.PostImageService;
 import com.yesul.community.service.PostService;
 import com.yesul.user.service.PrincipalDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,71 +23,64 @@ public class PostController {
     private final PostService postService;
     private final PostImageService postImageService;
 
-    // 커뮤니티 들어가면 레시피로 리다이렉트
+    /**
+     * /community/ → /community/recipe 로 리다이렉트
+     */
     @GetMapping("/")
     public String redirectToRecipe() {
         return "redirect:/community/recipe";
     }
 
+    /**
+     * 게시글 작성 폼으로 이동
+     */
     @GetMapping("/create")
     public String createForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        // 로그인 체크
         if (principalDetails == null) {
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         }
-
         model.addAttribute("postRequestDto", new PostRequestDto());
         return "community/postCreate";
     }
 
+    /**
+     * 게시글 등록 처리
+     */
     @PostMapping("/create")
     public String createPost(@ModelAttribute PostRequestDto postRequestDto,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        try {
-            // 로그인 체크
-            if (principalDetails == null) {
-                return "redirect:/login"; // 로그인 페이지로 리다이렉트
-            }
-
-            Long userId = principalDetails.getUser().getId(); // 로그인한 유저 ID
-            System.out.println("게시글 등록 시작 - userId: " + userId);
-            System.out.println("게시판: " + postRequestDto.getBoardName());
-            System.out.println("제목: " + postRequestDto.getTitle());
-
-            // 썸네일 자동 추출 (비어 있을 경우)
-            if (postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().isBlank()) {
-                String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
-                if (extractedThumbnail != null && !extractedThumbnail.trim().isEmpty()) {
-                    postRequestDto.setThumbnail(extractedThumbnail);
-                }
-            }
-
-            // 게시글 저장
-            PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
-            System.out.println("게시글 저장 완료 - postId: " + createdPost.getId());
-
-            // 저장된 게시글로 리다이렉트
-            String board = createdPost.getBoardName(); // 예: recipe, info, free
-            Long postId = createdPost.getId();
-            return "redirect:/community/" + board + "/" + postId;
-        } catch (Exception e) {
-            System.err.println("게시글 등록 중 에러 발생: " + e.getMessage());
-            e.printStackTrace();
-            throw e; // 에러를 다시 던져서 500 에러 페이지가 표시되도록 함
+        if (principalDetails == null) {
+            return "redirect:/login";
         }
+
+        Long userId = principalDetails.getUser().getId();
+
+        // 썸네일 자동 추출
+        if (postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().isBlank()) {
+            String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
+            if (extractedThumbnail != null && !extractedThumbnail.trim().isEmpty()) {
+                postRequestDto.setThumbnail(extractedThumbnail);
+            }
+        }
+
+        PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
+        return "redirect:/community/" + createdPost.getBoardName() + "/" + createdPost.getId();
     }
 
+    /**
+     * 게시판별 게시글 목록 조회
+     */
     @GetMapping("/{boardName}")
     public String boardList(@PathVariable String boardName,
                             @RequestParam(defaultValue = "0") int page,
                             Model model) {
-
         Pageable pageable = PageRequest.of(page, 6, Sort.by("createdAt").descending());
         Page<PostResponseDto> postPage = postService.findByBoardNamePaged(boardName, pageable);
 
         model.addAttribute("postPage", postPage);
         model.addAttribute("postList", postPage.getContent());
 
+        // 게시판 이름에 따라 뷰 선택
         String viewName = switch (boardName) {
             case "recipe" -> "community/postRecipe";
             case "info" -> "community/postInfo";
@@ -98,51 +91,100 @@ public class PostController {
         return viewName;
     }
 
+    /**
+     * 게시글 상세 조회
+     */
     @GetMapping("/{boardName}/{id}")
     public String postDetail(@PathVariable String boardName,
                              @PathVariable Long id,
-                             Model model,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
+                             @AuthenticationPrincipal PrincipalDetails principalDetails,
+                             Model model) {
         Long userId = (principalDetails != null) ? principalDetails.getUser().getId() : null;
-
-        // userId까지 포함해서 DTO 생성 (좋아요 여부, 댓글 포함)
         PostResponseDto post = postService.findById(id, userId);
 
         model.addAttribute("post", post);
-        model.addAttribute("boardName", boardName);
+        model.addAttribute("board_name", boardName);
+        model.addAttribute("isLoggedIn", principalDetails != null);
         return "community/postDetail";
     }
 
+    /**
+     * 게시글 수정 및 삭제 메뉴에서 수정 폼으로 이동
+     */
     @GetMapping("/{boardName}/{id}/edit")
     public String editForm(@PathVariable String boardName,
                            @PathVariable Long id,
                            Model model,
                            @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
         if (principalDetails == null) {
             return "redirect:/login";
         }
 
         Long userId = principalDetails.getUser().getId();
-        model.addAttribute("postRequestDto", postService.findById(id, userId));
-        model.addAttribute("boardName", boardName);
-        model.addAttribute("isLoggedIn", true);  // postDetail.html 에서 사용하니까 추가
 
-        return "community/postEdit";
+        try {
+            PostRequestDto postRequestDto = postService.findPostForEdit(id, userId);
+
+            model.addAttribute("postRequestDto", postRequestDto);
+            model.addAttribute("boardName", boardName);
+            model.addAttribute("isLoggedIn", true);
+
+            return "community/postEdit";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/community/" + boardName + "/" + id;
+        }
     }
 
+    /**
+     * 게시글 수정 처리
+     */
     @PostMapping("/{boardName}/{id}/edit")
-    public String updatePost(@ModelAttribute PostRequestDto postRequestDto, // 수정 데이터
+    public String updatePost(@ModelAttribute PostRequestDto postRequestDto,
                              @PathVariable String boardName,
                              @PathVariable Long id,
                              Model model,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails == null) {
+            return "redirect:/login";
+        }
 
-        Long userId = (principalDetails != null) ? principalDetails.getUser().getId() : null;
+        // 필수 필드 검증
+        if (postRequestDto.getContent() == null || postRequestDto.getContent().trim().isEmpty()) {
+            model.addAttribute("error", "내용을 입력해주세요.");
+            return "redirect:/community/" + boardName + "/" + id + "/edit";
+        }
 
-        postService.updatePost(id, postRequestDto, userId);
+        if (postRequestDto.getTitle() == null || postRequestDto.getTitle().trim().isEmpty()) {
+            model.addAttribute("error", "제목을 입력해주세요.");
+            return "redirect:/community/" + boardName + "/" + id + "/edit";
+        }
 
-        return "redirect:/community/" + boardName + "/" + id;
+        Long userId = principalDetails.getUser().getId();
+
+        try {
+            postService.updatePost(id, postRequestDto, userId);
+            return "redirect:/community/" + boardName + "/" + id;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/community/" + boardName + "/" + id + "/edit";
+        }
+    }
+
+    /**
+     * 게시글 삭제 처리
+     */
+    @PostMapping("/{boardName}/{id}/delete")
+    public String deletePost(@PathVariable String boardName,
+                             @PathVariable Long id,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails == null) {
+            return "redirect:/login";
+        }
+        Long userId = principalDetails.getUser().getId();
+
+        postService.deletePost(id, userId);
+
+        return "redirect:/community/" + boardName;
     }
 }

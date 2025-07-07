@@ -10,6 +10,7 @@ import java.util.List;
 @ToString
 @Builder
 public class PostRequestDto {
+    private Long id;
     private String boardName;
     private String title;
     private String content;

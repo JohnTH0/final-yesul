@@ -7,117 +7,116 @@
   <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
   <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
   <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+
   <style>
     .like-btn { cursor: pointer; font-size: 1.5rem; }
-    .like-btn.liked { /* color: red; */ }
+    .like-btn.liked {}
     .comment-box { border-top: 1px solid #eee; padding-top: 32px; margin-top: 48px; }
     .post-meta { color: #888; font-size: 1.05em; margin-bottom: 12px; }
     .post-title { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
     .post-category { color: #4a90e2; font-weight: 600; margin-bottom: 4px; font-size: 1.1em; }
-    .btn-custom { min-width: 100px; }
-    .comment-input-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .btn-custom {
+      min-width: 100px !important;
+      height: 40px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0 18px !important;
+      font-size: 1rem !important;
+      line-height: 1 !important;
     }
-    .comment-input {
-      flex: 1;
-      min-width: 0;
-      border: none;
-      background: #f7f9fa;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 1rem;
-      outline: none;
+    .comment-input-row { display: flex; align-items: center; gap: 8px; }
+    .comment-input { flex: 1; min-width: 0; border: none; background: #f7f9fa; border-radius: 12px; padding: 12px 16px; font-size: 1rem; outline: none; }
+    .comment-btn { background: #222; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 600; cursor: pointer; transition: background 0.18s; }
+    .comment-btn:disabled { background: #bbb; cursor: not-allowed; }
+    .comment-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+    .comment-card { background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(34,34,34,0.06); padding: 18px 20px 14px 20px; min-width: 0; }
+    .comment-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .comment-nickname { font-weight: 700; color: #222; font-size: 1.05rem; }
+    .comment-date { color: #bbb; font-size: 0.98rem; font-weight: 400; }
+    .comment-content { color: #444; font-size: 1.05rem; word-break: break-all; margin-top: 2px; }
+    .toastui-editor-contents img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+    .post-menu-btn {
+      width: 36px; height: 36px;
+      border: none; background: #f5f6fa;
+      border-radius: 50%; font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      margin-left: 8px;
     }
-    .comment-btn {
-      background: #222;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s;
+    .post-menu-btn:hover {
+      background: #e1e4ea;
     }
-    .comment-btn:disabled {
-      background: #bbb;
-      cursor: not-allowed;
+    .post-menu-popup {
+      display: none; position: absolute; right: 0; top: 44px;
+      background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      min-width: 130px; z-index: 10; padding: 8px 0;
+      animation: fadeInMenu 0.18s;
     }
-    .comment-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 24px;
+    @keyframes fadeInMenu { from { opacity: 0; transform: translateY(-8px);} to { opacity: 1; transform: none; } }
+    .post-menu-popup a, .post-menu-popup button {
+      display: block; width: 100%; padding: 13px 26px; background: none; border: none;
+      text-align: left; font-size: 1rem; color: #222; cursor: pointer; transition: background 0.13s;
     }
-    .comment-card {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 2px 8px rgba(34,34,34,0.06);
-      padding: 18px 20px 14px 20px;
-      min-width: 0;
+    .post-menu-popup a:hover, .post-menu-popup button:hover {
+      background: #f5f6fa;
     }
-    .comment-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .comment-nickname {
-      font-weight: 700;
-      color: #222;
-      font-size: 1.05rem;
-    }
-    .comment-date {
-      color: #bbb;
-      font-size: 0.98rem;
-      font-weight: 400;
-    }
-    .comment-content {
-      color: #444;
-      font-size: 1.05rem;
-      word-break: break-all;
-      margin-top: 2px;
-    }
-    .toastui-editor-contents img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
+    .post-menu-popup .delete-btn { color: #e74c3c; }
+    .post-menu-popup .divider {
+      height: 1px; background: #f0f0f0; margin: 4px 0;
     }
   </style>
 </head>
 <body>
 
-<!-- 공통 헤더 -->
 <div th:insert="~{fragments/user/header :: header}"></div>
 
 <section class="gi-blog padding-tb-40">
   <div class="container" style="max-width: 700px;">
-    <!-- 카테고리/제목/목록으로 버튼 한 줄 -->
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="post-category" th:text="${post.boardName}">정보</div>
-      <a th:href="@{/community/{board}(board=${post.boardName})}" class="btn btn-sm btn-secondary btn-custom">목록으로</a>
+      <div class="d-flex gap-2" style="position:relative;">
+        <!-- ... 버튼 및 메뉴: 작성자만 보임 -->
+        <div th:if="${isLoggedIn and post.isAuthor}" class="post-menu" style="position:relative;">
+          <button id="menuBtn" class="post-menu-btn" aria-label="더보기">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <div id="menuPopup" class="post-menu-popup">
+            <a th:href="@{/community/{boardName}/{id}/edit(boardName=${post.boardName}, id=${post.id})}">수정하기</a>
+            <div class="divider"></div>
+            <form th:action="@{/community/{boardName}/{id}/delete(boardName=${post.boardName}, id=${post.id})}" method="post" style="margin:0;">
+              <button type="submit" class="delete-btn">삭제하기</button>
+            </form>
+          </div>
+        </div>
+        <a th:href="@{/community/{board}(board=${post.boardName})}" class="btn btn-sm btn-secondary btn-custom">목록으로</a>
+      </div>
     </div>
+
     <div class="post-title" th:text="${post.title}">게시글 제목</div>
-    <!-- 작성자, 날짜, 조회수 -->
+
     <div class="post-meta">
       <span th:text="'작성자: ' + ${post.nickname}">닉네임</span> |
       <span th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">2025년 07월 02일</span> |
       <span th:text="'조회수: ' + ${post.viewCount}">0</span>
     </div>
-    <!-- 내용 -->
+
     <div class="toastui-editor-contents mb-4" th:utext="${post.content}" style="font-size:1.1em; line-height:1.7;"></div>
+
     <div class="mb-4 d-flex align-items-center gap-2" style="font-size:1.2em;">
-      <span id="likeBtn" th:classappend="${post.likedByMe} ? 'liked' : ''" class="like-btn">
-        <i th:class="${post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
-      </span>
+        <span id="likeBtn" th:classappend="${post.likedByMe} ? 'liked' : ''" class="like-btn">
+          <i th:class="${post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+        </span>
       <span id="likeCount" th:text="${post.likeCount}">0</span>개
     </div>
-    <!-- 댓글 -->
+
+    <div th:if="${isLoggedIn != null and !isLoggedIn}" style="margin-top:20px; color:red;">
+      로그인 후 좋아요 및 댓글을 작성할 수 있습니다.
+    </div>
+
     <div class="comment-box">
       <h5 style="font-weight:600;">댓글</h5>
-      <!-- 댓글 목록 -->
       <div class="comment-list">
         <div class="comment-card" th:each="comment : ${post.comments}">
           <div class="comment-meta">
@@ -127,7 +126,7 @@
           <div class="comment-content" th:text="${comment.content != null ? comment.content : ''}">댓글 내용</div>
         </div>
       </div>
-      <!-- 댓글 작성 + 목록으로 버튼 한 줄 정렬 -->
+
       <form th:action="@{/comments}" method="post" class="mt-4" id="commentForm">
         <input type="hidden" name="postId" th:value="${post.id}">
         <div class="comment-input-row">
@@ -139,23 +138,19 @@
   </div>
 </section>
 
-<!-- 공통 푸터 -->
 <div th:insert="~{fragments/user/footer :: footer}"></div>
 
-<!-- JS -->
 <script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
 <script th:inline="javascript">
   document.addEventListener('DOMContentLoaded', function() {
-    // 좋아요 토글 JS
     const likeBtn = document.getElementById('likeBtn');
     const likeCount = document.getElementById('likeCount');
     const postId = /*[[${post.id}]]*/ '';
-    const csrfToken = /*[[${_csrf.token}]]*/ '';
+
     if (likeBtn && likeCount && postId) {
       likeBtn.addEventListener('click', () => {
         fetch(`/likes/toggle/${postId}`, {
-          method: 'POST',
-          headers: { 'X-CSRF-TOKEN': csrfToken }
+          method: 'POST'
         })
                 .then(res => res.json())
                 .then(data => {
@@ -166,27 +161,38 @@
                 });
       });
     }
-    // 댓글 input UX 개선
+
     const input = document.getElementById('commentInput');
     const btn = document.getElementById('commentSubmitBtn');
     const form = document.getElementById('commentForm');
-    function toggleBtn() {
-      btn.disabled = !input.value.trim();
-    }
+
+    function toggleBtn() { btn.disabled = !input.value.trim(); }
+
     if (input && btn) {
       input.addEventListener('input', toggleBtn);
       toggleBtn();
-      // Shift+Enter 방지 (줄바꿈 안 되게)
+
       input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.shiftKey) {
-          e.preventDefault();
-        }
+        if (e.key === 'Enter' && e.shiftKey) e.preventDefault();
       });
     }
-    // 댓글 작성 후 input 비우기
+
     if (form && input && btn) {
-      form.addEventListener('submit', function(e) {
-        setTimeout(function() { input.value = ''; toggleBtn(); }, 100);
+      form.addEventListener('submit', function() {
+        setTimeout(() => { input.value = ''; toggleBtn(); }, 100);
+      });
+    }
+
+    // ... 버튼 클릭 시 메뉴 토글
+    const menuBtn = document.getElementById('menuBtn');
+    const menuPopup = document.getElementById('menuPopup');
+    if (menuBtn && menuPopup) {
+      menuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuPopup.style.display = menuPopup.style.display === 'block' ? 'none' : 'block';
+      });
+      document.addEventListener('click', function() {
+        menuPopup.style.display = 'none';
       });
     }
   });
