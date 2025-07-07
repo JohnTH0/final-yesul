@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+</head>
+<body>
+<main class="wrapper sb-default ecom">
+    <div th:replace="fragments/admin/header :: adminHeader"></div>
+    <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+    <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
+
+    <div class="gi-main-content">
+        <div class="container-fluid">
+            <div class="gi-page-title gi-page-title-2">
+                <div class="gi-breadcrumb">
+                    <h5>Notice</h5>
+                    <ul>
+                        <li>공지사항</li>
+                        <li>목록조회</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <form th:action="@{/admin/notice/regist}" id="postForm" method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label for="title">제목</label>
+                        <input type="text" id="title" name="title" th:value="${noticeDto.title}" class="form-control" required/>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="editor">내용</label>
+                        <div id="editor"></div>
+                        <input type="hidden" id="content" name="content"/>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="imageFile">이미지 첨부</label>
+                        <div id="drop-area" class="border p-4 text-center"
+                             style="border: 2px dashed #ccc; cursor: pointer;">
+                            여기에 이미지를 드래그하거나 클릭해서 업로드하세요.
+                            <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display: none;"/>
+                        </div>
+                        <div id="preview" class="mt-3"></div>
+                    </div>
+                    <input type="hidden" name="imageUrl" id="imageUrl"/>
+
+                    <div class="text-end mt-4 mb-4">
+                        <button type="submit" class="btn btn-success px-4">등록하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="fragments/admin/footer :: adminFooter"></div>
+<th:block th:insert="fragments/admin/script :: adminScripts"></th:block>
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        console.log("DOM fully loaded");
+
+        const editorContainer = document.querySelector('#editor');
+        if (!editorContainer) {
+            console.error("에디터 컨테이너(#editor)를 찾을 수 없습니다!");
+            return;
+        }
+
+        const editor = new toastui.Editor({
+            el: editorContainer,
+            height: '500px',
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical'
+        });
+
+        const form = document.querySelector('#postForm');
+        if (!form) {
+            console.error("form을 찾을 수 없습니다!");
+            return;
+        }
+
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("imageFile");
+        const preview = document.getElementById("preview");
+        const imageUrlInput = document.getElementById("imageUrl");
+
+        dropArea.addEventListener("click", () => fileInput.click());
+
+        dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropArea.classList.add("bg-light");
+        });
+
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("bg-light");
+        });
+
+        dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropArea.classList.remove("bg-light");
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                fileInput.files = e.dataTransfer.files;
+                uploadImage(file);
+            }
+        });
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (file) {
+                uploadImage(file);
+            }
+        });
+
+        function uploadImage(file) {
+            if (!file.type.startsWith("image/")) {
+                alert("이미지 파일만 업로드 가능합니다.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" class="img-fluid mt-2" style="max-height: 200px;" />`;
+            };
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch("/admin/notice/upload", {
+                method: "POST",
+                body: formData,
+            })
+                .then(res => res.json())
+                .then(data => {
+                    imageUrlInput.value = data.url;
+                    preview.innerHTML = `<img src="${data.url}" class="img-fluid mt-2" style="max-height: 200px;" />`;
+                })
+                .catch(err => {
+                    console.error("이미지 업로드 실패:", err);
+                    alert("이미지 업로드에 실패했습니다.");
+                });
+        }
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            console.log("submit 이벤트 발생");
+
+            const htmlContent = editor.getHTML();
+            console.log("htmlContent:", htmlContent);
+
+            document.querySelector('#content').value = htmlContent;
+
+            const tempDoc = document.createElement('div');
+            tempDoc.innerHTML = htmlContent;
+            const firstImg = tempDoc.querySelector('img');
+            if (firstImg) {
+                document.querySelector('#imageUrl').value = firstImg.getAttribute('src');
+            }
+            form.submit();
+        });
+    });
+</script>

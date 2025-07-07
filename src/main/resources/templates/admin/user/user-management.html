@@ -38,64 +38,65 @@
                                     </thead>
 
                                     <tbody>
+                                        <a th:href="@{/admin/user/{id}(id=${userInfo.id})/status}">
                                         <tr th:each="userInfo : ${userInfoList}">
-                                        <td style="text-align: center;" th:text="${userInfo.id}"></td>
-                                        <td style="text-align: center;" th:text="${userInfo.nickname}"></td>
-                                        <td style="text-align: center;" th:text="${userInfo.email}"></td>
-                                        <td style="text-align: center;" th:text="${userInfo.getFormattedBirthday}"></td>
-                                        <td style="text-align: center;" th:text="${#temporals.format(userInfo.createdAt, 'yyyy-MM-dd')}"></td>
+                                            <td style="text-align: center;" th:text="${userInfo.id}"></td>
+                                            <td style="text-align: center;" th:text="${userInfo.nickname}"></td>
+                                            <td style="text-align: center;" th:text="${userInfo.email}"></td>
+                                            <td style="text-align: center;" th:text="${userInfo.getFormattedBirthday}"></td>
+                                            <td style="text-align: center;" th:text="${#temporals.format(userInfo.createdAt, 'yyyy-MM-dd')}"></td>
 
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <th:block th:switch="${userInfo.displayStatus}">
-                                                    <!-- 일반: 버튼 + 회색 -->
-                                                    <th:block th:case="'일반'">
-                                                        <button type="button"
-                                                                class="gi-btn outline-btn color-light"
-                                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false" data-display="static"
-                                                                th:text="${userInfo.displayStatus}">일반</button>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <th:block th:switch="${userInfo.displayStatus}">
+                                                        <!-- 일반: 버튼 + 회색 -->
+                                                        <th:block th:case="'일반'">
+                                                            <button type="button"
+                                                                    class="gi-btn outline-btn color-light"
+                                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false" data-display="static"
+                                                                    th:text="${userInfo.displayStatus}">일반</button>
+                                                        </th:block>
+
+                                                        <!-- 미인증: 녹색 텍스트 -->
+                                                        <th:block th:case="'미인증'">
+                                                            <span class="text-success fw-bold"
+                                                                  th:text="${userInfo.displayStatus}">미인증</span>
+                                                        </th:block>
+
+                                                        <!-- 탈퇴: 검정색 텍스트 -->
+                                                        <th:block th:case="'탈퇴'">
+                                                            <span class="text-dark fw-bold"
+                                                                  th:text="${userInfo.displayStatus}">탈퇴</span>
+                                                        </th:block>
+
+                                                        <!-- 정지: 버튼 + 빨간색 -->
+                                                        <th:block th:case="'정지'">
+                                                            <button type="button"
+                                                                    class="gi-btn outline-btn color-danger"
+                                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false" data-display="static"
+                                                                    th:text="${userInfo.displayStatus}">정지</button>
+                                                        </th:block>
                                                     </th:block>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item"
+                                                           href="javascript:void(0);"
+                                                           th:if="${userInfo.displayStatus == '정지'}"
+                                                           th:attr="data-user-id=${userInfo.id}"
+                                                           data-action="unblock"
+                                                           onclick="updateUserStatus(this)">정지 해제</a>
 
-                                                    <!-- 미인증: 녹색 텍스트 -->
-                                                    <th:block th:case="'미인증'">
-                                                        <span class="text-success fw-bold"
-                                                              th:text="${userInfo.displayStatus}">미인증</span>
-                                                    </th:block>
-
-                                                    <!-- 탈퇴: 검정색 텍스트 -->
-                                                    <th:block th:case="'탈퇴'">
-                                                        <span class="text-dark fw-bold"
-                                                              th:text="${userInfo.displayStatus}">탈퇴</span>
-                                                    </th:block>
-
-                                                    <!-- 정지: 버튼 + 빨간색 -->
-                                                    <th:block th:case="'정지'">
-                                                        <button type="button"
-                                                                class="gi-btn outline-btn color-danger"
-                                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false" data-display="static"
-                                                                th:text="${userInfo.displayStatus}">정지</button>
-                                                    </th:block>
-                                                </th:block>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                       href="javascript:void(0);"
-                                                       th:if="${userInfo.displayStatus == '정지'}"
-                                                       th:attr="data-user-id=${userInfo.id}"
-                                                       data-action="unblock"
-                                                       onclick="updateUserStatus(this)">정지 해제</a>
-
-                                                    <a class="dropdown-item"
-                                                       href="javascript:void(0);"
-                                                       th:if="${userInfo.displayStatus == '일반'}"
-                                                       th:attr="data-user-id=${userInfo.id}"
-                                                       data-action="block"
-                                                       onclick="updateUserStatus(this)">정지</a>
+                                                        <a class="dropdown-item"
+                                                           href="javascript:void(0);"
+                                                           th:if="${userInfo.displayStatus == '일반'}"
+                                                           th:attr="data-user-id=${userInfo.id}"
+                                                           data-action="block"
+                                                           onclick="updateUserStatus(this)">정지</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

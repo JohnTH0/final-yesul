@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/head :: adminHead"></head>
+<body>
+<main class="wrapper sb-default ecom">
+    <div th:replace="fragments/admin/header :: adminHeader"></div>
+    <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+    <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
+    <h3>공지사항페이지</h3>
+
+    <div class="gi-main-content">
+        <div class="container-fluid">
+            <div class="gi-page-title gi-page-title-2">
+                <div class="gi-breadcrumb">
+                    <h5>Notice</h5>
+                    <ul>
+                        <li>공지사항</li>
+                        <li>목록조회</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: right;" class="mb-3">
+                <a th:href="@{/admin/notice/regist}" class="btn btn-success pe-2">등록</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover text-center" style="table-layout: fixed; width: 100%; background: #fff; border-top-left-radius: 15px; border-top-right-radius: 15px; overflow: hidden;">
+                    <thead class="table-secondary">
+                    <tr>
+                        <th style="width: 10%;">번호</th>
+                        <th style="width: 20%;">제목</th>
+                        <th style="width: 40%;">내용</th>
+                        <th style="width: 15%;">작성일</th>
+                        <th style="width: 15%;">첨부파일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="notice, iterStat : ${noticeListPageable.getContent()}"
+                        th:onclick="|location.href='@{/admin/notice/{id}(id=${notice.id})}'|"
+                        style="cursor: pointer;">
+
+                        <td th:text="${iterStat.count + 10 * (noticeListPageable.number)}"></td>
+                        <td class="text-start text-dark text-decoration-none" th:text="${notice.title}"></td>
+                        <td style="max-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                            th:utext="${notice.content}"></td>
+                        <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
+                        <td>
+                            <a th:if="${notice.imageUrl != null && !notice.imageUrl.isEmpty()}"
+                               th:href="${notice.imageUrl}" target="_blank">
+                                <span class="remix-icons ri-attachment-line"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="@{/admin/notice/delete/{id}(id=${notice.id})}" target="_blank">
+                                <span class="remix-icons ri-delete-bin-5-line"></span>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${noticeListPageable == null or #lists.isEmpty(noticeListPageable)}">
+                        <td colspan="5" class="text-center text-muted">등록된 게시글이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row justify-content-between align-items-center bottom-information mt-auto px-4 py-2 border-top">
+                <div class="row justify-content-between bottom-information">
+                    <div class="col-auto dataTables_info" id="product_list_info" role="status" aria-live="polite">
+                     총 [[${noticeListPageable.totalElements}]]건 </div>
+
+                    <div class="col-auto dataTables_paginate paging_simple_numbers" id="product_list_paginate" th:if="${noticeListPageable.totalPages > 1}">
+                        <ul class="pagination justify-content-end">
+                            <li class="paginate_button page-item previous " th:classappend="${noticeListPageable.first} ? 'disabled'" id="product_list_previous">
+                                <a th:href="@{|/admin/notice?page=${noticeListPageable.number - 1}|}" aria-controls="product_list" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                            <li class="paginate_button page-item " th:each="i : ${#numbers.sequence(0, noticeListPageable.totalPages - 1)}"
+                                th:classappend="${noticeListPageable.number == i} ? 'active'">
+                                <a th:href="@{|/admin/notice?page=${i}|}" aria-controls="product_list" data-dt-idx="2" tabindex="0" class="page-link" th:text="${i + 1}"></a></li>
+                            <li class="paginate_button page-item next" id="product_list_next" th:classappend="${noticeListPageable.last} ? 'disabled'">
+                            <a th:href="@{|/admin/notice?page=${noticeListPageable.number + 1}|}" aria-controls="product_list" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/admin/footer :: adminFooter"></div>
+    <div th:replace="fragments/admin/script :: adminScripts"></div>
+</main>
+</body>
+</html>
+

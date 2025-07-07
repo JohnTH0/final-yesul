@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/*-----------------------------------------------------------------------------------
+
+Item Name: Grabit - Multipurpose eCommerce HTML Template.
+Author: Maraviya Infotech
+Version: 3.0.2
+Copyright 2024
+
+-----------------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------------------
+    Included CSS INDEX
+-----------------------------------------------------------------------------------
+
+01. Typography
+02. Components
+    - Common
+    - Sidebar
+    - Header
+    - Footer
+    - Notify-bar
+    - Tools-sidebar
+
+03. Layout 
+    - Cards
+    - All-chart
+    - Tables
+    - Event-calendar
+
+04. Pages
+    - Chatapp-page
+    - Todo-page
+    - Ecommerce-page
+    - Auth-pages
+    - Vendor-pages
+    - Buttons-page
+    - Accordion-page
+    - Alert-popup-page
+
+-----------------------------------------------------------------------------------*/
+
+// Typography
+@import "base/typography";
+
+// Utilities
+@import "utilities/variables";
+@import "utilities/mixins";
+
+// Components
+@import "components/common";
+@import "components/sidebar";
+@import "components/header";
+@import "components/footer";
+@import "components/notify-bar";
+@import "components/tools-sidebar";
+
+// Layouts
+@import "layouts/cards";
+@import "layouts/all-chart";
+@import "layouts/tables";
+@import "layouts/event-calendar";
+
+// Pages
+@import "pages/chatapp-page";
+@import "pages/todo-page";
+@import "pages/ecommerce-page";
+@import "pages/auth-pages";
+@import "pages/vendor-pages";
+@import "pages/buttons-page";
+@import "pages/accordion-page";
+@import "pages/alert-popup-page";
