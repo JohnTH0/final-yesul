@@ -1,7 +1,7 @@
 package com.yesul.user.service;
 
-import com.yesul.user.model.entity.User;
-import com.yesul.user.repository.UserRepository;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.yesul.user.model.entity.User;
+import com.yesul.user.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

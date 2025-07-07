@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+  <title>Grabit - Multipurpose eCommerce HTML Template.</title>
+  <meta name="keywords"
+        content="Bootstrap 5.x, ecommerce, farming, food market, grocery market, grocery shop, grocery store, grocery supper market, multi vendor, organic food, supermarket, supermarket grocery">
+  <meta name="description" content="Multipurpose eCommerce HTML Template">
+  <meta name="author" content="Maraviya Infotech">
+  <!-- site Favicon -->
+  <link rel="icon" th:href="@{/assets/img/favicon/favicon.png}" sizes="32x32">
+  <link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/animate.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/owl.theme.default.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/slick.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/plugins/nouislider.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/_register.css}">
+  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css}">
+  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css}">
+  <link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/responsive.css}">
+
+</head>
+
+<body>
+<!-- Loader -->
+<div id="gi-overlay">
+  <div class="loader"></div>
+</div>
+
+<!-- Header start  -->
+<div th:replace="~{fragments/user/header.html}"></div>
+<!-- Header End  -->
+
+<!-- Breadcrumb start -->
+<div class="gi-breadcrumb m-b-40">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="row gi_breadcrumb_inner">
+          <div class="col-md-6 col-sm-12">
+            <h2 class="gi-breadcrumb-title">Vendor settings</h2>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <!-- gi-breadcrumb-list start -->
+            <ul class="gi-breadcrumb-list">
+              <li class="gi-breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="gi-breadcrumb-item active">settings</li>
+            </ul>
+            <!-- gi-breadcrumb-list end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb end -->
+
+<!-- Vendor setting section start -->
+<section class="gi-vendor-setting padding-tb-40">
+  <div class="container">
+    <div class="row mb-minus-24px">
+      <div class="col-lg-3 col-md-12 mb-24">
+        <div class="gi-sidebar-wrap gi-border-box gi-sticky-sidebar">
+            <div class="gi-vendor-block-items">
+                <ul>
+                    <li><a th:href="@{/user/profile}">내정보</a></li>
+                    <li><a th:href="@{/user/profile/edit}">내정보 수정 페이지</a></li>
+                    <li><a th:href="@{/user/history}">좋아요 한 글 보기</a></li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-12 mb-24">
+        <div class="gi-vendor-settings-card gi-vendor-profile-card">
+          <form th:action="@{/user/profile/update}" th:object="${user}" method="post" enctype="multipart/form-data">
+            <div class="gi-vendor-settings-card">
+              <h5>Account Information</h5>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <h6>Name</h6>
+                  <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" class="form-control" th:field="*{name}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <h6>Nickname</h6>
+                  <div class="form-group">
+                    <label for="nickname">닉네임</label>
+                    <input type="text" id="nickname" class="form-control" th:field="*{nickname}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <h6>E-mail address</h6>
+                  <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" class="form-control" th:field="*{email}" readonly/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <h6>Birthday</h6>
+                  <div class="form-group">
+                    <label for="birthday">생년월일 (YYYYMMDD)</label>
+                    <input type="text" id="birthday" class="form-control" th:field="*{birthday}"
+                           placeholder="YYYYMMDD"/>
+                  </div>
+                </div>
+              </div>
+              <span class="gi-register-wrap">
+                    <label for="address">주소</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" id="address" name="address" th:field="*{address}" readonly required>
+                        <button type="button" class="gi-btn-1" onclick="openPostcode()">주소 검색</button>
+                    </div>
+                    <span id="addressFeedback" class="error-message"></span>
+              </span>
+            </div>
+
+            <div class="gi-vendor-settings-card">
+              <h5>Profile Image</h5>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <div class="form-group">
+                    <label for="profileImage">현재 프로필 사진</label>
+                    <img
+                      th:src="@{${user != null and user.profile != null ? user.profile : '/assets/img/app/default_profile.jpg'}}"
+                      alt="프로필 사진" style="max-width: 150px; display: block; margin-bottom: 10px;"/>
+                    <label for="profileImage">새 프로필 사진 선택</label>
+                    <input type="file" id="profileImage" name="profileImage" class="form-control" accept="image/*"/>
+                    <input type="hidden" name="profile" th:value="*{profile}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="gi-vendor-settings-card">
+              <h5>Password Change</h5>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <div class="form-group">
+                    <label for="newPassword">새 비밀번호</label>
+                    <input type="password" id="newPassword" name="newPassword" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 mb-24">
+                <div class="gi-vendor-detail-block">
+                  <div class="form-group">
+                    <label for="confirmPassword">새 비밀번호 확인</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit">
+              <button type="submit" class="gi-btn-2">
+                <i class="ri-save-line"></i> 정보 저장
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Vendor setting section end -->
+
+<!-- Footer Start -->
+<div th:replace="~{fragments/user/footer.html}"></div>
+<!-- Footer Area End -->
+
+<!-- Quickview Modal -->
+<div th:replace="~{fragments/user/quickview.html}"></div>
+<!-- Quickview Modal end -->
+
+<!-- Back to top  -->
+<a class="gi-back-to-top"></a>
+
+<!-- Feature tools -->
+<div th:replace="~{fragments/user/feature.html}"></div>
+
+<!-- Plugins JS -->
+<script th:src="@{/assets/js/plugins/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap-select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/swiper-bundle.min.js}"></script>
+<script th:src="@{/assets/js/plugins/fontawesome.js}"></script>
+<script th:src="@{/assets/js/plugins/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/js/plugins/infiniteslidev2.js}"></script>
+<script th:src="@{/assets/js/plugins/jquery.zoom.min.js}"></script>
+<script th:src="@{/assets/js/plugins/slick.min.js}"></script>
+<script th:src="@{/assets/js/plugins/nouislider.js}"></script>
+<script th:src="@{/assets/js/plugins/wow.js}"></script>
+<script th:src="@{/assets/js/plugins/smoothscroll.min.js}"></script>
+<script th:src="@{/assets/js/register-validation.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:src="'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'"></script>
+
+
+</body>
+
+</html>
+
+<script>
+    function openPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // data.address: 최종 주소 문자열
+                // data.zonecode: 우편번호
+                document.getElementById('address').value = data.address;
+                // 필요하다면 우편번호 hidden field에 저장
+                // document.getElementById('zonecode').value = data.zonecode;
+            }
+        }).open();
+    }
+</script>
