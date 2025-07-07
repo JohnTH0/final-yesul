@@ -8,4 +8,6 @@ import org.springframework.data.domain.Slice;
 public interface MessageService {
     Slice<Message> getMessagesWithCursor(Long chatRoomId, Long lastMessageId, int size);
     MessageResponseDto saveMessage(MessageRequestDto message, Long senderId);
+
+
 }

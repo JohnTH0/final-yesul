@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +25,16 @@ public class MessageServiceImpl implements MessageService {
     private final ChatRoomRepository chatRoomRepository;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Slice<Message> getMessagesWithCursor(Long chatRoomId, Long lastMessageId, int size) {
         Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "id"));
-        return messageRepository.getMessagesWithCursor(chatRoomId, lastMessageId, pageable);
+        if (lastMessageId == null) {
+            return messageRepository.getMessagesFirstPage(chatRoomId, pageable);
+        } else {
+            return messageRepository.getMessagesWithCursor(chatRoomId, lastMessageId, pageable);
+        }
     }
+
 
     @Override
     @Transactional
@@ -72,4 +78,6 @@ public class MessageServiceImpl implements MessageService {
                 .createdAt(message.getCreatedAt())
                 .build();
     }
+
+
 }

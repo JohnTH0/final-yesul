@@ -5,3 +5,7 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:your-localdb-password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379

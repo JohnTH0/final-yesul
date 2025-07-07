@@ -5,6 +5,8 @@ import com.yesul.chatroom.model.entity.Message;
 import com.yesul.chatroom.service.ChatRoomService;
 import com.yesul.chatroom.service.MessageService;
 import com.yesul.user.service.PrincipalDetails;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +40,7 @@ public class ChatController {
         return "redirect:/users/chatroom/" + result.getChatRoom().getId() + "?new=" + result.isNewlyCreated();
     }
 
-    //채팅방 조회(메시지 조회, 무한 스크롤 구현)
+    // 채팅방 조회(메시지 조회, 무한 스크롤 구현)
     @GetMapping("/{roomId}")
     public String getChatRoom(
             @PathVariable Long roomId,
@@ -47,23 +49,29 @@ public class ChatController {
     ) {
         Slice<Message> messageSlice;
 
+        int size = 20; // 최초 로딩 메시지 수
+
         if (Boolean.TRUE.equals(isNew)) {
-            messageSlice = new SliceImpl<>(List.of()); // 빈 Slice
+            messageSlice = new SliceImpl<>(List.of()); // 새로 만든 방이면 빈 메시지
         } else {
-            messageSlice = messageService.getMessagesWithCursor(roomId, null, 5);
+            // 커서 조건 null → Service에서 알아서 분기됨!
+            messageSlice = messageService.getMessagesWithCursor(roomId, null, size);
         }
 
-        List<Message> messages = messageSlice.getContent();
-
+        List<Message> messages = new ArrayList<>(messageSlice.getContent());
+        Collections.reverse(messages);
         model.addAttribute("roomId", roomId);
         model.addAttribute("messages", messages);
         model.addAttribute("hasNext", messageSlice.hasNext());
 
-        if (!messages.isEmpty()) {
-            Long lastMessageId = messages.get(messages.size() - 1).getId();
-            model.addAttribute("lastMessageId", lastMessageId);
-        }
+        Long lastMessageId = !messages.isEmpty()
+                ? messages.get(messages.size() - 1).getId()
+                : null;
+
+        model.addAttribute("lastMessageId", lastMessageId);
 
         return "user/user-chat";
     }
+
+
 }

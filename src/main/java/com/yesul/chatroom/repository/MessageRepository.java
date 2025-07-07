@@ -17,4 +17,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             Pageable pageable
     );
 
+    @Query("SELECT m FROM Message m WHERE m.chatRoom.id = :chatRoomId ORDER BY m.id DESC")
+    Slice<Message> getMessagesFirstPage(
+            @Param("chatRoomId") Long chatRoomId,
+            Pageable pageable
+    );
+
 }

@@ -5,3 +5,9 @@ spring:
     username: ${DEV_DB_USERNAME}
     password: ${DEV_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    redis:
+      host: redis-container
+      port: 6379
+      password: ${DEV_REDIS_PASSWORD}

@@ -44,14 +44,13 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         }
 
         if (principalDetails == null) {
-            log.warn("⚠️ 예상치 못한 Principal 구조: {}", rawPrincipal);
             session.close();
             return;
         }
 
         Long userId = principalDetails.getUser().getId();
         sessions.putIfAbsent(userId, session);
-        log.info("✅ 웹소켓 연결 성공! userId={}", userId);
+        log.info("웹소켓 연결 성공! userId={}", userId);
     }
 
 
@@ -69,7 +68,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         if (receiverSession != null && receiverSession.isOpen()) {
             receiverSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
         } else {
-            System.out.println("수신자 없음");
             log.info(" 수신자 오프라인: {}", messageResponseDto.getReceiverId());
             // TODO: Push 알림 처리
         }

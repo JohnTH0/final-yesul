@@ -38,7 +38,7 @@ public class Message extends BaseTimeEntity {
     @Column(name = "message_context",length = 5000, nullable = false)
     private String messageContext;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "message_type", nullable = false, columnDefinition = "TEXT")
     private MessageType messageType;
 

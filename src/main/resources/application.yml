@@ -56,10 +56,10 @@ spring:
           naver:
             client-id: ${NAVER_REST_KEY}
             client-secret: ${NAVER_REST_SECRET}
-            authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
             scope: name, email
             client-name: Naver
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
             provider: naver
 
         provider:
