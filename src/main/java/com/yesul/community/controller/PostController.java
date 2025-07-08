@@ -32,55 +32,28 @@ public class PostController {
     }
 
     /**
-     * 게시글 작성 폼으로 이동
-     */
-    @GetMapping("/create")
-    public String createForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        if (principalDetails == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("postRequestDto", new PostRequestDto());
-        return "community/postCreate";
-    }
-
-    /**
-     * 게시글 등록 처리
-     */
-    @PostMapping("/create")
-    public String createPost(@ModelAttribute PostRequestDto postRequestDto,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        if (principalDetails == null) {
-            return "redirect:/login";
-        }
-
-        Long userId = principalDetails.getUser().getId();
-
-        // 썸네일 자동 추출
-        if (postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().isBlank()) {
-            String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
-            if (extractedThumbnail != null && !extractedThumbnail.trim().isEmpty()) {
-                postRequestDto.setThumbnail(extractedThumbnail);
-            }
-        }
-
-        PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
-        return "redirect:/community/" + createdPost.getBoardName() + "/" + createdPost.getId();
-    }
-
-    /**
-     * 게시판별 게시글 목록 조회
+     * 게시판별 게시글 목록 조회 및 검색
      */
     @GetMapping("/{boardName}")
     public String boardList(@PathVariable String boardName,
                             @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(required = false) String keyword,
                             Model model) {
-        Pageable pageable = PageRequest.of(page, 6, Sort.by("createdAt").descending());
-        Page<PostResponseDto> postPage = postService.findByBoardNamePaged(boardName, pageable);
+
+        Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<PostResponseDto> postPage;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            postPage = postService.searchByBoardNameAndKeyword(boardName, keyword, pageable);
+        } else {
+            postPage = postService.findByBoardNamePaged(boardName, pageable);
+        }
 
         model.addAttribute("postPage", postPage);
         model.addAttribute("postList", postPage.getContent());
+        model.addAttribute("boardName", boardName);
+        model.addAttribute("paramKeyword", keyword);
 
-        // 게시판 이름에 따라 뷰 선택
         String viewName = switch (boardName) {
             case "recipe" -> "community/postRecipe";
             case "info" -> "community/postInfo";
@@ -109,7 +82,42 @@ public class PostController {
     }
 
     /**
-     * 게시글 수정 및 삭제 메뉴에서 수정 폼으로 이동
+     * 게시글 작성 폼으로 이동
+     */
+    @GetMapping("/create")
+    public String createForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("postRequestDto", new PostRequestDto());
+        return "community/postCreate";
+    }
+
+    /**
+     * 게시글 등록 처리
+     */
+    @PostMapping("/create")
+    public String createPost(@ModelAttribute PostRequestDto postRequestDto,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails == null) {
+            return "redirect:/login";
+        }
+
+        Long userId = principalDetails.getUser().getId();
+
+        if (postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().isBlank()) {
+            String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
+            if (extractedThumbnail != null && !extractedThumbnail.trim().isEmpty()) {
+                postRequestDto.setThumbnail(extractedThumbnail);
+            }
+        }
+
+        PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
+        return "redirect:/community/" + createdPost.getBoardName() + "/" + createdPost.getId();
+    }
+
+    /**
+     * 게시글 수정 폼으로 이동
      */
     @GetMapping("/{boardName}/{id}/edit")
     public String editForm(@PathVariable String boardName,
@@ -124,11 +132,9 @@ public class PostController {
 
         try {
             PostRequestDto postRequestDto = postService.findPostForEdit(id, userId);
-
             model.addAttribute("postRequestDto", postRequestDto);
             model.addAttribute("boardName", boardName);
             model.addAttribute("isLoggedIn", true);
-
             return "community/postEdit";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -149,7 +155,6 @@ public class PostController {
             return "redirect:/login";
         }
 
-        // 필수 필드 검증
         if (postRequestDto.getContent() == null || postRequestDto.getContent().trim().isEmpty()) {
             model.addAttribute("error", "내용을 입력해주세요.");
             return "redirect:/community/" + boardName + "/" + id + "/edit";
@@ -181,8 +186,8 @@ public class PostController {
         if (principalDetails == null) {
             return "redirect:/login";
         }
-        Long userId = principalDetails.getUser().getId();
 
+        Long userId = principalDetails.getUser().getId();
         postService.deletePost(id, userId);
 
         return "redirect:/community/" + boardName;

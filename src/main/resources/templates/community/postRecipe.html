@@ -71,6 +71,10 @@
                 </div>
             </a>
         </div>
+        <!-- 게시글이 없을 때 메시지 -->
+        <div class="text-center py-5" th:if="${postList == null or #lists.isEmpty(postList)}" style="width:100%;">
+            <p style="font-size:1.2rem; color:#888;">게시글이 없습니다.</p>
+        </div>
     </div>
 
     <br><br>
@@ -80,8 +84,8 @@
         <!-- 검색창: 완전 중앙 -->
         <div style="position:absolute; left:50%; transform:translateX(-50%); z-index:1; width:220px; max-width:90vw;">
             <div class="oh-search-wrap" style="margin:0;">
-                <form class="oh-search-form" method="get" th:action="@{/community/{board}(board=${boardName})}">
-                    <input class="oh-search-input" type="text" name="keyword" th:value="${param.keyword}" placeholder="게시글 검색">
+                <form class="oh-search-form" method="get" th:action="@{/community/{boardName}(boardName=${boardName})}">
+                    <input class="oh-search-input" type="text" name="keyword" th:value="${paramKeyword}" placeholder="게시글 검색">
                     <button class="oh-search-btn" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>

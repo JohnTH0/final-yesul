@@ -31,10 +31,20 @@
     .comment-btn:disabled { background: #bbb; cursor: not-allowed; }
     .comment-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
     .comment-card { background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(34,34,34,0.06); padding: 18px 20px 14px 20px; min-width: 0; }
-    .comment-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .comment-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .comment-nickname { font-weight: 700; color: #222; font-size: 1.05rem; }
-    .comment-date { color: #bbb; font-size: 0.98rem; font-weight: 400; }
-    .comment-content { color: #444; font-size: 1.05rem; word-break: break-all; margin-top: 2px; }
+    .comment-date { color: #bbb; font-size: 0.95rem; font-weight: 400; }
+    .comment-content { color: #444; font-size: 1.05rem; word-break: break-all; margin-top: 4px; line-height: 1.5; }
+    .comment-delete-btn {
+      background: #f2f3f6; border: none; color: #888; font-size: 1.1rem;
+      padding: 4px 10px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      margin-left: 8px;
+    }
+    .comment-delete-btn:hover {
+      background: #e0e2e7; color: #444;
+    }
     .toastui-editor-contents img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
     .post-menu-btn {
       width: 36px; height: 36px;
@@ -120,8 +130,18 @@
       <div class="comment-list">
         <div class="comment-card" th:each="comment : ${post.comments}">
           <div class="comment-meta">
-            <span class="comment-nickname" th:text="${comment.nickname != null ? comment.nickname : '익명'}">닉네임</span>
-            <span class="comment-date" th:text="${comment.createdAt != null ? #temporals.format(comment.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
+            <div class="d-flex align-items-center gap-2">
+              <span class="comment-nickname" th:text="${comment.nickname != null ? comment.nickname : '익명'}">닉네임</span>
+              <span class="comment-date" th:text="${comment.createdAt != null ? #temporals.format(comment.createdAt, 'yyyy.MM.dd') : ''}">2021.02.26</span>
+            </div>
+            <form th:if="${comment.isAuthor}" th:action="@{/comments/delete}" method="post" style="display:inline;">
+              <input type="hidden" name="commentId" th:value="${comment.id}" />
+              <input type="hidden" name="postId" th:value="${post.id}" />
+              <input type="hidden" name="boardName" th:value="${post.boardName}" />
+              <button type="submit" class="comment-delete-btn" aria-label="댓글 삭제">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </form>
           </div>
           <div class="comment-content" th:text="${comment.content != null ? comment.content : ''}">댓글 내용</div>
         </div>

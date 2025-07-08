@@ -34,4 +34,15 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(comment);
     }
+
+    @Override
+    public void delete(Long commentId, Long userId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new RuntimeException("본인 댓글만 삭제 가능합니다");
+        }
+        commentRepository.delete(comment);
+    }
+
 }

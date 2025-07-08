@@ -72,7 +72,7 @@ public class PostServiceImpl implements PostService {
     // 키워드 검색 (게시판 + 제목에 포함되는 키워드)
     @Override
     public Page<PostResponseDto> searchByBoardNameAndKeyword(String boardName, String keyword, Pageable pageable) {
-        return postRepository.findByBoardNameAndTitleContainingIgnoreCase(boardName, keyword, pageable)
+        return postRepository.searchByBoardNameAndKeyword(boardName, keyword, pageable)
                 .map(this::convertToDto);
     }
 
@@ -111,7 +111,7 @@ public class PostServiceImpl implements PostService {
         // 댓글 변환
         List<CommentResponseDto> commentDtos = post.getComments() != null ?
                 post.getComments().stream()
-                        .map(CommentResponseDto::from)
+                        .map(comment -> CommentResponseDto.from(comment, userId))
                         .toList() :
                 new ArrayList<>();
         dto.setComments(commentDtos);
@@ -147,6 +147,7 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }
 
+        // 필수 필드 검증
         if (postRequestDto.getContent() == null || postRequestDto.getContent().trim().isEmpty()) {
             throw new IllegalArgumentException("내용을 입력해주세요.");
         }
@@ -155,38 +156,32 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("제목을 입력해주세요.");
         }
 
-        // 1. 본문에 포함된 이미지 추출
-        List<String> contentImageUrls = postImageService.extractImageUrlsFromContent(postRequestDto.getContent());
-
-        // 2. 기존 이미지 중 본문에 없는 이미지 삭제 (NCP + DB)
-        List<PostImage> existingImages = new ArrayList<>(post.getImages());
-        for (PostImage image : existingImages) {
-            if (!contentImageUrls.contains(image.getImageUrl())) {
-                postImageService.deleteImage(image.getImageUrl());
-                post.getImages().remove(image);
-                postImageRepository.delete(image);
-            }
-        }
-
-        // 3. 본문에 있는데 아직 등록 안 된 이미지 추가
-        List<String> existingImageUrls = post.getImages().stream()
-                .map(PostImage::getImageUrl)
-                .toList();
-
-        for (String imageUrl : contentImageUrls) {
-            if (!existingImageUrls.contains(imageUrl)) {
-                PostImage newImage = PostImage.builder()
-                        .imageUrl(imageUrl.trim())
-                        .build();
-                post.addImage(newImage);
-                postImageRepository.save(newImage);
-            }
-        }
-
-        // 4. 게시글 본문/제목 수정
+        // 게시글 정보 수정
         post.update(postRequestDto);
 
-        // 5. 썸네일 없을 경우 첫 번째 이미지 자동 설정
+        // 기존 이미지 삭제
+        if (post.getImages() != null) {
+            List<PostImage> existingImages = new ArrayList<>(post.getImages());
+            for (PostImage image : existingImages) {
+                postImageRepository.delete(image);
+            }
+            post.getImages().clear();
+        }
+
+        // 새 이미지 추가
+        if (postRequestDto.getImageUrls() != null && !postRequestDto.getImageUrls().isEmpty()) {
+            for (String imageUrl : postRequestDto.getImageUrls()) {
+                if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                    PostImage postImage = PostImage.builder()
+                            .imageUrl(imageUrl.trim())
+                            .build();
+                    post.addImage(postImage);
+                    postImageRepository.save(postImage);
+                }
+            }
+        }
+
+        // 썸네일이 비어있으면 첫 번째 이미지로 설정
         if ((postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().trim().isEmpty())
                 && postRequestDto.getContent() != null) {
             String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
@@ -253,7 +248,7 @@ public class PostServiceImpl implements PostService {
         dto.setComments(
                 post.getComments() != null ?
                         post.getComments().stream()
-                                .map(CommentResponseDto::from)
+                                .map(comment ->  CommentResponseDto.from(comment, null))
                                 .toList() :
                         new ArrayList<>()
         );

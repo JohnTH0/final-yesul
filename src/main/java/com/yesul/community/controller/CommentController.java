@@ -30,4 +30,15 @@ public class CommentController {
     public String getComments(@PathVariable Long postId) {
         return "댓글 리스트 예정";
     }
+
+    // 댓글 삭제
+    @PostMapping("/delete")
+    public String deleteComment(@RequestParam Long commentId,
+                                @RequestParam String boardName,
+                                @RequestParam Long postId,
+                                @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Long userId = principalDetails.getUser().getId();
+        commentService.delete(commentId, userId);
+        return "redirect:/community/" + boardName + "/" + postId;
+    }
 }
