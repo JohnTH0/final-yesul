@@ -59,19 +59,32 @@ public class ChatSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
 
         String payload = textMessage.getPayload();
-        MessageRequestDto message = objectMapper.readValue(payload, MessageRequestDto.class);
+        MessageRequestDto messageRequestDto = objectMapper.readValue(payload, MessageRequestDto.class);
 
-        MessageResponseDto messageResponseDto = messageService.saveMessage(message, message.getUserId());
+        // DB에 메시지 저장
+        MessageResponseDto messageResponseDto = messageService.saveMessage(messageRequestDto, messageRequestDto.getUserId());
 
-        // 수신자 세션 찾아서 전달
+        // 저장된 DTO를 JSON으로 변환 (sender, receiver 모두 동일한 데이터 사용)
+        String responseJson = objectMapper.writeValueAsString(messageResponseDto);
+
+        // 1) 수신자에게
         WebSocketSession receiverSession = sessions.get(messageResponseDto.getReceiverId());
         if (receiverSession != null && receiverSession.isOpen()) {
-            receiverSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+            receiverSession.sendMessage(new TextMessage(responseJson));
         } else {
+            System.out.println("수신자 없음");
             log.info(" 수신자 오프라인: {}", messageResponseDto.getReceiverId());
             // TODO: Push 알림 처리
         }
+
+        // 2) 송신자에게도!
+        Long senderId = messageRequestDto.getUserId();
+        WebSocketSession senderSession = sessions.get(senderId);
+        if (senderSession != null && senderSession.isOpen()) {
+            senderSession.sendMessage(new TextMessage(responseJson));
+        }
     }
+
 
 
 
