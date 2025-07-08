@@ -1,18 +1,13 @@
 package com.yesul.user.model.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter @Setter
 public class UserPasswordResetDto {
-
-    @NotBlank(message = "현재 비밀번호를 입력해주세요.")
-    private String currentPassword;
-
-    @NotBlank(message = "새 비밀번호를 입력해주세요.")
-    @Size(min = 8, max = 30, message = "비밀번호는 8~30자 사이여야 합니다.")
-    private String newPassword;
+    @NotBlank(message = "이메일을 입력해주세요.")
+    @Email(message = "유효한 이메일 주소를 입력해주세요.")
+    private String email;
 }

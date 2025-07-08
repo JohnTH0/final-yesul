@@ -80,10 +80,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                // 로그인 이후 구글 devtool
+                                "/.well-known/appspecific/**",
+                                // User단
                                 "/user/verify-email",
                                 "/user/regist",
                                 "/user/regist-process",
                                 "/user/user-regist-mail",
+                                "/reset-password",
+                                "/password-reset-complete",
+
                                 "/", "/main", "/user/assets/**", "/community/**", "/error",
                                 "/assets/**",
                                 "/asserts/**",

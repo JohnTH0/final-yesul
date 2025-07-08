@@ -30,10 +30,6 @@ public class UserUpdateDto {
     @Size(max = 50, message = "이메일은 50자를 초과할 수 없습니다.")
     private String email;
 
-    @Size(min = 8, max = 30, message = "새 비밀번호는 8~30자로 입력해주세요.")
-    private String newPassword;
-    private String confirmPassword;
-
     private MultipartFile profileImage;
 
     private String profile;

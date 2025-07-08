@@ -63,8 +63,5 @@ public interface UserService {
      */
     void resignUser(Long userId, String rawPassword);
 
-    void resendSignUpVerification(String email);
-    void resendPasswordResetLink(String email);
-    boolean isPasswordResetTokenValid(String email, String token);
     void resetPassword(String email, String token, String newPassword);
 }

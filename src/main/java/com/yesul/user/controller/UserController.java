@@ -1,16 +1,10 @@
 package com.yesul.user.controller;
 
-import com.yesul.user.model.dto.*;
-import com.yesul.user.model.entity.User;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import com.yesul.exception.handler.EntityNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +13,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yesul.exception.handler.EntityNotFoundException;
 import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.user.service.PrincipalDetails;
-import com.yesul.user.service.RegistrationAsyncService;
+import com.yesul.user.service.UserAsyncService;
 import com.yesul.user.service.UserService;
-
-import java.util.Optional;
+import com.yesul.user.model.entity.User;
+import com.yesul.user.model.dto.*;
 
 @Slf4j
 @Controller
@@ -33,10 +28,9 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final RegistrationAsyncService asyncRegService;
+    private final UserAsyncService asyncRegService;
     private final PasswordEncoder passwordEncoder;
 
-    // Regist Start
     // 회원가입 페이지 이동
     @GetMapping("/regist")
     public String registForm(Model model) {
@@ -84,9 +78,8 @@ public class UserController {
             return "redirect:/user/regist";
         }
     }
-    // Regist End
 
-    // Mypage Start
+    // 유저 정보 페이지
     @GetMapping("/profile")
     public String userProfile(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
@@ -106,21 +99,36 @@ public class UserController {
                             redirectAttributes.addFlashAttribute("error", "사용자를 찾을 수 없습니다.");
                         }
                 );
-
-        // 3) 사용자 정보 페이지로 이동
         return "user/user-profile";
     }
 
+    // 유저 정보 수정 페이지
     @GetMapping("/profile/edit")
-    public String userProfileEdit(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String username = authentication.getName();
-            userService.findUserByEmail(username).ifPresent(user -> model.addAttribute("user", user));
+    public String userProfileEdit(Model model,
+                                  @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                  RedirectAttributes redirectAttributes) {
+
+        if (principalDetails == null) {
+            redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+            return "redirect:/login";
         }
+
+        User currentUser = principalDetails.getUser();
+
+        UserUpdateDto dto = new UserUpdateDto();
+        dto.setName(currentUser.getName());
+        dto.setNickname(currentUser.getNickname());
+        dto.setBirthday(currentUser.getBirthday());
+        dto.setAddress(currentUser.getAddress());
+        dto.setEmail(currentUser.getEmail());
+        dto.setProfile(currentUser.getProfile());
+
+        model.addAttribute("user", dto);
+
         return "user/user-edit";
     }
 
+    // 유저정보 수정
     @PostMapping("/profile/update")
     public String updateUserProfile(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
@@ -134,7 +142,6 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             log.error("유효성 검사 오류: {}", bindingResult.getAllErrors());
-            // 오류가 있으면 다시 폼 페이지로 돌아가 오류 메시지를 표시
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
             redirectAttributes.addFlashAttribute("user", userUpdateDto);
             return "redirect:/user/profile/edit";
@@ -144,7 +151,11 @@ public class UserController {
 
         try {
             userService.updateUserProfile(userId, userUpdateDto);
-            redirectAttributes.addFlashAttribute("message", "프로필이 성공적으로 업데이트되었습니다.");
+            User updatedUser = userService.findUserByEmail(principalDetails.getUser().getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
+            principalDetails.setUser(updatedUser);
+
+            redirectAttributes.addFlashAttribute("success", "회원 정보가 수정되었습니다.");
         } catch (UserNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/user/profile/edit";
@@ -160,26 +171,26 @@ public class UserController {
         return "redirect:/user/profile";
     }
 
-    @GetMapping("/reset-password")
-    public String resetPasswordForm(Model model) {
-        model.addAttribute("passwordResetDto", new UserPasswordResetDto());
-        return "user/reset-password";
+    // 비밀번호 변경 페이지 이동
+    @GetMapping("/change-password")
+    public String changePasswordForm(Model model) {
+        model.addAttribute("passwordChangeDto", new UserPasswordChangeDto());
+        return "user/change-password";
     }
 
-    @PostMapping("/reset-password")
-    public String resetPasswordProcess(
+    // 비밀번호 변경
+    @PostMapping("/change-password")
+    public String changePasswordProcess(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            @Validated @ModelAttribute("passwordResetDto") UserPasswordResetDto dto,
+            @Validated @ModelAttribute("passwordChangeDto") UserPasswordChangeDto dto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
 
-        // 로그인 체크
         if (principalDetails == null) {
             redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
             return "redirect:/login";
         }
 
-        // 폼 유효성 검사
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.passwordResetDto",
@@ -188,7 +199,6 @@ public class UserController {
             return "redirect:/user/reset-password";
         }
 
-        // 1) 기존 비밀번호 일치 확인
         if (!passwordEncoder.matches(dto.getCurrentPassword(), principalDetails.getPassword())) {
             bindingResult.rejectValue("currentPassword", "wrongPassword", "현재 비밀번호가 올바르지 않습니다.");
             redirectAttributes.addFlashAttribute(
@@ -198,7 +208,6 @@ public class UserController {
             return "redirect:/user/reset-password";
         }
 
-        // 2) 새 비밀번호로 업데이트
         try {
             userService.changePassword(principalDetails.getUser().getId(), dto.getNewPassword());
             redirectAttributes.addFlashAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
@@ -210,13 +219,14 @@ public class UserController {
         return "redirect:/user/profile";
     }
 
+    // 회원 탈퇴 페이지 이동
     @GetMapping("/resign")
     public String resignForm(Model model) {
         model.addAttribute("userResignDto", new UserResignDto());
         return "user/resign";
     }
 
-    // 2) POST: 탈퇴 처리
+    // 회원 탈퇴
     @PostMapping("/resign")
     public String resignProcess(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
@@ -235,7 +245,6 @@ public class UserController {
         }
 
         try {
-            // Service에서 비밀번호 확인 및 type 변경
             userService.resignUser(
                     principalDetails.getUser().getId(),
                     dto.getCurrentPassword()
@@ -252,69 +261,12 @@ public class UserController {
         }
     }
 
-    @GetMapping("/password-request")
-    public String showRequestForm(Model model) {
-        model.addAttribute("requestDto", new UserPasswordRequestDto());
-        return "user/password-request";
-    }
-
-    // 2) 요청 처리
-    @PostMapping("/password-request")
-    public String handleRequest(
-            @Valid @ModelAttribute("requestDto") UserPasswordRequestDto dto,
-            BindingResult br,
-            RedirectAttributes ra) {
-
-        if (br.hasErrors()) return "user/password-request";
-
-        userService.findUserByEmail(dto.getEmail())
-                .ifPresentOrElse(user -> {
-                    if (user.getType() == '2') {
-                        userService.resendSignUpVerification(dto.getEmail());
-                        ra.addFlashAttribute("message", "가입 인증 메일을 재발송했습니다.");
-                    } else if (user.getType() == '1') {
-                        userService.resendPasswordResetLink(dto.getEmail());
-                        ra.addFlashAttribute("message", "비밀번호 재설정 메일을 발송했습니다.");
-                    } else {
-                        ra.addFlashAttribute("message", "현재 상태에서 요청을 처리할 수 없습니다.");
-                    }
-                }, () -> {
-                    ra.addFlashAttribute("message", "등록되지 않은 이메일입니다.");
-                });
-
-        return "redirect:/user/password-request-complete";
-    }
-
-    @GetMapping("/password-request-complete")
-    public String showRequestComplete() {
-        return "user/password-request-complete";
-    }
-
-    // 3) 비밀번호 재설정 폼
-    @GetMapping("/password-reset")
-    public String showResetForm(
-            @RequestParam String email,
-            @RequestParam String token,
-            Model model,
-            RedirectAttributes ra) {
-
-        if (!userService.isPasswordResetTokenValid(email, token)) {
-            ra.addFlashAttribute("message", "유효하지 않거나 만료된 링크입니다.");
-            return "redirect:/user/password-request";
-        }
-
-        model.addAttribute("email", email);
-        model.addAttribute("token", token);
-        model.addAttribute("resetDto", new UserPasswordResetDto());
-        return "user/password-reset";
-    }
-
-    // 4) 비밀번호 재설정 처리
+    // 4) 비밀번호 재설정
     @PostMapping("/password-reset")
     public String handleReset(
             @RequestParam String email,
             @RequestParam String token,
-            @Valid @ModelAttribute("resetDto") UserPasswordResetDto dto,
+            @Validated @ModelAttribute("resetDto") UserPasswordChangeDto dto,
             BindingResult br,
             RedirectAttributes ra) {
 

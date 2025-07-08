@@ -7,12 +7,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import lombok.Getter;
+import lombok.Setter; // Setter 어노테이션 추가
 
 import com.yesul.user.model.entity.User;
 
 @Getter
+@Setter
 public class PrincipalDetails implements OAuth2User, UserDetails {
-    private final User user;
+    private User user;
     private final Map<String, Object> attributes;
     private final Collection<? extends GrantedAuthority> authorities;
 
