@@ -1,96 +1,103 @@
+<!-- Header start  -->
+<div th:fragment="header">
 <header class="gi-header">
   <!-- Header Top Start -->
-  <div class="header-top">
-    <div class="container">
-      <div class="row align-itegi-center">
-        <!-- Header Top social Start -->
-        <div class="col text-left header-top-left d-lg-block">
-          <div class="header-top-social">
-            <ul class="mb-0">
-              <li class="list-inline-item">
-                <a href="javascript:void(0)"><i class="fi fi-rr-phone-call"></i></a>+91 987 654 3210
-              </li>
-              <li class="list-inline-item">
-                <a href="javascript:void(0)"><i class="fi fi-brands-whatsapp"></i></a>+91 987 654
-                3210
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- Header Top social End -->
-        <!-- Header Top Message Start -->
-        <div class="col text-center header-top-center">
-          <div class="header-top-message">
-            World's Fastest Online Shopping Destination
-          </div>
-        </div>
-        <!-- Header Top Message End -->
-        <!-- Header Top Language Currency -->
-        <div class="col header-top-right d-none d-lg-block">
-          <div class="header-top-right-inner d-flex justify-content-end">
-            <a class="gi-help" href="faq.html">Help?</a>
-            <a class="gi-help" href="track-order.html">Track Order?</a>
-            <!-- Language Start -->
-            <div class="header-top-lan-curr header-top-lan dropdown">
-              <button class="dropdown-toggle" data-bs-toggle="dropdown">English
-                <i class="fi-rr-angle-small-down" aria-hidden="true"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li class="active"><a class="dropdown-item" href="#">English</a></li>
-                <li><a class="dropdown-item" href="#">Italiano</a></li>
-              </ul>
-            </div>
-            <!-- Language End -->
-            <!-- Currency Start -->
-            <div class="header-top-lan-curr header-top-curr dropdown">
-              <button class="dropdown-toggle" data-bs-toggle="dropdown">Dollar
-                <i class="fi-rr-angle-small-down" aria-hidden="true"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
-                <li><a class="dropdown-item" href="#">EUR €</a></li>
-              </ul>
-            </div>
-            <!-- Currency End -->
-          </div>
-        </div>
-        <!-- Header Top Language Currency -->
-        <!-- Header Top responsive Action -->
-        <div class="col header-top-res d-lg-none">
-          <div class="gi-header-buttons">
-            <div class="right-icons">
-              <!-- Header User Start -->
-              <a href="login.html" class="gi-header-btn gi-header-user">
-                <div class="header-icon"><i class="fi-rr-user"></i></div>
-              </a>
-              <!-- Header User End -->
-              <!-- Header Wishlist Start -->
-              <a href="wishlist.html" class="gi-header-btn gi-wish-toggle">
-                <div class="header-icon"><i class="fi-rr-heart"></i></div>
-                <span class="gi-header-count gi-wishlist-count">3</span>
-              </a>
-              <!-- Header Wishlist End -->
-              <!-- Header Cart Start -->
-              <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle">
-                <div class="header-icon"><i class="fi-rr-shopping-bag"></i>
-                  <span class="main-label-note-new"></span>
-                </div>
-                <span class="gi-header-count gi-cart-count">3</span>
-              </a>
-              <!-- Header Cart End -->
-              <!-- Header menu Start -->
-              <a href="javascript:void(0)" class="gi-header-btn gi-site-menu-icon d-lg-none">
-                <i class="fi-rr-menu-burger"></i>
-              </a>
-              <!-- Header menu End -->
-            </div>
-          </div>
-        </div>
-        <!-- Header Top responsive Action -->
-      </div>
-    </div>
+<!--  <div class="header-top">-->
+<!--    <div class="container">-->
+<!--      <div class="row align-itegi-center">-->
+<!--        &lt;!&ndash; Header Top social Start &ndash;&gt;-->
+<!--        <div class="col text-left header-top-left d-lg-block">-->
+<!--          <div class="header-top-social">-->
+<!--            <ul class="mb-0">-->
+<!--              <li class="list-inline-item">-->
+<!--                <a href="javascript:void(0)"><i class="fi fi-rr-phone-call"></i></a>+91 987 654 3210-->
+<!--              </li>-->
+<!--              <li class="list-inline-item">-->
+<!--                <a href="javascript:void(0)"><i class="fi fi-brands-whatsapp"></i></a>+91 987 654-->
+<!--                3210-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Header Top social End &ndash;&gt;-->
+<!--        &lt;!&ndash; Header Top Message Start &ndash;&gt;-->
+<!--        <div class="col text-center header-top-center">-->
+<!--          <div class="header-top-message">-->
+<!--            World's Fastest Online Shopping Destination-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Header Top Message End &ndash;&gt;-->
+<!--        &lt;!&ndash; Header Top Language Currency &ndash;&gt;-->
+<!--        <div class="col header-top-right d-none d-lg-block">-->
+<!--          <div class="header-top-right-inner d-flex justify-content-end">-->
+<!--            <a class="gi-help" href="faq.html">Help?</a>-->
+<!--            <a class="gi-help" href="track-order.html">Track Order?</a>-->
+<!--            &lt;!&ndash; Language Start &ndash;&gt;-->
+<!--            <div class="header-top-lan-curr header-top-lan dropdown">-->
+<!--              <button class="dropdown-toggle" data-bs-toggle="dropdown">English-->
+<!--                <i class="fi-rr-angle-small-down" aria-hidden="true"></i>-->
+<!--              </button>-->
+<!--              <ul class="dropdown-menu">-->
+<!--                <li class="active"><a class="dropdown-item" href="#">English</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">Italiano</a></li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Language End &ndash;&gt;-->
+<!--            &lt;!&ndash; Currency Start &ndash;&gt;-->
+<!--            <div class="header-top-lan-curr header-top-curr dropdown">-->
+<!--              <button class="dropdown-toggle" data-bs-toggle="dropdown">Dollar-->
+<!--                <i class="fi-rr-angle-small-down" aria-hidden="true"></i>-->
+<!--              </button>-->
+<!--              <ul class="dropdown-menu">-->
+<!--                <li class="active"><a class="dropdown-item" href="#">USD $</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">EUR €</a></li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Currency End &ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Header Top Language Currency &ndash;&gt;-->
+<!--        &lt;!&ndash; Header Top responsive Action &ndash;&gt;-->
+<!--        <div class="col header-top-res d-lg-none">-->
+<!--          <div class="gi-header-buttons">-->
+<!--            <div class="right-icons">-->
+<!--              &lt;!&ndash; Header User Start &ndash;&gt;-->
+<!--              <a href="login.html" class="gi-header-btn gi-header-user">-->
+<!--                <div class="header-icon"><i class="fi-rr-user"></i></div>-->
+<!--              </a>-->
+<!--              &lt;!&ndash; Header User End &ndash;&gt;-->
+<!--              &lt;!&ndash; Header Wishlist Start &ndash;&gt;-->
+<!--              <a href="wishlist.html" class="gi-header-btn gi-wish-toggle">-->
+<!--                <div class="header-icon"><i class="fi-rr-heart"></i></div>-->
+<!--                <span class="gi-header-count gi-wishlist-count">3</span>-->
+<!--              </a>-->
+<!--              &lt;!&ndash; Header Wishlist End &ndash;&gt;-->
+<!--              &lt;!&ndash; Header Cart Start &ndash;&gt;-->
+<!--              <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle">-->
+<!--                <div class="header-icon"><i class="fi-rr-shopping-bag"></i>-->
+<!--                  <span class="main-label-note-new"></span>-->
+<!--                </div>-->
+<!--                <span class="gi-header-count gi-cart-count">3</span>-->
+<!--              </a>-->
+<!--              &lt;!&ndash; Header Cart End &ndash;&gt;-->
+<!--              &lt;!&ndash; Header menu Start &ndash;&gt;-->
+<!--              <a href="javascript:void(0)" class="gi-header-btn gi-site-menu-icon d-lg-none">-->
+<!--                <i class="fi-rr-menu-burger"></i>-->
+<!--              </a>-->
+<!--              &lt;!&ndash; Header menu End &ndash;&gt;-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Header Top responsive Action &ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  &lt;!&ndash; Header Top  End &ndash;&gt;-->
+
+  <!-- Loader -->
+  <div id="gi-overlay">
+    <div class="loader"></div>
   </div>
-  <!-- Header Top  End -->
 
   <!-- Header Bottom  Start -->
   <div class="gi-header-bottom d-lg-block">
@@ -100,7 +107,7 @@
           <!-- Header Logo Start -->
           <div class="align-self-center gi-header-logo">
             <div class="header-logo">
-              <a href="index.html"><img src="/assets/img/logo/main_logo_2.png" alt="Site Logo"></a>
+              <a href="/"><img src="assets/img/yesul/logo/main-logo-191x52.png" alt="Site Logo"></a>
             </div>
           </div>
           <!-- Header Logo End -->
@@ -108,7 +115,7 @@
           <div class="align-self-center gi-header-search">
             <div class="header-search">
               <form class="gi-search-group-form" action="#">
-                <input class="form-control gi-search-bar" placeholder="Search Products..."
+                <input class="form-control gi-search-bar" placeholder="전통주 검색하기"
                        type="text">
                 <button class="search_submit" type="submit"><i class="fi-rr-search"></i></button>
               </form>
@@ -127,14 +134,14 @@
                     <i class="fi-rr-user"></i>
                   </div>
                   <div class="gi-btn-desc">
-                    <span class="gi-btn-title">Account</span>
+                    <span class="gi-btn-title">계정</span>
                     <span class="gi-btn-stitle">Login</span>
                   </div>
                 </a>
                 <ul class="gi-dropdown-menu">
-                  <li><a class="dropdown-item" href="/user/regist">Register</a></li>
-                  <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
-                  <li><a class="dropdown-item" href="/login">Login</a></li>
+                  <li><a class="dropdown-item" href="/user/regist">회원가입</a></li>
+                  <li><a class="dropdown-item" href="checkout.html">로그아웃</a></li>
+                  <li><a class="dropdown-item" href="/login">로그인</a></li>
                 </ul>
               </div>
               <!-- Header User End -->
@@ -144,20 +151,20 @@
                   <i class="fi-rr-heart"></i>
                 </div>
                 <div class="gi-btn-desc">
-                  <span class="gi-btn-title">Wishlist</span>
-                  <span class="gi-btn-stitle"><b class="gi-wishlist-count">3</b>-items</span>
+                  <span class="gi-btn-title">관심목록</span>
+                  <span class="gi-btn-stitle"><b class="gi-wishlist-count">0</b>-items</span>
                 </div>
               </a>
               <!-- Header wishlist End -->
               <!-- Header Cart Start -->
               <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="Cart">
                 <div class="header-icon">
-                  <i class="fi-rr-shopping-bag"></i>
+                  <i class="fi-rr-comments-question"></i>
                   <span class="main-label-note-new"></span>
                 </div>
                 <div class="gi-btn-desc">
-                  <span class="gi-btn-title">Cart</span>
-                  <span class="gi-btn-stitle"><b class="gi-cart-count">3</b>-items</span>
+                  <span class="gi-btn-title">문의</span>
+                  <span class="gi-btn-stitle"><b class="gi-cart-count">0</b>-messages</span>
                 </div>
               </a>
               <!-- Header Cart End -->
@@ -173,151 +180,6 @@
   <div class="gi-header-cat d-none d-lg-block">
     <div class="container position-relative">
       <div class="gi-nav-bar">
-        <!-- Category Toggle -->
-        <div class="gi-category-icon-block">
-          <div class="gi-category-menu">
-            <div class="gi-category-toggle">
-              <i class="fi fi-rr-apps"></i>
-              <span class="text">All Categories</span>
-              <i class="fi-rr-angle-small-down d-1199 gi-angle" aria-hidden="true"></i>
-            </div>
-          </div>
-          <div class="gi-cat-dropdown">
-            <div class="gi-cat-block">
-              <div class="gi-cat-tab">
-                <div class="gi-tab-list nav flex-column nav-pills me-3" id="v-pills-tab"
-                     role="tablist" aria-orientation="vertical">
-                  <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
-                          data-bs-target="#v-pills-home" type="button" role="tab"
-                          aria-controls="v-pills-home" aria-selected="true"><i
-                    class="fi-rr-cupcake"></i>Dairy & Bakery</button>
-                  <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
-                          data-bs-target="#v-pills-profile" type="button" role="tab"
-                          aria-controls="v-pills-profile" aria-selected="false"><i
-                    class="fi fi-rs-apple-whole"></i>Fruits & Vegetable</button>
-                  <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
-                          data-bs-target="#v-pills-messages" type="button" role="tab"
-                          aria-controls="v-pills-messages" aria-selected="false"><i
-                    class="fi fi-rr-popcorn"></i>Snack & Spice</button>
-                  <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
-                          data-bs-target="#v-pills-settings" type="button" role="tab"
-                          aria-controls="v-pills-settings" aria-selected="false"><i
-                    class="fi fi-rr-drink-alt"></i>Juice & Drinks </button>
-                </div>
-                <div class="tab-content" id="v-pills-tabContent">
-                  <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                       aria-labelledby="v-pills-home-tab">
-                    <div class="tab-list row">
-                      <div class="col">
-                        <h6 class="gi-col-title">Dairy</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Milk</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Ice cream</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Cheese</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Frozen custard</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Frozen yogurt</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col">
-                        <h6 class="gi-col-title">Bakery</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Cake and Pastry</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Rusk Toast</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Bread & Buns</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Chocolate Brownie</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Cream Roll</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                       aria-labelledby="v-pills-profile-tab">
-                    <div class="tab-list row">
-                      <div class="col">
-                        <h6 class="gi-col-title">Fruits</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Cauliflower</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Bell Peppers</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Broccoli</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Cabbage</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Tomato</a></li>
-                        </ul>
-                      </div>
-                      <div class="col">
-                        <h6 class="gi-col-title">Vegetable</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Cauliflower</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Bell Peppers</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Broccoli</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Cabbage</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Tomato</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                       aria-labelledby="v-pills-messages-tab">
-                    <div class="tab-list row">
-                      <div class="col">
-                        <h6 class="gi-col-title">Snacks</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">French fries</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">potato chips</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Biscuits & Cookies</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Popcorn</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Rice Cakes</a></li>
-                        </ul>
-                      </div>
-                      <div class="col">
-                        <h6 class="gi-col-title">Spice</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Cinnamon Powder</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Cumin Powder</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Fenugreek Powder</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Pepper Powder</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Long Pepper</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
-                       aria-labelledby="v-pills-settings-tab">
-                    <div class="tab-list row">
-                      <div class="col">
-                        <h6 class="gi-col-title">Juice</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Mango Juice</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Coconut Water</a>
-                          </li>
-                          <li><a href="shop-left-sidebar-col-3.html">Tetra Pack</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Apple Juices</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Lychee Juice</a></li>
-                        </ul>
-                      </div>
-                      <div class="col">
-                        <h6 class="gi-col-title">soft drink</h6>
-                        <ul class="cat-list">
-                          <li><a href="shop-left-sidebar-col-3.html">Breizh Cola</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Green Cola</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Jolt Cola</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Mecca Cola</a></li>
-                          <li><a href="shop-left-sidebar-col-3.html">Topsia Cola</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Main Menu Start -->
         <div id="gi-main-menu-desk" class="d-none d-lg-block sticky-nav">
@@ -326,17 +188,10 @@
               <div class="col-md-12 align-self-center">
                 <div class="gi-main-menu">
                   <ul>
-                    <li class="dropdown drop-list">
-                      <a href="javascript:void(0)" class="dropdown-arrow">Home<i
-                        class="fi-rr-angle-small-right"></i></a>
-                      <ul class="sub-menu">
-                        <li><a href="index.html">Grocery</a></li>
-                        <li><a href="demo-2.html">Fashion</a></li>
-                        <li><a href="demo-3.html">Fashion 2</a></li>
-                      </ul>
+                    <li class="non-drop"><a href="shop-banner-left-sidebar-col-3.html">공지사항</a>
                     </li>
                     <li class="dropdown drop-list position-static">
-                      <a href="javascript:void(0)" class="dropdown-arrow">Categories<i
+                      <a href="javascript:void(0)" class="dropdown-arrow">전통주<i
                         class="fi-rr-angle-small-right"></i></a>
                       <ul class="mega-menu d-block">
                         <li class="d-flex">
@@ -386,7 +241,7 @@
                       </ul>
                     </li>
                     <li class="dropdown drop-list">
-                      <a href="javascript:void(0)" class="dropdown-arrow">Products<i
+                      <a href="javascript:void(0)" class="dropdown-arrow">예술 AI<i
                         class="fi-rr-angle-small-right"></i></a>
                       <ul class="sub-menu">
                         <li class="dropdown position-static"><a
@@ -410,17 +265,12 @@
                       </ul>
                     </li>
                     <li class="dropdown drop-list">
-                      <a href="javascript:void(0)" class="dropdown-arrow">Blog<i
+                      <a href="javascript:void(0)" class="dropdown-arrow">커뮤니티<i
                         class="fi-rr-angle-small-right"></i></a>
                       <ul class="sub-menu">
-                        <li><a href="blog-left-sidebar.html">left sidebar</a></li>
-                        <li><a href="blog-right-sidebar.html">right sidebar</a></li>
-                        <li><a href="blog-full-width.html">Full Width</a></li>
-                        <li><a href="blog-detail-left-sidebar.html">Detail left sidebar</a>
-                        </li>
-                        <li><a href="blog-detail-right-sidebar.html">Detail right
-                          sidebar</a></li>
-                        <li><a href="blog-detail-full-width.html">Detail Full Width</a></li>
+                        <li><a href="blog-left-sidebar.html">레시피 게시판</a></li>
+                        <li><a href="blog-right-sidebar.html">정보 게시판</a></li>
+                        <li><a href="blog-full-width.html">자유 게시판</a></li>
                       </ul>
                     </li>
                     <li class="dropdown drop-list">
@@ -436,9 +286,6 @@
                         <li><a href="login.html">Login</a></li>
                       </ul>
                     </li>
-                    <li class="non-drop"><a href="shop-banner-left-sidebar-col-3.html">
-                      <i class="fi-rr-badge-percent"></i>Offers</a>
-                    </li>
                   </ul>
                 </div>
               </div>
@@ -446,48 +293,6 @@
           </div>
         </div>
         <!-- Main Menu End -->
-
-        <div class="gi-location-block">
-          <div class="gi-location-menu">
-            <div class="gi-location-toggle">
-              <i class="fi fi-rr-marker location"></i>
-              <span class="gi-location-title d-1199 gi-location">New York</span>
-              <i class="fi-rr-angle-small-down d-1199 gi-angle" aria-hidden="true"></i>
-            </div>
-            <div class="gi-location-content">
-              <div class="gi-location-dropdown">
-                <div class="row gi-location-wrapper">
-                  <ul class="loc-grid">
-                    <li class="loc-list current">
-                      <i class="fi fi-rr-map-marker-plus"></i>
-                      <span class="gi-detail-current">current Location</span>
-                    </li>
-                    <li class="loc-list">
-                      <i class="fi fi-rr-map-marker-plus"></i>
-                      <span class="gi-detail">Los Angeles</span>
-                    </li>
-                    <li class="loc-list">
-                      <i class="fi fi-rr-map-marker-plus"></i>
-                      <span class="gi-detail">Chicago</span>
-                    </li>
-                    <li class="loc-list">
-                      <i class="fi fi-rr-map-marker-plus"></i>
-                      <span class="gi-detail">Houston</span>
-                    </li>
-                    <li class="loc-list">
-                      <i class="fi fi-rr-map-marker-plus"></i>
-                      <span class="gi-detail">Phoenix</span>
-                    </li>
-                    <li class="loc-list">
-                      <i class="fi fi-rr-map-marker-plus"></i>
-                      <span class="gi-detail">San Diego</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -617,3 +422,83 @@
   </div>
   <!-- Mobile Menu sidebar End -->
 </header>
+<!-- Header End  -->
+
+<!-- Cart sidebar Start -->
+<div class="gi-side-cart-overlay"></div>
+<div id="gi-side-cart" class="gi-side-cart">
+  <div class="gi-cart-inner">
+    <div class="gi-cart-top">
+      <div class="gi-cart-title">
+        <span class="cart_title">문의 채팅</span>
+        <a href="javascript:void(0)" class="gi-cart-close">
+          <i class="fi-rr-cross-small"></i>
+        </a>
+      </div>
+      <ul class="gi-cart-pro-items">
+        <li>
+          <a href="product-left-sidebar.html" class="gi-pro-img"><img
+            src="assets/img/product-images/25_1.jpg" alt="product"></a>
+          <div class="gi-pro-content">
+            <a href="product-left-sidebar.html" class="cart-pro-title">Fresh Lichi</a>
+            <span class="cart-price"><span>$25.00</span> x 1 kg</span>
+            <div class="qty-plus-minus">
+              <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+            </div>
+            <a href="javascript:void(0)" class="remove">×</a>
+          </div>
+        </li>
+        <li>
+          <a href="product-left-sidebar.html" class="gi-pro-img"><img
+            src="assets/img/product-images/17_1.jpg" alt="product"></a>
+          <div class="gi-pro-content">
+            <a href="product-left-sidebar.html" class="cart-pro-title">Ginger - Organic</a>
+            <span class="cart-price"><span>$5.00</span> x 1 250g</span>
+            <div class="qty-plus-minus">
+              <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+            </div>
+            <a href="javascript:void(0)" class="remove">×</a>
+          </div>
+        </li>
+        <li>
+          <a href="product-left-sidebar.html" class="gi-pro-img"><img
+            src="assets/img/product-images/2_1.jpg" alt="product"></a>
+          <div class="gi-pro-content">
+            <a href="product-left-sidebar.html" class="cart-pro-title">Dates Value Pack Pouch</a>
+            <span class="cart-price"><span>$59.00</span> x 1 pack</span>
+            <div class="qty-plus-minus">
+              <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+            </div>
+            <a href="javascript:void(0)" class="remove">×</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="gi-cart-bottom">
+      <div class="cart-sub-total">
+        <table class="table cart-table">
+          <tbody>
+          <tr>
+            <td class="text-left">Sub-Total :</td>
+            <td class="text-right">$300.00</td>
+          </tr>
+          <tr>
+            <td class="text-left">VAT (20%) :</td>
+            <td class="text-right">$60.00</td>
+          </tr>
+          <tr>
+            <td class="text-left">Total :</td>
+            <td class="text-right primary-color">$360.00</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cart_btn">
+        <a href="cart.html" class="gi-btn-1">View Cart</a>
+        <a href="checkout.html" class="gi-btn-2">Checkout</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Cart sidebar End -->
+</div>

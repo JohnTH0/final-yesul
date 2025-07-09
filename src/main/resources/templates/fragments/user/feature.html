@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<body>
 <div th:fragment="feature">
+  <!-- Feature tools -->
   <div class="gi-tools-sidebar-overlay"></div>
   <div class="gi-tools-sidebar">
     <a href="javascript:void(0)" class="gi-tools-sidebar-toggle in-out">
@@ -63,8 +61,17 @@
           </div>
         </div>
       </div>
+      <div class="admin-btn-wrapper">
+        <a th:href="@{/admin/login}" class="gi-btn-3" >관리자 페이지</a>
+      </div>
+      <style>
+        .admin-btn-wrapper {
+          position: fixed;
+          bottom: 30px;      /* 화면 아래에서 20px 위에 위치 */
+          left: 50%;         /* 가로 중앙 기준점 */
+          transform: translateX(-50%); /* 정확한 가운데 정렬 */
+        }
+      </style>
     </div>
   </div>
 </div>
-</body>
-</html>
