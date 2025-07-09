@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.yesul.user.model.entity.User;
-import com.yesul.user.model.dto.UserPasswordResetDto;
+import com.yesul.user.model.dto.UserPasswordResetMailDto;
 import com.yesul.user.service.UserService;
 import com.yesul.user.service.UserAsyncService;
 
@@ -35,7 +35,7 @@ public class UserLoginController {
 
         // 로그인 확인
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/user/profile";
+            return "redirect:/";
         }
         // 로그인 상태가 아닐 시
         return "login/login";
@@ -49,14 +49,14 @@ public class UserLoginController {
     // 비밀번호 초기화 페이지 이동
     @GetMapping("/reset-password")
     public String showRequestForm(Model model) {
-        model.addAttribute("resetDto", new UserPasswordResetDto());
+        model.addAttribute("resetMailDto", new UserPasswordResetMailDto());
         return "login/password-reset-request";
     }
 
     // 비밀번호 초기화
     @PostMapping("/reset-password")
     public String handleRequest(
-            @Validated @ModelAttribute("resetDto") UserPasswordResetDto dto,
+            @Validated @ModelAttribute("resetMailDto") UserPasswordResetMailDto dto,
             BindingResult br,
             RedirectAttributes ra) {
 

@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.yesul.user.service.CustomOAuth2UserService;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 @Configuration
 @EnableMethodSecurity
@@ -82,13 +83,14 @@ public class SecurityConfig {
                         .requestMatchers(
                                 // 로그인 이후 구글 devtool
                                 "/.well-known/appspecific/**",
-                                // User단
+                                // Login
                                 "/user/verify-email",
                                 "/user/regist",
                                 "/user/regist-process",
                                 "/user/user-regist-mail",
                                 "/reset-password",
                                 "/password-reset-complete",
+                                "/user/reset-new-password",
 
                                 "/", "/main", "/user/assets/**", "/community/**", "/error",
                                 "/assets/**",
@@ -112,12 +114,12 @@ public class SecurityConfig {
                             exception.printStackTrace();
                             response.sendRedirect("/login?error");
                         })
-                        .defaultSuccessUrl("/user/profile")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/user/profile")
+                        .defaultSuccessUrl("/", true)
                         .failureHandler((request, response, exception) -> {
                             exception.printStackTrace();
                             response.sendRedirect("/login?error");

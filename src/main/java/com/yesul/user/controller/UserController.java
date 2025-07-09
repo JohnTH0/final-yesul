@@ -42,17 +42,28 @@ public class UserController {
     @PostMapping("/regist-process")
     public String registProcess(
             @Validated @ModelAttribute("userRegisterDto") UserRegisterDto dto,
-            RedirectAttributes attr) {
-        asyncRegService.registerInBackground(dto);
-        attr.addFlashAttribute("message", "회원가입 요청을 접수했습니다. 잠시 후 이메일을 확인해주세요.");
-        return "redirect:/user/user-regist-mail";
-    }
+            RedirectAttributes attr,
+            Model model) {
+        // 회원가입 진행
+        User user = userService.registerUser(dto);
+        // 이메일 발송 비동기처리
+        asyncRegService.sendVerificationEmailAsync(user);
 
+        String email = user.getEmail();
+        String domain = email.substring(email.indexOf('@') + 1);
+        model.addAttribute("mailDomainUrl", "https://" + domain);
+        attr.addFlashAttribute("message", "회원가입 요청을 접수했습니다. 잠시 후 이메일을 확인해주세요.");
+//        return "redirect:/user/user-regist-mail";
+        return "user/user-regist-mail";
+    }
+/*
     // 회원가입 후 메일 인증 페이지이동
     @GetMapping("/user-regist-mail")
     public String userRegistMail() {
         return "user/user-regist-mail";
     }
+
+*/
 
     // 이메일 인증
     @GetMapping("/verify-email")
@@ -196,7 +207,7 @@ public class UserController {
                     "org.springframework.validation.BindingResult.passwordResetDto",
                     bindingResult);
             redirectAttributes.addFlashAttribute("passwordResetDto", dto);
-            return "redirect:/user/reset-password";
+            return "redirect:/user/change-password";
         }
 
         if (!passwordEncoder.matches(dto.getCurrentPassword(), principalDetails.getPassword())) {
@@ -205,7 +216,7 @@ public class UserController {
                     "org.springframework.validation.BindingResult.passwordResetDto",
                     bindingResult);
             redirectAttributes.addFlashAttribute("passwordResetDto", dto);
-            return "redirect:/user/reset-password";
+            return "redirect:/user/change-password";
         }
 
         try {
@@ -249,10 +260,8 @@ public class UserController {
                     principalDetails.getUser().getId(),
                     dto.getCurrentPassword()
             );
-            // 정상 탈퇴하면 Spring Security 로그아웃 경로로 리다이렉트
             return "redirect:/logout";
         } catch (IllegalArgumentException e) {
-            // 비밀번호 불일치 등
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/user/resign";
         } catch (Exception e) {
@@ -261,12 +270,26 @@ public class UserController {
         }
     }
 
-    // 4) 비밀번호 재설정
-    @PostMapping("/password-reset")
+    // 패스워드 신규 설정 페이지로 이동
+    @GetMapping("/reset-new-password")
+    public String resetNewPasswordForm(
+            @RequestParam("email") String email,
+            @RequestParam("token") String token,
+            Model model) {
+
+        model.addAttribute("email", email);
+        model.addAttribute("token", token);
+        model.addAttribute("userPasswordResetDto", new UserPasswordResetDto());
+        return "user/reset-password";
+    }
+
+
+    // 패스워드 변경 Post
+    @PostMapping("/reset-new-password")
     public String handleReset(
             @RequestParam String email,
             @RequestParam String token,
-            @Validated @ModelAttribute("resetDto") UserPasswordChangeDto dto,
+            @Validated @ModelAttribute("userPasswordResetDto") UserPasswordResetDto dto,
             BindingResult br,
             RedirectAttributes ra) {
 

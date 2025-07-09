@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<!-- 1) 공통 head -->
 <head th:replace="~{layout/user-default :: head('내 정보')}"></head>
 
 <body>
-<!-- 2) 공통 header -->
 <div th:replace="~{layout/user-default :: header}"></div>
 
 <div class="gi-breadcrumb m-b-40">
@@ -36,8 +34,9 @@
           <div class="gi-vendor-block-items">
             <ul>
               <li><a th:href="@{/user/profile}">내정보</a></li>
+              <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
+              <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
               <li><a th:href="@{/user/history}">좋아요 한 글 보기</a></li>
-              <li><a th:href="@{/user/profile/edit}">내정보 수정 페이지</a></li>
             </ul>
           </div>
         </div>
@@ -94,9 +93,17 @@
                     <li>
                       <strong>소셜 연동상태 : </strong>
                       <div th:if="${user != null}" th:switch="${user.type}">
+                        <!-- type = '1' -->
                         <span th:case="'1'">미연동</span>
-                        <span th:case="'2'" th:if="${user.provider == 'kakao'}">카카오연동</span>
-                        <span th:case="'2'" th:if="${user.provider == 'naver'}">네이버연동</span>
+
+                        <!-- type = '2' -->
+                        <div th:case="'2'">
+                          <span th:if="${user.provider eq 'kakao'}">카카오연동</span>
+                          <span th:if="${user.provider eq 'naver'}">네이버연동</span>
+                          <span th:if="${user.provider != 'kakao' and user.provider != 'naver'}">
+                            알 수 없는 소셜 연동 (provider: <span th:text="${user.provider}">?</span>)
+                          </span>
+                        </div>
                         <span th:case="*">알 수 없는 상태</span>
                       </div>
                     </li>

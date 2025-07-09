@@ -58,13 +58,27 @@
   width: 100%;
 }
 
-.address-group .address-btn {
-  white-space: nowrap;      /* 줄바꿈 금지 */
-  flex-shrink: 0;           /* 버튼 크기 고정 */
+.address-group {
   display: flex;
-  align-items: center;
-  padding: 0 1rem;          /* 필요에 따라 패딩 조절 */
+  gap: 0.5rem;             /* 요소 간 간격 */
+  align-items: center;     /* 수직 중앙 정렬 */
 }
+
+.address-group input {
+  flex: 1 1 auto;          /* 남은 공간을 차지하되, 줄어들 수 있도록 */
+  min-width: 0;            /* flex 아이템이 줄어들 때 overflow 방지 */
+  height: 3rem;            /* 기존에 맞춘 높이 */
+  padding: 0 0.75rem;
+}
+
+.address-group .address-btn {
+  flex: 0 0 auto;          /* 크기 고정 */
+  white-space: nowrap;
+  height: 3rem;            /* 입력창과 동일한 높이 */
+  line-height: 3rem;
+  padding: 0 1rem;
+}
+
 .address-group .form-control {
   /* flex-grow: 1; 이미 주어졌으면 input이 남은 공간 채움 */
 }

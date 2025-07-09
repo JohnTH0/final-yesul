@@ -87,29 +87,5 @@ $(document).ready(function() {
 
     this.submit();
 
-    // AJAX 요청
-    // $.ajax({
-    //   url: '/user/regist-process', // UserController의 경로
-    //   type: 'POST',
-    //   contentType: 'application/json',
-    //   data: JSON.stringify({
-    //     name: name,
-    //     email: email,
-    //     password: password,
-    //     confirmPwd: confirmPwd,
-    //     nickname: nickname,
-    //     birthday: birthday,
-    //     address: address
-    //   }),
-    //   success: function(response) {
-    //     var res = JSON.parse(response);
-    //     modalMessage.text(res.message);
-    //     modal.css('display', 'flex');
-    //   },
-    //   error: function(xhr) {
-    //     var errorData = JSON.parse(xhr.responseText);
-    //     alert('회원가입 실패: ' + errorData.message);
-    //   }
-    // });
   });
 });
