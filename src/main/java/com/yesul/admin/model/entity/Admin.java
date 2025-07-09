@@ -26,4 +26,7 @@ public class Admin extends BaseTimeEntity {
     @Column(name = "login_pwd", length = 60, nullable = false)
     private String loginPwd;
 
+    @Column(name = "otp_secret_key", length = 60)
+    private String otpSecretKey;
+
 }

@@ -1,5 +1,6 @@
 package com.yesul.config;
 
+import com.yesul.login.handler.AdminLoginSuccessHandler;
 import com.yesul.user.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -24,15 +25,17 @@ public class SecurityConfig {
     private final UserDetailsService adminUserDetailsService;
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomOAuth2UserService oAuth2MemberService;
+    private final AdminLoginSuccessHandler adminLoginSuccessHandler;
 
     // @RequiredArgsConstructor 제거, @Qualifier로 직접 명시, Ambiguty 처리
     public SecurityConfig(
             @Qualifier("userDetailsServiceImpl") UserDetailsService adminUserDetailsService,
             CustomUserDetailsService customUserDetailsService,
-            CustomOAuth2UserService oAuth2MemberService) {
+            CustomOAuth2UserService oAuth2MemberService, AdminLoginSuccessHandler adminLoginSuccessHandler) {
         this.adminUserDetailsService = adminUserDetailsService;
         this.customUserDetailsService = customUserDetailsService;
         this.oAuth2MemberService = oAuth2MemberService;
+        this.adminLoginSuccessHandler = adminLoginSuccessHandler;
     }
 
     @Bean
@@ -45,13 +48,14 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/admin/login", "/asserts/**"
                         ).permitAll()
+                        .requestMatchers("/admin/otp","/admin/otp/verify").hasAuthority("ADMIN_PENDING_OTP")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/admin/login")
                         .loginProcessingUrl("/admin/login")
-                        .defaultSuccessUrl("/admin/dashboard", true)
+                        .successHandler(adminLoginSuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             exception.printStackTrace();
                             response.sendRedirect("/admin/login?error");

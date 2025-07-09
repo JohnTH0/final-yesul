@@ -71,7 +71,9 @@ dependencies {
 	// NCP 오브젝트 스토리지용 SDK
 	implementation 'software.amazon.awssdk:s3:2.25.23'
 
-
+	// 구글 T-OTP
+	implementation 'com.warrenstrange:googleauth:1.5.0'
+	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 }
 
 tasks.named('test') {

@@ -42,7 +42,7 @@
               <div class="main-info">
                 <div class="hero-container">
                   <!-- Login form -->
-                  <form class="login-form" th:action="@{/admin/login}" method="post"> <!-- 해당 요청은 Spring Security 필터에서 처리-->
+                  <form class="login-form" th:action="@{/admin/login}" method="post">
                     <div class="imgcontainer">
                       <a th:href="@{/admin/dashboard}"><img th:src="@{/asserts/img/logo/full-logo-2.png}" alt="logo" class="logo"></a>
                     </div>
@@ -57,7 +57,7 @@
                         <span class="checkmark"></span>
                       </label>
                       <span class="psw">
-                        <a th:href="@{/forgot}" class="forgot-btn">Forgot password?</a>
+                        <a th:href="@{/forgot}" class="forgot-btn">비밀번호를 잊으셨나요?</a>
                       </span>
                       <div class="login-btns">
                         <button type="submit">Login</button>
@@ -68,6 +68,7 @@
               </div>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </section>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>YeSul - Admin Page</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .swal2-container {
+            background: url('/asserts/img/bg/3.jpg') no-repeat center center !important;
+            background-size: cover !important;
+        }
+    </style>
+</head>
+<body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Swal.fire({
+            title: 'OTP 인증',
+            text: '구글 OTP 앱에 표시된 6자리 코드를 입력하세요',
+            input: 'text',
+            inputPlaceholder: '6자리 숫자',
+            inputAttributes: {
+                maxlength: 6,
+                autocapitalize: 'off',
+                autocorrect: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: '인증하기',
+            cancelButtonText: '취소',
+            preConfirm: (otpCode) => {
+                if (!otpCode || otpCode.length !== 6) {
+                    Swal.showValidationMessage('6자리 코드를 입력하세요');
+                } else {
+                    return otpCode;
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/admin/otp/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        otpCode: result.value
+                    })
+                }).then(res => res.text())
+                    .then(res => {
+                        if (res.includes("실패")) {
+                            Swal.fire('실패', 'OTP 인증에 실패했습니다.', 'error').then(() => {
+                                window.location.reload(); // 다시 시도
+                            });
+                        } else {
+                            window.location.href = '/admin/dashboard'; // 인증 성공 시 이동
+                        }
+                    });
+            } else {
+                // 사용자가 취소 누름
+                window.location.href = '/admin/login?otp=cancelled';
+            }
+        });
+    });
+</script>
+</body>
+</html>
