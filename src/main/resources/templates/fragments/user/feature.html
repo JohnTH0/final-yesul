@@ -13,37 +13,27 @@
       <div class="gi-tools-block">
         <h3>Select Color</h3>
         <ul class="gi-color">
-          <li class="color-primary active-variant">
-          </li>
-          <li class="color-1">
-          </li>
-          <li class="color-2">
-          </li>
-          <li class="color-3">
-          </li>
-          <li class="color-4">
-          </li>
-          <li class="color-5">
-          </li>
-          <li class="color-6">
-          </li>
-          <li class="color-7">
-          </li>
-          <li class="color-8">
-          </li>
-          <li class="color-9">
-          </li>
+          <li class="color-primary active-variant"></li>
+          <li class="color-1"></li>
+          <li class="color-2"></li>
+          <li class="color-3"></li>
+          <li class="color-4"></li>
+          <li class="color-5"></li>
+          <li class="color-6"></li>
+          <li class="color-7"></li>
+          <li class="color-8"></li>
+          <li class="color-9"></li>
         </ul>
       </div>
       <div class="gi-tools-block">
         <h3>Modes</h3>
         <div class="gi-tools-rtl">
           <div class="mode-primary gi-tools-item rtl-mode mode active-mode ltr" data-gi-mode-tool="ltr">
-            <img src="/assets/img/tools/ltr.png" alt="ltr">
+            <img th:src="@{/assets/img/tools/ltr.png}" alt="ltr" />
             <p>LTR</p>
           </div>
           <div class="gi-tools-item rtl-mode mode rtl" data-gi-mode-tool="rtl">
-            <img src="/assets/img/tools/rtl.png" alt="rtl">
+            <img th:src="@{/assets/img/tools/rtl.png}" alt="rtl" />
             <p>RTL</p>
           </div>
         </div>
@@ -52,22 +42,22 @@
         <h3>Dark Modes</h3>
         <div class="gi-tools-dark">
           <div class="mode-primary gi-tools-item mode-dark active-mode light" data-gi-mode-dark="light">
-            <img src="/assets/img/tools/light.png" alt="light">
+            <img th:src="@{/assets/img/tools/light.png}" alt="light" />
             <p>Light</p>
           </div>
           <div class="gi-tools-item mode-dark dark" data-gi-mode-dark="dark">
-            <img src="/assets/img/tools/dark.png" alt="dark">
+            <img th:src="@{/assets/img/tools/dark.png}" alt="dark" />
             <p>Dark</p>
           </div>
         </div>
       </div>
       <div class="admin-btn-wrapper">
-        <a th:href="@{/admin/login}" class="gi-btn-3" >관리자 페이지</a>
+        <a th:href="@{/admin/login}" class="gi-btn-3">관리자 페이지</a>
       </div>
       <style>
         .admin-btn-wrapper {
           position: fixed;
-          bottom: 30px;      /* 화면 아래에서 20px 위에 위치 */
+          bottom: 30px;      /* 화면 아래에서 30px 위에 위치 */
           left: 50%;         /* 가로 중앙 기준점 */
           transform: translateX(-50%); /* 정확한 가운데 정렬 */
         }

@@ -1,422 +1,308 @@
 <!-- Header start  -->
 <div th:fragment="header">
-<header class="gi-header">
-  <!-- Header Top Start -->
-<!--  <div class="header-top">-->
-<!--    <div class="container">-->
-<!--      <div class="row align-itegi-center">-->
-<!--        &lt;!&ndash; Header Top social Start &ndash;&gt;-->
-<!--        <div class="col text-left header-top-left d-lg-block">-->
-<!--          <div class="header-top-social">-->
-<!--            <ul class="mb-0">-->
-<!--              <li class="list-inline-item">-->
-<!--                <a href="javascript:void(0)"><i class="fi fi-rr-phone-call"></i></a>+91 987 654 3210-->
-<!--              </li>-->
-<!--              <li class="list-inline-item">-->
-<!--                <a href="javascript:void(0)"><i class="fi fi-brands-whatsapp"></i></a>+91 987 654-->
-<!--                3210-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; Header Top social End &ndash;&gt;-->
-<!--        &lt;!&ndash; Header Top Message Start &ndash;&gt;-->
-<!--        <div class="col text-center header-top-center">-->
-<!--          <div class="header-top-message">-->
-<!--            World's Fastest Online Shopping Destination-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; Header Top Message End &ndash;&gt;-->
-<!--        &lt;!&ndash; Header Top Language Currency &ndash;&gt;-->
-<!--        <div class="col header-top-right d-none d-lg-block">-->
-<!--          <div class="header-top-right-inner d-flex justify-content-end">-->
-<!--            <a class="gi-help" href="faq.html">Help?</a>-->
-<!--            <a class="gi-help" href="track-order.html">Track Order?</a>-->
-<!--            &lt;!&ndash; Language Start &ndash;&gt;-->
-<!--            <div class="header-top-lan-curr header-top-lan dropdown">-->
-<!--              <button class="dropdown-toggle" data-bs-toggle="dropdown">English-->
-<!--                <i class="fi-rr-angle-small-down" aria-hidden="true"></i>-->
-<!--              </button>-->
-<!--              <ul class="dropdown-menu">-->
-<!--                <li class="active"><a class="dropdown-item" href="#">English</a></li>-->
-<!--                <li><a class="dropdown-item" href="#">Italiano</a></li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; Language End &ndash;&gt;-->
-<!--            &lt;!&ndash; Currency Start &ndash;&gt;-->
-<!--            <div class="header-top-lan-curr header-top-curr dropdown">-->
-<!--              <button class="dropdown-toggle" data-bs-toggle="dropdown">Dollar-->
-<!--                <i class="fi-rr-angle-small-down" aria-hidden="true"></i>-->
-<!--              </button>-->
-<!--              <ul class="dropdown-menu">-->
-<!--                <li class="active"><a class="dropdown-item" href="#">USD $</a></li>-->
-<!--                <li><a class="dropdown-item" href="#">EUR €</a></li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; Currency End &ndash;&gt;-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; Header Top Language Currency &ndash;&gt;-->
-<!--        &lt;!&ndash; Header Top responsive Action &ndash;&gt;-->
-<!--        <div class="col header-top-res d-lg-none">-->
-<!--          <div class="gi-header-buttons">-->
-<!--            <div class="right-icons">-->
-<!--              &lt;!&ndash; Header User Start &ndash;&gt;-->
-<!--              <a href="login.html" class="gi-header-btn gi-header-user">-->
-<!--                <div class="header-icon"><i class="fi-rr-user"></i></div>-->
-<!--              </a>-->
-<!--              &lt;!&ndash; Header User End &ndash;&gt;-->
-<!--              &lt;!&ndash; Header Wishlist Start &ndash;&gt;-->
-<!--              <a href="wishlist.html" class="gi-header-btn gi-wish-toggle">-->
-<!--                <div class="header-icon"><i class="fi-rr-heart"></i></div>-->
-<!--                <span class="gi-header-count gi-wishlist-count">3</span>-->
-<!--              </a>-->
-<!--              &lt;!&ndash; Header Wishlist End &ndash;&gt;-->
-<!--              &lt;!&ndash; Header Cart Start &ndash;&gt;-->
-<!--              <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle">-->
-<!--                <div class="header-icon"><i class="fi-rr-shopping-bag"></i>-->
-<!--                  <span class="main-label-note-new"></span>-->
-<!--                </div>-->
-<!--                <span class="gi-header-count gi-cart-count">3</span>-->
-<!--              </a>-->
-<!--              &lt;!&ndash; Header Cart End &ndash;&gt;-->
-<!--              &lt;!&ndash; Header menu Start &ndash;&gt;-->
-<!--              <a href="javascript:void(0)" class="gi-header-btn gi-site-menu-icon d-lg-none">-->
-<!--                <i class="fi-rr-menu-burger"></i>-->
-<!--              </a>-->
-<!--              &lt;!&ndash; Header menu End &ndash;&gt;-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; Header Top responsive Action &ndash;&gt;-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  &lt;!&ndash; Header Top  End &ndash;&gt;-->
-
-  <!-- Loader -->
-  <div id="gi-overlay">
-    <div class="loader"></div>
-  </div>
-
-  <!-- Header Bottom  Start -->
-  <div class="gi-header-bottom d-lg-block">
-    <div class="container position-relative">
-      <div class="row">
-        <div class="gi-flex">
-          <!-- Header Logo Start -->
-          <div class="align-self-center gi-header-logo">
-            <div class="header-logo">
-              <a href="/"><img src="assets/img/yesul/logo/main-logo-191x52.png" alt="Site Logo"></a>
-            </div>
-          </div>
-          <!-- Header Logo End -->
-          <!-- Header Search Start -->
-          <div class="align-self-center gi-header-search">
-            <div class="header-search">
-              <form class="gi-search-group-form" action="#">
-                <input class="form-control gi-search-bar" placeholder="전통주 검색하기"
-                       type="text">
-                <button class="search_submit" type="submit"><i class="fi-rr-search"></i></button>
-              </form>
-            </div>
-          </div>
-          <!-- Header Search End -->
-          <!-- Header Button Start -->
-          <div class="gi-header-action align-self-center">
-            <div class="gi-header-buttons">
-              <!-- Header User Start -->
-              <div class="gi-acc-drop">
-                <a href="javascript:void(0)"
-                   class="gi-header-btn gi-header-user dropdown-toggle gi-user-toggle"
-                   title="Account">
-                  <div class="header-icon">
-                    <i class="fi-rr-user"></i>
-                  </div>
-                  <div class="gi-btn-desc">
-                    <span class="gi-btn-title">계정</span>
-                    <span class="gi-btn-stitle">Login</span>
-                  </div>
-                </a>
-                <ul class="gi-dropdown-menu">
-                  <li><a class="dropdown-item" href="/user/regist">회원가입</a></li>
-                  <li><a class="dropdown-item" href="checkout.html">로그아웃</a></li>
-                  <li><a class="dropdown-item" href="/login">로그인</a></li>
-                </ul>
-              </div>
-              <!-- Header User End -->
-              <!-- Header wishlist Start -->
-              <a href="wishlist.html" class="gi-header-btn gi-wish-toggle" title="Wishlist">
-                <div class="header-icon">
-                  <i class="fi-rr-heart"></i>
-                </div>
-                <div class="gi-btn-desc">
-                  <span class="gi-btn-title">관심목록</span>
-                  <span class="gi-btn-stitle"><b class="gi-wishlist-count">0</b>-items</span>
-                </div>
-              </a>
-              <!-- Header wishlist End -->
-              <!-- Header Cart Start -->
-              <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="Cart">
-                <div class="header-icon">
-                  <i class="fi-rr-comments-question"></i>
-                  <span class="main-label-note-new"></span>
-                </div>
-                <div class="gi-btn-desc">
-                  <span class="gi-btn-title">문의</span>
-                  <span class="gi-btn-stitle"><b class="gi-cart-count">0</b>-messages</span>
-                </div>
-              </a>
-              <!-- Header Cart End -->
-            </div>
-          </div>
-        </div>
-      </div>
+  <header class="gi-header">
+    <!-- Loader -->
+    <div id="gi-overlay">
+      <div class="loader"></div>
     </div>
-  </div>
-  <!-- Header Button End -->
 
-  <!-- Header menu -->
-  <div class="gi-header-cat d-none d-lg-block">
-    <div class="container position-relative">
-      <div class="gi-nav-bar">
-
-        <!-- Main Menu Start -->
-        <div id="gi-main-menu-desk" class="d-none d-lg-block sticky-nav">
-          <div class="nav-desk">
-            <div class="row">
-              <div class="col-md-12 align-self-center">
-                <div class="gi-main-menu">
-                  <ul>
-                    <li class="non-drop"><a href="shop-banner-left-sidebar-col-3.html">공지사항</a>
-                    </li>
-                    <li class="dropdown drop-list position-static">
-                      <a href="javascript:void(0)" class="dropdown-arrow">전통주<i
-                        class="fi-rr-angle-small-right"></i></a>
-                      <ul class="mega-menu d-block">
-                        <li class="d-flex">
-                          <span class="bg"></span>
-                          <ul class="d-block mega-block">
-                            <li class="menu_title"><a href="javascript:void(0)">Classic</a></li>
-                            <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a>
-                            </li>
-                            <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a>
-                            </li>
-                            <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a>
-                            </li>
-                            <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a>
-                            </li>
-                            <li><a href="shop-full-width.html">Full width 4 column</a>
-                            </li>
-                          </ul>
-                          <ul class="d-block mega-block">
-                            <li class="menu_title"><a href="javascript:void(0)">Banner</a></li>
-                            <li><a href="shop-banner-left-sidebar-col-3.html">left sidebar 3 column</a></li>
-                            <li><a href="shop-banner-left-sidebar-col-4.html">left sidebar 4 column</a></li>
-                            <li><a href="shop-banner-right-sidebar-col-3.html">right sidebar 3 column</a></li>
-                            <li><a href="shop-banner-right-sidebar-col-4.html">right sidebar 4 column</a></li>
-                            <li><a href="shop-banner-full-width.html">Full width 4 column</a>
-                            </li>
-                          </ul>
-                          <ul class="d-block mega-block">
-                            <li class="menu_title"><a href="javascript:void(0)">Columns</a></li>
-                            <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
-                            <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
-                            <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
-                            <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
-                            <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a>
-                            </li>
-                          </ul>
-                          <ul class="d-block mega-block">
-                            <li class="menu_title"><a href="javascript:void(0)">List</a>
-                            </li>
-                            <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
-                            <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
-                            <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a>
-                            </li>
-                            <li><a href="shop-list-banner-right-sidebar.html">Banner right sidebar</a></li>
-                            <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown drop-list">
-                      <a href="javascript:void(0)" class="dropdown-arrow">예술 AI<i
-                        class="fi-rr-angle-small-right"></i></a>
-                      <ul class="sub-menu">
-                        <li class="dropdown position-static"><a
-                          href="javascript:void(0)">Product page
-                          <i class="fi-rr-angle-small-right"></i></a>
-                          <ul class="sub-menu sub-menu-child">
-                            <li><a href="product-left-sidebar.html">Product left sidebar</a></li>
-                            <li><a href="product-right-sidebar.html">Product right sidebar</a></li>
-                          </ul>
-                        </li>
-                        <li class="dropdown position-static"><a href="javascript:void(0)">Product Accordion
-                          <i class="fi-rr-angle-small-right"></i></a>
-                          <ul class="sub-menu sub-menu-child">
-                            <li><a href="product-accordion-left-sidebar.html">left sidebar</a></li>
-                            <li><a href="product-accordion-right-sidebar.html">right sidebar</a></li>
-                          </ul>
-                        </li>
-                        <li><a href="product-full-width.html">Product full width</a></li>
-                        <li><a href="product-accordion-full-width.html">accordion full width</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown drop-list">
-                      <a href="javascript:void(0)" class="dropdown-arrow">커뮤니티<i
-                        class="fi-rr-angle-small-right"></i></a>
-                      <ul class="sub-menu">
-                        <li><a href="blog-left-sidebar.html">레시피 게시판</a></li>
-                        <li><a href="blog-right-sidebar.html">정보 게시판</a></li>
-                        <li><a href="blog-full-width.html">자유 게시판</a></li>
-                      </ul>
-                    </li>
-                    <li class="dropdown drop-list">
-                      <a href="javascript:void(0)" class="dropdown-arrow">Pages<i
-                        class="fi-rr-angle-small-right"></i></a>
-                      <ul class="sub-menu">
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="contact-us.html">Contact Us</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="compare.html">Compare</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="login.html">Login</a></li>
-                      </ul>
-                    </li>
+    <!-- Header Bottom  Start -->
+    <div class="gi-header-bottom d-lg-block">
+      <div class="container position-relative">
+        <div class="row">
+          <div class="gi-flex">
+            <!-- Header Logo Start -->
+            <div class="align-self-center gi-header-logo">
+              <div class="header-logo">
+                <a th:href="@{/}">
+                  <img th:src="@{/assets/img/yesul/logo/main-logo-191x52.png}" alt="Site Logo"/>
+                </a>
+              </div>
+            </div>
+            <!-- Header Logo End -->
+            <!-- Header Search Start -->
+            <div class="align-self-center gi-header-search">
+              <div class="header-search">
+                <form class="gi-search-group-form" action="#">
+                  <input class="form-control gi-search-bar" placeholder="전통주 검색하기"
+                         type="text"/>
+                  <button class="search_submit" type="submit"><i class="fi-rr-search"></i></button>
+                </form>
+              </div>
+            </div>
+            <!-- Header Search End -->
+            <!-- Header Button Start -->
+            <div class="gi-header-action align-self-center">
+              <div class="gi-header-buttons">
+                <!-- Header User Start -->
+                <div class="gi-acc-drop">
+                  <a href="javascript:void(0)"
+                     class="gi-header-btn gi-header-user dropdown-toggle gi-user-toggle"
+                     title="Account">
+                    <div class="header-icon">
+                      <i class="fi-rr-user"></i>
+                    </div>
+                    <div class="gi-btn-desc">
+                      <span class="gi-btn-title">계정</span>
+                      <span class="gi-btn-stitle">Login</span>
+                    </div>
+                  </a>
+                  <ul class="gi-dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/user/regist}">회원가입</a></li>
+                    <li><a class="dropdown-item" th:href="@{/checkout.html}">로그아웃</a></li>
+                    <li><a class="dropdown-item" th:href="@{/login}">로그인</a></li>
                   </ul>
                 </div>
+                <!-- Header User End -->
+                <!-- Header wishlist Start -->
+                <a th:href="@{/wishlist.html}" class="gi-header-btn gi-wish-toggle" title="Wishlist">
+                  <div class="header-icon">
+                    <i class="fi-rr-heart"></i>
+                  </div>
+                  <div class="gi-btn-desc">
+                    <span class="gi-btn-title">관심목록</span>
+                    <span class="gi-btn-stitle"><b class="gi-wishlist-count">0</b>-items</span>
+                  </div>
+                </a>
+                <!-- Header wishlist End -->
+                <!-- Header Cart Start -->
+                <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="Cart">
+                  <div class="header-icon">
+                    <i class="fi-rr-comments-question"></i>
+                    <span class="main-label-note-new"></span>
+                  </div>
+                  <div class="gi-btn-desc">
+                    <span class="gi-btn-title">문의</span>
+                    <span class="gi-btn-stitle"><b class="gi-cart-count">0</b>-messages</span>
+                  </div>
+                </a>
+                <!-- Header Cart End -->
               </div>
             </div>
           </div>
         </div>
-        <!-- Main Menu End -->
-
       </div>
     </div>
-  </div>
-  <!-- Header menu End -->
+    <!-- Header Button End -->
+    <div class="gi-header-cat d-none d-lg-block">
+      <div class="container position-relative">
+        <div class="gi-nav-bar">
 
-  <!-- Mobile Menu sidebar Start -->
-  <div class="gi-mobile-menu-overlay"></div>
-  <div id="gi-mobile-menu" class="gi-mobile-menu">
-    <div class="gi-menu-title">
-      <span class="menu_title">My Menu</span>
-      <button class="gi-close-menu">×</button>
-    </div>
-    <div class="gi-menu-inner">
-      <div class="gi-menu-content">
-        <ul>
-          <li class="dropdown drop-list">
-            <a href="javascript:void(0)" class="dropdown-arrow">Home</a>
-            <ul class="sub-menu">
-              <li><a href="index.html">Grocery</a></li>
-              <li><a href="demo-2.html">Fashion</a></li>
-              <li><a href="demo-3.html">Fashion 2</a></li>
-            </ul>
-          </li>
-          <li><a href="javascript:void(0)">Categories</a>
-            <ul class="sub-menu">
-              <li>
-                <a href="javascript:void(0)">Classic Variation</a>
-                <ul class="sub-menu">
-                  <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a></li>
-                  <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a></li>
-                  <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a></li>
-                  <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a></li>
-                  <li><a href="shop-full-width.html">Full width 4 column</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="javascript:void(0)">Classic Variation</a>
-                <ul class="sub-menu">
-                  <li><a href="shop-banner-left-sidebar-col-3.html">Banner left sidebar 3 column</a></li>
-                  <li><a href="shop-banner-left-sidebar-col-4.html">Banner left sidebar 4 column</a></li>
-                  <li><a href="shop-banner-right-sidebar-col-3.html">Banner right sidebar 3 column</a></li>
-                  <li><a href="shop-banner-right-sidebar-col-4.html">Banner right sidebar 4 column</a></li>
-                  <li><a href="shop-banner-full-width.html">Banner Full width 4 column</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="javascript:void(0)">Columns Variation</a>
-                <ul class="sub-menu">
-                  <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
-                  <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
-                  <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
-                  <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
-                  <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="javascript:void(0)">List Variation</a>
-                <ul class="sub-menu">
-                  <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
-                  <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
-                  <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a></li>
-                  <li><a href="shop-list-banner-right-sidebar.html">Banner right sidebar</a></li>
-                  <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li><a href="javascript:void(0)">Products</a>
-            <ul class="sub-menu">
-              <li>
-                <a href="javascript:void(0)">Product page</a>
-                <ul class="sub-menu">
-                  <li><a href="product-left-sidebar.html">Product left sidebar</a></li>
-                  <li><a href="product-right-sidebar.html">Product right sidebar</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="javascript:void(0)">Product accordion</a>
-                <ul class="sub-menu">
-                  <li><a href="product-accordion-left-sidebar.html">left sidebar</a></li>
-                  <li><a href="product-accordion-right-sidebar.html">right sidebar</a></li>
-                </ul>
-              </li>
-              <li><a href="product-full-width.html">product full width</a></li>
-              <li><a href="product-accordion-full-width.html">accordion full width</a></li>
-            </ul>
-          </li>
-          <li class="dropdown"><a href="javascript:void(0)">Blog</a>
-            <ul class="sub-menu">
-              <li><a href="blog-left-sidebar.html">Blog left sidebar</a></li>
-              <li><a href="blog-right-sidebar.html">Blog right sidebar</a></li>
-              <li><a href="blog-detail-left-sidebar.html">Blog detail left sidebar</a></li>
-              <li><a href="blog-detail-right-sidebar.html">Blog detail right sidebar</a></li>
-              <li><a href="blog-full-width.html">Blog full width</a></li>
-              <li><a href="blog-detail-full-width.html">Blog detail full width</a></li>
-            </ul>
-          </li>
-          <li class="dropdown"><a href="javascript:void(0)">Pages</a>
-            <ul class="sub-menu">
-              <li><a href="about-us.html">About Us</a></li>
-              <li><a href="contact-us.html">Contact Us</a></li>
-              <li><a href="cart.html">Cart</a></li>
-              <li><a href="checkout.html">Checkout</a></li>
-              <li><a href="compare.html">Compare</a></li>
-              <li><a href="faq.html">FAQ</a></li>
-              <li><a href="login.html">Login</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="header-res-lan-curr">
-        <!-- Social Start -->
-        <div class="header-res-social">
-          <div class="header-top-social">
-            <ul class="mb-0">
-              <li class="list-inline-item"><a href="#"><i class="gicon gi-facebook"></i></a></li>
-              <li class="list-inline-item"><a href="#"><i class="gicon gi-twitter"></i></a></li>
-              <li class="list-inline-item"><a href="#"><i class="gicon gi-instagram"></i></a></li>
-              <li class="list-inline-item"><a href="#"><i class="gicon gi-linkedin"></i></a></li>
-            </ul>
+          <!-- Main Menu Start -->
+          <div id="gi-main-menu-desk" class="d-none d-lg-block sticky-nav">
+            <div class="nav-desk">
+              <div class="row">
+                <div class="col-md-12 align-self-center">
+                  <div class="gi-main-menu">
+                    <ul>
+                      <li class="non-drop"><a th:href="@{/shop-banner-left-sidebar-col-3.html}">공지사항</a>
+                      </li>
+                      <li class="dropdown drop-list position-static">
+                        <a href="javascript:void(0)" class="dropdown-arrow">전통주<i
+                          class="fi-rr-angle-small-right"></i></a>
+                        <ul class="mega-menu d-block">
+                          <li class="d-flex">
+                            <span class="bg"></span>
+                            <ul class="d-block mega-block">
+                              <li class="menu_title"><a href="javascript:void(0)">Classic</a></li>
+                              <li><a th:href="@{/shop-left-sidebar-col-3.html}">Left sidebar 3 column</a>
+                              </li>
+                              <li><a th:href="@{/shop-left-sidebar-col-4.html}">Left sidebar 4 column</a>
+                              </li>
+                              <li><a th:href="@{/shop-right-sidebar-col-3.html}">Right sidebar 3 column</a>
+                              </li>
+                              <li><a th:href="@{/shop-right-sidebar-col-4.html}">Right sidebar 4 column</a>
+                              </li>
+                              <li><a th:href="@{/shop-full-width.html}">Full width 4 column</a>
+                              </li>
+                            </ul>
+                            <ul class="d-block mega-block">
+                              <li class="menu_title"><a href="javascript:void(0)">Banner</a></li>
+                              <li><a th:href="@{/shop-banner-left-sidebar-col-3.html}">left sidebar 3 column</a></li>
+                              <li><a th:href="@{/shop-banner-left-sidebar-col-4.html}">left sidebar 4 column</a></li>
+                              <li><a th:href="@{/shop-banner-right-sidebar-col-3.html}">right sidebar 3 column</a></li>
+                              <li><a th:href="@{/shop-banner-right-sidebar-col-4.html}">right sidebar 4 column</a></li>
+                              <li><a th:href="@{/shop-banner-full-width.html}">Full width 4 column</a>
+                              </li>
+                            </ul>
+                            <ul class="d-block mega-block">
+                              <li class="menu_title"><a href="javascript:void(0)">Columns</a></li>
+                              <li><a th:href="@{/shop-full-width-col-3.html}">3 Columns full width</a></li>
+                              <li><a th:href="@{/shop-full-width-col-4.html}">4 Columns full width</a></li>
+                              <li><a th:href="@{/shop-full-width-col-5.html}">5 Columns full width</a></li>
+                              <li><a th:href="@{/shop-full-width-col-6.html}">6 Columns full width</a></li>
+                              <li><a th:href="@{/shop-banner-full-width-col-3.html}">Banner 3 Columns</a>
+                              </li>
+                            </ul>
+                            <ul class="d-block mega-block">
+                              <li class="menu_title"><a href="javascript:void(0)">List</a>
+                              </li>
+                              <li><a th:href="@{/shop-list-left-sidebar.html}">Shop left sidebar</a></li>
+                              <li><a th:href="@{/shop-list-right-sidebar.html}">Shop right sidebar</a></li>
+                              <li><a th:href="@{/shop-list-banner-left-sidebar.html}">Banner left sidebar</a>
+                              </li>
+                              <li><a th:href="@{/shop-list-banner-right-sidebar.html}">Banner right sidebar</a></li>
+                              <li><a th:href="@{/shop-list-full-col-2.html}">Full width 2 columns</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="non-drop"><a th:href="@{/alcohols/ai}">예술 AI</a>
+                      </li>
+                      <li class="dropdown drop-list">
+                        <a href="javascript:void(0)" class="dropdown-arrow">커뮤니티<i
+                          class="fi-rr-angle-small-right"></i></a>
+                        <ul class="sub-menu">
+                          <li><a th:href="@{/blog-left-sidebar.html}">레시피 게시판</a></li>
+                          <li><a th:href="@{/blog-right-sidebar.html}">정보 게시판</a></li>
+                          <li><a th:href="@{/blog-full-width.html}">자유 게시판</a></li>
+                        </ul>
+                      </li>
+                      <li class="dropdown drop-list">
+                        <a href="javascript:void(0)" class="dropdown-arrow">Pages<i
+                          class="fi-rr-angle-small-right"></i></a>
+                        <ul class="sub-menu">
+                          <li><a th:href="@{/about-us.html}">About Us</a></li>
+                          <li><a th:href="@{/contact-us.html}">Contact Us</a></li>
+                          <li><a th:href="@{/cart.html}">Cart</a></li>
+                          <li><a th:href="@{/checkout.html}">Checkout</a></li>
+                          <li><a th:href="@{/compare.html}">Compare</a></li>
+                          <li><a th:href="@{/faq.html}">FAQ</a></li>
+                          <li><a th:href="@{/login.html}">Login</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+          <!-- Main Menu End -->
+
         </div>
-        <!-- Social End -->
+      </div>
+    </div>
+    <!-- Header menu End -->
+
+    <!-- Mobile Menu sidebar Start -->
+    <div class="gi-mobile-menu-overlay"></div>
+    <div id="gi-mobile-menu" class="gi-mobile-menu">
+      <div class="gi-menu-title">
+        <span class="menu_title">My Menu</span>
+        <button class="gi-close-menu">×</button>
+      </div>
+      <div class="gi-menu-inner">
+        <div class="gi-menu-content">
+          <ul>
+            <li class="dropdown drop-list">
+              <a href="javascript:void(0)" class="dropdown-arrow">Home</a>
+              <ul class="sub-menu">
+                <li><a href="index.html">Grocery</a></li>
+                <li><a href="demo-2.html">Fashion</a></li>
+                <li><a href="demo-3.html">Fashion 2</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Categories</a>
+              <ul class="sub-menu">
+                <li>
+                  <a href="javascript:void(0)">Classic Variation</a>
+                  <ul class="sub-menu">
+                    <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a></li>
+                    <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a></li>
+                    <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a></li>
+                    <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a></li>
+                    <li><a href="shop-full-width.html">Full width 4 column</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="javascript:void(0)">Classic Variation</a>
+                  <ul class="sub-menu">
+                    <li><a href="shop-banner-left-sidebar-col-3.html">Banner left sidebar 3 column</a></li>
+                    <li><a href="shop-banner-left-sidebar-col-4.html">Banner left sidebar 4 column</a></li>
+                    <li><a href="shop-banner-right-sidebar-col-3.html">Banner right sidebar 3 column</a></li>
+                    <li><a href="shop-banner-right-sidebar-col-4.html">Banner right sidebar 4 column</a></li>
+                    <li><a href="shop-banner-full-width.html">Banner Full width 4 column</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="javascript:void(0)">Columns Variation</a>
+                  <ul class="sub-menu">
+                    <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
+                    <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
+                    <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
+                    <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
+                    <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="javascript:void(0)">List Variation</a>
+                  <ul class="sub-menu">
+                    <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
+                    <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
+                    <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a></li>
+                    <li><a href="shop-list-banner-right-sidebar.html">Banner right sidebar</a></li>
+                    <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Products</a>
+              <ul class="sub-menu">
+                <li>
+                  <a href="javascript:void(0)">Product page</a>
+                  <ul class="sub-menu">
+                    <li><a href="product-left-sidebar.html">Product left sidebar</a></li>
+                    <li><a href="product-right-sidebar.html">Product right sidebar</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="javascript:void(0)">Product accordion</a>
+                  <ul class="sub-menu">
+                    <li><a href="product-accordion-left-sidebar.html">left sidebar</a></li>
+                    <li><a href="product-accordion-right-sidebar.html">right sidebar</a></li>
+                  </ul>
+                </li>
+                <li><a href="product-full-width.html">product full width</a></li>
+                <li><a href="product-accordion-full-width.html">accordion full width</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="javascript:void(0)">Blog</a>
+              <ul class="sub-menu">
+                <li><a href="blog-left-sidebar.html">Blog left sidebar</a></li>
+                <li><a href="blog-right-sidebar.html">Blog right sidebar</a></li>
+                <li><a href="blog-detail-left-sidebar.html">Blog detail left sidebar</a></li>
+                <li><a href="blog-detail-right-sidebar.html">Blog detail right sidebar</a></li>
+                <li><a href="blog-full-width.html">Blog full width</a></li>
+                <li><a href="blog-detail-full-width.html">Blog detail full width</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="javascript:void(0)">Pages</a>
+              <ul class="sub-menu">
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="compare.html">Compare</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="login.html">Login</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="header-res-lan-curr">
+          <!-- Social Start -->
+          <div class="header-res-social">
+            <div class="header-top-social">
+              <ul class="mb-0">
+                <li class="list-inline-item"><a href="#"><i class="gicon gi-facebook"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="gicon gi-twitter"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="gicon gi-instagram"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="gicon gi-linkedin"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- Social End -->
+        </div>
       </div>
     </div>
   </div>
@@ -432,81 +318,81 @@
   </script>
 <!-- Header End  -->
 
-<!-- Cart sidebar Start -->
-<div class="gi-side-cart-overlay"></div>
-<div id="gi-side-cart" class="gi-side-cart">
-  <div class="gi-cart-inner">
-    <div class="gi-cart-top">
-      <div class="gi-cart-title">
-        <span class="cart_title">문의 채팅</span>
-        <a href="javascript:void(0)" class="gi-cart-close">
-          <i class="fi-rr-cross-small"></i>
-        </a>
+  <!-- Cart sidebar Start -->
+  <div class="gi-side-cart-overlay"></div>
+  <div id="gi-side-cart" class="gi-side-cart">
+    <div class="gi-cart-inner">
+      <div class="gi-cart-top">
+        <div class="gi-cart-title">
+          <span class="cart_title">문의 채팅</span>
+          <a href="javascript:void(0)" class="gi-cart-close">
+            <i class="fi-rr-cross-small"></i>
+          </a>
+        </div>
+        <ul class="gi-cart-pro-items">
+          <li>
+            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
+              src="assets/img/product-images/25_1.jpg" alt="product"></a>
+            <div class="gi-pro-content">
+              <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Fresh Lichi</a>
+              <span class="cart-price"><span>$25.00</span> x 1 kg</span>
+              <div class="qty-plus-minus">
+                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+              </div>
+              <a href="javascript:void(0)" class="remove">×</a>
+            </div>
+          </li>
+          <li>
+            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
+              src="assets/img/product-images/17_1.jpg" alt="product"></a>
+            <div class="gi-pro-content">
+              <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Ginger - Organic</a>
+              <span class="cart-price"><span>$5.00</span> x 1 250g</span>
+              <div class="qty-plus-minus">
+                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+              </div>
+              <a href="javascript:void(0)" class="remove">×</a>
+            </div>
+          </li>
+          <li>
+            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
+              src="assets/img/product-images/2_1.jpg" alt="product"></a>
+            <div class="gi-pro-content">
+              <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Dates Value Pack Pouch</a>
+              <span class="cart-price"><span>$59.00</span> x 1 pack</span>
+              <div class="qty-plus-minus">
+                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
+              </div>
+              <a href="javascript:void(0)" class="remove">×</a>
+            </div>
+          </li>
+        </ul>
       </div>
-      <ul class="gi-cart-pro-items">
-        <li>
-          <a href="product-left-sidebar.html" class="gi-pro-img"><img
-            src="assets/img/product-images/25_1.jpg" alt="product"></a>
-          <div class="gi-pro-content">
-            <a href="product-left-sidebar.html" class="cart-pro-title">Fresh Lichi</a>
-            <span class="cart-price"><span>$25.00</span> x 1 kg</span>
-            <div class="qty-plus-minus">
-              <input class="qty-input" type="text" name="gi-qtybtn" value="1">
-            </div>
-            <a href="javascript:void(0)" class="remove">×</a>
-          </div>
-        </li>
-        <li>
-          <a href="product-left-sidebar.html" class="gi-pro-img"><img
-            src="assets/img/product-images/17_1.jpg" alt="product"></a>
-          <div class="gi-pro-content">
-            <a href="product-left-sidebar.html" class="cart-pro-title">Ginger - Organic</a>
-            <span class="cart-price"><span>$5.00</span> x 1 250g</span>
-            <div class="qty-plus-minus">
-              <input class="qty-input" type="text" name="gi-qtybtn" value="1">
-            </div>
-            <a href="javascript:void(0)" class="remove">×</a>
-          </div>
-        </li>
-        <li>
-          <a href="product-left-sidebar.html" class="gi-pro-img"><img
-            src="assets/img/product-images/2_1.jpg" alt="product"></a>
-          <div class="gi-pro-content">
-            <a href="product-left-sidebar.html" class="cart-pro-title">Dates Value Pack Pouch</a>
-            <span class="cart-price"><span>$59.00</span> x 1 pack</span>
-            <div class="qty-plus-minus">
-              <input class="qty-input" type="text" name="gi-qtybtn" value="1">
-            </div>
-            <a href="javascript:void(0)" class="remove">×</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="gi-cart-bottom">
-      <div class="cart-sub-total">
-        <table class="table cart-table">
-          <tbody>
-          <tr>
-            <td class="text-left">Sub-Total :</td>
-            <td class="text-right">$300.00</td>
-          </tr>
-          <tr>
-            <td class="text-left">VAT (20%) :</td>
-            <td class="text-right">$60.00</td>
-          </tr>
-          <tr>
-            <td class="text-left">Total :</td>
-            <td class="text-right primary-color">$360.00</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="cart_btn">
-        <a href="cart.html" class="gi-btn-1">View Cart</a>
-        <a href="checkout.html" class="gi-btn-2">Checkout</a>
+      <div class="gi-cart-bottom">
+        <div class="cart-sub-total">
+          <table class="table cart-table">
+            <tbody>
+            <tr>
+              <td class="text-left">Sub-Total :</td>
+              <td class="text-right">$300.00</td>
+            </tr>
+            <tr>
+              <td class="text-left">VAT (20%) :</td>
+              <td class="text-right">$60.00</td>
+            </tr>
+            <tr>
+              <td class="text-left">Total :</td>
+              <td class="text-right primary-color">$360.00</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cart_btn">
+          <a th:href="@{/cart.html}" class="gi-btn-1">View Cart</a>
+          <a th:href="@{/checkout.html}" class="gi-btn-2">Checkout</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Cart sidebar End -->
+  <!-- Cart sidebar End -->
 </div>

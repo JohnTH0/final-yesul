@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 헤드 -->
+<head th:replace="~{fragments/user/head :: head}"></head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<div th:replace="~{fragments/user/header :: header}"></div>
+
+<!-- 공통 feature -->
+  <div th:replace="~{fragments/user/feature :: feature}"></div>
+
+<!-- 공통 푸터 -->
+  <div th:replace="~{fragments/user/footer :: footer}"></div>
+
+<!-- 공통 js -->
+  <div th:replace="~{fragments/user/js :: js}"></div>
+
+</body>
+
+</html>

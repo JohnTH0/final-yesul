@@ -12,20 +12,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/alcohols")
 public class AlcoholController {
 
     private final AlcoholService alcoholService;
     private final ClovaService clovaService;
+
+    @GetMapping("ai")
+    public String ai() {
+        return "ai/ai-chat";
+    }
 
     @PostMapping("/clova")
     @ResponseBody
