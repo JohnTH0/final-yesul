@@ -12,12 +12,12 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/community")
+@RequestMapping("/likes")
 public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/likes/toggle/{postId}")
+    @PostMapping("/{postId}")
     @ResponseBody
     public Map<String, Object> toggleLike(@PathVariable Long postId,
                                           @AuthenticationPrincipal PrincipalDetails principalDetails) {

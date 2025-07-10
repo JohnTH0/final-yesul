@@ -35,41 +35,42 @@
     <!-- 게시글 목록 -->
     <div class="row card-list-row">
         <div class="col-md-4 mb-4" th:each="post : ${postList}" th:if="${postList != null and !#lists.isEmpty(postList)}">
-            <a th:href="@{/community/{board}/{id}(board=${boardName}, id=${post.id})}"
-               style="text-decoration: none; color: inherit;">
-                <div class="oh-card">
-                    <div class="oh-card-img-wrap" style="position:relative;">
+            <div class="oh-card">
+                <div class="oh-card-img-wrap" style="position:relative;">
+                    <a th:href="@{/community/{board}/{id}(board=${boardName}, id=${post.id})}"
+                       style="text-decoration: none; color: inherit;">
                         <img class="oh-card-img"
                              th:src="${post.thumbnail != null and !post.thumbnail.isEmpty() ? post.thumbnail : '/assets/img/community/mainLogo.jpg'}"
                              alt="썸네일 이미지">
+                    </a>
+                    <!-- 하트 버튼: a 태그 밖! -->
+                    <span class="oh-like-btn"
+                          th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
+                          th:data-post-id="${post.id}"
+                          style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,0.85); border-radius:50%; padding:7px; box-shadow:0 2px 8px rgba(0,0,0,0.08); z-index:2;">
+                        <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                    </span>
+                </div>
+                <div class="oh-card-body">
+                    <div>
+                        <div class="oh-card-title" th:text="${post.title != null ? post.title : '제목없음'}">제목</div>
+                        <div class="oh-card-meta">
+                            <span th:text="${post.nickname != null ? post.nickname : '익명'}">작성자</span> ·
+                            <span th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
+                        </div>
+                    </div>
+                    <div class="oh-card-bottom" style="display:flex; align-items:center; gap:10px; font-size: 1rem; color: #555;">
+                        <span>조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
                         <span class="oh-like-btn"
                               th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
                               th:data-post-id="${post.id}"
-                              style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,0.85); border-radius:50%; padding:7px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                                <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
-                            </span>
-                    </div>
-                    <div class="oh-card-body">
-                        <div>
-                            <div class="oh-card-title" th:text="${post.title != null ? post.title : '제목없음'}">제목</div>
-                            <div class="oh-card-meta">
-                                <span th:text="${post.nickname != null ? post.nickname : '익명'}">작성자</span> ·
-                                <span th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
-                            </div>
-                        </div>
-                        <div class="oh-card-bottom" style="display:flex; align-items:center; gap:10px; font-size: 1rem; color: #555;">
-                            <span>조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
-                            <span class="oh-like-btn"
-                                  th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
-                                  th:data-post-id="${post.id}"
-                                  style="font-size: 1.2rem; cursor: pointer;">
-        <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
-    </span>
-                            <span th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
-                        </div>
+                              style="font-size: 1.2rem; cursor: pointer;">
+                            <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                        </span>
+                        <span class="oh-like-count" th:data-post-id="${post.id}" th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
         <!-- 게시글이 없을 때 메시지 -->
         <div class="text-center py-5" th:if="${postList == null or #lists.isEmpty(postList)}" style="width:100%;">
@@ -85,8 +86,7 @@
         <div style="position:absolute; left:50%; transform:translateX(-50%); z-index:1; width:220px; max-width:90vw;">
             <div class="oh-search-wrap" style="margin:0;">
                 <form class="oh-search-form" method="get" th:action="@{/community/{boardName}(boardName=${boardName})}">
-                    <input class="oh-search-input" type="text" name="keyword" th:value="${paramKeyword}" placeholder="게시글 검색">
-                    <button class="oh-search-btn" type="submit">
+                    <input class="oh-search-input" type="text" name="keyword" th:value="${paramKeyword}" placeholder="게시글 검색">                    <button class="oh-search-btn" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
@@ -124,6 +124,100 @@
 
 <!-- 푸터 -->
 <div th:replace="fragments/user/footer :: footer"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 이미지 위 하트(좋아요) 버튼
+        document.querySelectorAll('.oh-card-img-wrap > .oh-like-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const postId = btn.getAttribute('data-post-id');
+                if (!postId) return;
+                fetch(`/community/like/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        // 하트 상태 변경
+                        if (data.liked) {
+                            btn.classList.add('liked');
+                            btn.querySelector('i').className = 'fa-solid fa-heart';
+                        } else {
+                            btn.classList.remove('liked');
+                            btn.querySelector('i').className = 'fa-regular fa-heart';
+                        }
+                        // 카드 하단 좋아요 버튼/수도 같이 변경
+                        document.querySelectorAll('.oh-card-bottom .oh-like-btn[data-post-id="' + postId + '"]').forEach(function(bottomBtn) {
+                            if (data.liked) {
+                                bottomBtn.classList.add('liked');
+                                bottomBtn.querySelector('i').className = 'fa-solid fa-heart';
+                            } else {
+                                bottomBtn.classList.remove('liked');
+                                bottomBtn.querySelector('i').className = 'fa-regular fa-heart';
+                            }
+                        });
+                        document.querySelectorAll('.oh-like-count[data-post-id="' + postId + '"]').forEach(function(countSpan) {
+                            countSpan.textContent = data.likeCount;
+                        });
+                    })
+                    .catch(() => {
+                        alert('로그인이 필요합니다.');
+                    });
+            });
+        });
+        // 카드 하단 좋아요 버튼
+        document.querySelectorAll('.oh-card-bottom .oh-like-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const postId = btn.getAttribute('data-post-id');
+                if (!postId) return;
+                fetch(`/community/like/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        // 하트 상태 변경
+                        if (data.liked) {
+                            btn.classList.add('liked');
+                            btn.querySelector('i').className = 'fa-solid fa-heart';
+                        } else {
+                            btn.classList.remove('liked');
+                            btn.querySelector('i').className = 'fa-regular fa-heart';
+                        }
+                        // 이미지 위 하트도 같이 변경
+                        const card = btn.closest('.oh-card');
+                        if (card) {
+                            const imgLikeBtn = card.querySelector('.oh-card-img-wrap > .oh-like-btn[data-post-id="' + postId + '"]');
+                            if (imgLikeBtn) {
+                                if (data.liked) {
+                                    imgLikeBtn.classList.add('liked');
+                                    imgLikeBtn.querySelector('i').className = 'fa-solid fa-heart';
+                                } else {
+                                    imgLikeBtn.classList.remove('liked');
+                                    imgLikeBtn.querySelector('i').className = 'fa-regular fa-heart';
+                                }
+                            }
+                        }
+                        // 좋아요 수 변경
+                        document.querySelectorAll('.oh-like-count[data-post-id="' + postId + '"]').forEach(function(countSpan) {
+                            countSpan.textContent = data.likeCount;
+                        });
+                    })
+                    .catch(() => {
+                        alert('로그인이 필요합니다.');
+                    });
+            });
+        });
+    });
+</script>
 
 <style>
     /* 스타일 카드 */
