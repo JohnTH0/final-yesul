@@ -1,8 +1,9 @@
 package com.yesul.login.controller;
 
 import com.yesul.login.service.AdminOtpService;
+import com.yesul.monitoring.service.MonitoringService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminLoginController {
 
     private final AdminOtpService adminOtpService;
+    private final MonitoringService monitoringService;
 
     @GetMapping("/login")
     public void loginPage(){}
@@ -26,6 +28,7 @@ public class AdminLoginController {
 
     @PostMapping("/otp/verify")
     public String verifyOtp(@RequestParam int otpCode,
+                            HttpServletRequest request,
                             Authentication authentication,
                             RedirectAttributes redirectAttributes) {
 
@@ -35,6 +38,11 @@ public class AdminLoginController {
             redirectAttributes.addFlashAttribute("message", "OTP 인증 실패하였습니다.");
             return "redirect:/admin/otp";
         }
+
+        String ip = request.getRemoteAddr();
+        String userAgent = request.getHeader("User-Agent");
+
+        monitoringService.logAdminLogin(ip, userAgent);
 
         return "redirect:/admin/dashboard";
     }

@@ -44,13 +44,18 @@
                             </div>
                             <div class="gi-hover-drop-panel right">
                                 <div class="details">
-                                    <h6 th:text="${adminName}">YeSul</h6>
-                                    <p th:text="${adminEmail}">admin1@yesul.com</p>
+                                    <h6>YeSul</h6>
+                                    <p>admin1@yesul.com</p>
                                 </div>
                                 <ul class="border-top">
                                     <li>
+                                        <a th:href="@{/admin/login-log}">
+                                            <i class="ri-logout-circle-r-line"></i>로그인 이력
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a th:href="@{/admin/logout}">
-                                            <i class="ri-logout-circle-r-line"></i>Logout
+                                            <i class="ri-logout-circle-r-line"></i>로그아웃
                                         </a>
                                     </li>
                                 </ul>
