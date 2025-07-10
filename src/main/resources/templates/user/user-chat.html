@@ -1,148 +1,122 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>Chatroom</title>
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+  <title>User Chatroom</title>
+  <link rel="stylesheet" href="/assets/css/plugins/bootstrap.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <style>
-    body { background: #f5f6fa; }
-    .chat-container {
-      max-width: 480px; margin: 32px auto; background: #fff;
-      border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-      display: flex; flex-direction: column; min-height: 600px;
+    body { margin: 0; background: #f5f6fa; height: 100vh; }
+    .user-chat-wrapper {
+      max-width: 720px; margin: 32px auto; background: #fff; border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden; height: 90vh;
+      display: flex; flex-direction: column;
     }
-    .chat-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 24px 16px; border-bottom: 1.5px solid #ececec;
-      border-top-left-radius: 18px; border-top-right-radius: 18px; background: #f9fafb;
-    }
-    .chat-header .profile { display: flex; align-items: center; }
-    .chat-header img { width: 44px; height: 44px; border-radius: 50%; margin-right: 12px; object-fit: cover; background: #eee; }
-    .chat-header .name { font-weight: bold; font-size: 1.1rem; }
-    .chat-header .status { font-size: 0.98rem; color: #4caf50; margin-left: 8px; }
-    .chat-header .back-btn { background: none; border: none; padding: 0 4px; cursor: pointer; }
 
-    .chat-history {
-      flex: 1 1 0; padding: 24px 16px 12px; background: #f5f6fa;
-      overflow-y: auto; display: flex; flex-direction: column;
-    }
-    .chat-history ul { padding: 0; margin: 0; list-style: none; }
-    .chat-history li { display: flex; align-items: flex-end; margin-bottom: 18px; }
-    .chat-history li.my-message { flex-direction: row; }
-    .chat-profile { width: 36px; height: 36px; border-radius: 50%; margin: 0 8px; object-fit: cover; background: #eee; }
-    .chat-content { max-width: 70%; display: flex; flex-direction: column; align-items: flex-start; }
-    .chat-history li.my-message .chat-content { align-items: flex-start; }
-    .chat-meta { font-size: 0.92rem; color: #b0b0b0; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-    .chat-meta .sender { font-weight: 500; color: #888; margin-right: 2px; }
+    .chat-header { padding: 20px; border-bottom: 1px solid #ddd; background: #f9fafb; }
+    .chat-history { flex: 1; overflow-y: auto; padding: 20px; background: #f9fafb; }
+    .chat-history ul { list-style: none; padding: 0; margin: 0; }
+    .chat-history li { display: flex; flex-direction: column; margin-bottom: 12px; }
+
+    .user-message { align-items: flex-start; }
+    .admin-message { align-items: flex-end; }
+    .sender-name { font-size: 0.85rem; color: #555; margin-bottom: 2px; }
+
     .chat-bubble {
-      position: relative; display: inline-block; padding: 14px 18px;
-      border-radius: 16px; font-size: 15px; line-height: 1.6; word-break: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-      background: #686e73; color: #fff;
+      max-width: 60%; padding: 12px 16px; border-radius: 20px; word-break: break-word;
+      border: 1px solid #ccc;
     }
-    .chat-history li.other-message .chat-bubble {
-      background: #fff; color: #222; border: 1px solid #ececec;
-    }
-    .chat-time {
-      font-size: 0.82rem; color: #b0b0b0; margin-top: 2px; display: none;
-    }
-    .chat-time.show { display: block; }
+
+    .user-message .chat-bubble { background: #f1f1f1; color: #000; }
+    .admin-message .chat-bubble { background: #007bff; color: #fff; }
+
+    .chat-time { font-size: 0.75rem; color: #888; margin-top: 4px; }
 
     .chat-input-area {
-      padding: 10px 12px; background: #fff;
-      border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
-      border-top: 1.5px solid #ececec;
-    }
-    .chat-input-area .input-group { display: flex; align-items: stretch; }
-    .chat-input-area .upload-btn {
-      min-width: 56px;
-      border-radius: 18px 0 0 18px;
-      font-weight: bold;
-      background: #333; color: #fff;
-      border: 1.5px solid #ececec; border-right: none;
-      font-size: 20px; display: flex; align-items: center; justify-content: center;
+      padding: 12px 16px; border-top: 1px solid #ddd; background: #fff;
+      display: flex; align-items: center;
     }
     .chat-input-area textarea {
-      resize: none; border-radius: 0; height: 56px;
-      font-size: 16px; background: #f5f6fa; border: 1.5px solid #ececec; border-left: none; border-right: none;
-      flex: 1 1 auto; padding: 13px 20px;
+      flex: 1; resize: none; height: 48px; border: 1px solid #ccc;
+      border-radius: 12px; padding: 12px; margin-right: 8px;
     }
-    .chat-input-area .btn.send-btn {
-      min-width: 80px; border-radius: 0 18px 18px 0;
-      font-weight: bold; background: #333; color: #fff;
-      border: 1.5px solid #ececec; border-left: none;
-      font-size: 17px; display: flex; align-items: center; justify-content: center;
-    }
+    .upload-btn { margin-right: 8px; }
+    .send-btn { min-width: 80px; height: 48px; border-radius: 12px; }
   </style>
 </head>
 <body>
+
+<!--  header fragment 유지 -->
 <div th:replace="fragments/user/header :: header"></div>
 
-<div class="chat-container">
+<div class="user-chat-wrapper">
   <div class="chat-header">
-    <div class="profile">
-      <img src="/assets/img/user/2.jpg" alt="user">
-      <div>
-        <span class="name" th:text="${chatPartnerName}">채팅 상대 이름</span>
-        <span class="status">● Online</span>
-      </div>
-    </div>
-    <button class="back-btn" onclick="history.back()" aria-label="뒤로가기">←</button>
+    <span id="chatPartnerName" th:text="${chatPartnerName}"></span>
   </div>
 
-  <div class="chat-history" id="chat-message-list">
+  <div class="chat-history">
     <ul id="messageList">
-      <li th:each="msg : ${messages}" th:classappend="${msg.senderType.name()} == 'USER' ? 'my-message' : 'other-message'">
-        <img class="chat-profile" th:if="${msg.senderType.name()} != 'USER'" th:src="${msg.senderProfileUrl}" alt="프로필">
-        <div class="chat-content">
-          <div class="chat-meta">
-            <span class="sender" th:if="${msg.senderType.name()} != 'USER'" th:text="${msg.senderName}"></span>
-          </div>
-          <div class="chat-bubble" th:text="${msg.messageContext}">메시지</div>
-          <div class="chat-time" th:text="${#temporals.format(msg.createdAt, 'HH:mm')}">17:56</div>
+      <li th:each="msg : ${messages}"
+          th:classappend="${msg.senderType.name()} == 'USER' ? 'user-message' : 'admin-message'">
+        <span class="sender-name"
+              th:if="${msg.senderType.name()} == 'USER'"></span>
+        <span class="sender-name"
+              th:if="${msg.senderType.name()} != 'USER'"
+              th:text="${chatPartnerName}"></span>
+
+        <div class="chat-bubble"
+             th:if="${msg.messageType.name()} == 'TEXT'"
+             th:text="${msg.messageContext}">메시지</div>
+
+        <div class="chat-bubble"
+             th:if="${msg.messageType.name()} == 'IMAGE'">
+          <img th:src="${msg.messageContext}" style="max-width: 100%;">
         </div>
+
+        <div class="chat-time"
+             th:text="${#temporals.format(msg.createdAt, 'HH:mm')}">12:30</div>
       </li>
     </ul>
   </div>
 
   <div class="chat-input-area">
-    <div class="input-group">
-      <button type="button" class="btn upload-btn" onclick="document.getElementById('imageInput').click()">＋</button>
-      <textarea id="messageInput" class="form-control" placeholder="메시지를 입력하세요"></textarea>
-      <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="uploadImage(this)">
-      <button type="button" onclick="sendMessage()" class="btn send-btn">전송</button>
-    </div>
+    <button type="button" class="btn btn-secondary upload-btn"
+            onclick="document.getElementById('imageInput').click()">＋</button>
+    <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
+    <input type="file" id="imageInput" accept="image/*"
+           style="display:none;" onchange="uploadImage(this)">
+    <button type="button" id="sendBtn" class="btn btn-dark send-btn">전송</button>
+    <input type="hidden" id="chatRoomId" th:value="${roomId}">
   </div>
 </div>
 
+<!--  footer fragment 유지 -->
 <div th:replace="fragments/user/footer :: footer"></div>
-<input type="hidden" id="chatRoomId" th:value="${roomId}">
 
-<script th:inline="javascript">
-  const socket = new WebSocket("ws://" + window.location.host + "/ws/chat");
-  const messageInput = document.getElementById("messageInput");
-  const chatRoomId = document.getElementById("chatRoomId").value;
-  const chatList = document.getElementById("chat-message-list");
+<script>
+  let socket;
+  const messageInput = document.getElementById('messageInput');
+  const chatRoomIdInput = document.getElementById('chatRoomId');
+  const sendBtn = document.getElementById('sendBtn');
+  const chatList = document.getElementById('messageList');
+  const chatHistory = document.querySelector('.chat-history');
+  const chatPartnerName = document.getElementById('chatPartnerName').textContent.trim();
 
-  socket.onopen = () => console.log("✅ WebSocket 연결 성공!");
-  socket.onmessage = (event) => {
-    const msg = JSON.parse(event.data);
-    appendMessage(msg.messageContext, msg.senderType, msg.createdAt, msg.senderName, msg.senderProfileUrl, msg.messageType);
-    adjustTimestamps();
-    scrollToBottom();
-  };
-
-  window.addEventListener("DOMContentLoaded", () => {
-    restoreTempMessage();
-    adjustTimestamps();
-    scrollToBottom();
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   });
 
-  messageInput.addEventListener("input", () => {
+  // 임시 저장
+  messageInput.addEventListener('input', () => {
+    const roomId = chatRoomIdInput.value;
     const temp = messageInput.value.trim();
-    if (temp) {
+    if (temp && roomId) {
       const params = new URLSearchParams();
-      params.append("chatRoomId", chatRoomId);
+      params.append("chatRoomId", roomId);
       params.append("message", temp);
       fetch("/chatroom/temp-message", {
         method: "POST",
@@ -153,15 +127,11 @@
     }
   });
 
-  messageInput.addEventListener("keypress", function(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-
   function restoreTempMessage() {
-    fetch(`/chatroom/temp-message?chatRoomId=${chatRoomId}`, { credentials: "include" })
+    const roomId = chatRoomIdInput.value;
+    if (!roomId) return;
+
+    fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, { credentials: "include" })
       .then(res => res.text())
       .then(tempMessage => { if (tempMessage) messageInput.value = tempMessage; })
       .catch(console.error);
@@ -169,16 +139,29 @@
 
   function sendMessage() {
     const message = messageInput.value.trim();
-    if (!message) return;
-    socket.send(JSON.stringify({ chatRoomId, senderType: "USER", messageContext: message, messageType: "TEXT" }));
-    messageInput.value = "";
-    fetch(`/chatroom/temp-message?chatRoomId=${chatRoomId}`, { method: "DELETE", credentials: "include" });
+    const roomId = chatRoomIdInput.value;
+
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      alert("WebSocket 연결 실패");
+      return;
+    }
+
+    socket.send(JSON.stringify({
+      chatRoomId: roomId,
+      receiverType: "Admin",
+      messageContext: message,
+      messageType: "TEXT"
+    }));
+
+    messageInput.value = '';
+    fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, { method: "DELETE", credentials: "include" });
   }
 
   function uploadImage(input) {
     const file = input.files[0];
     if (!file) return;
 
+    const roomId = chatRoomIdInput.value;
     const formData = new FormData();
     formData.append("image", file);
 
@@ -187,69 +170,59 @@
       credentials: "include",
       body: formData
     })
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
         socket.send(JSON.stringify({
-          chatRoomId,
+          chatRoomId: roomId,
           senderType: "USER",
           messageContext: data.imageUrl,
           messageType: "IMAGE"
         }));
-      })
-      .catch(console.error);
+      });
   }
 
-  function appendMessage(content, senderType, createdAt, senderName, senderProfileUrl, messageType) {
+  function connectWebSocket(roomId) {
+    socket = new WebSocket("ws://" + window.location.host + "/ws/chat");
+    socket.onopen = () => console.log("WebSocket 연결됨");
+    socket.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      const li = buildMessageLi(msg);
+      chatList.appendChild(li);
+      adjustTimestamps();
+      scrollToBottom();
+    };
+  }
+
+  function buildMessageLi(msg) {
     const li = document.createElement("li");
-    const isMine = (senderType || '').toUpperCase() === 'USER';
-    li.className = isMine ? 'my-message' : 'other-message';
+    li.className = msg.receiverType === 'ADMIN' ? 'user-message' : 'admin-message';
 
-    if (!isMine) {
-      const img = document.createElement("img");
-      img.className = 'chat-profile';
-      img.src = senderProfileUrl || '/assets/img/user/2.jpg';
-      img.alt = '프로필';
-      li.appendChild(img);
-    }
-
-    const contentDiv = document.createElement("div");
-    contentDiv.className = 'chat-content';
-
-    if (!isMine) {
-      const meta = document.createElement("div");
-      meta.className = 'chat-meta';
-      const senderSpan = document.createElement("span");
-      senderSpan.className = 'sender';
-      senderSpan.textContent = senderName || '';  // ✅ 기본값 제거
-      meta.appendChild(senderSpan);
-      contentDiv.appendChild(meta);
-    }
+    const nameSpan = document.createElement("span");
+    nameSpan.className = 'sender-name';
+    nameSpan.textContent = msg.receiverType === 'ADMIN' ? '' : chatPartnerName;
+    li.appendChild(nameSpan);
 
     const bubble = document.createElement("div");
     bubble.className = 'chat-bubble';
-
-    if (messageType === 'IMAGE') {
-      const imgTag = document.createElement('img');
-      imgTag.src = content;
-      imgTag.style.maxWidth = '100%';
-      bubble.appendChild(imgTag);
+    if (msg.messageType === 'IMAGE') {
+      const img = document.createElement('img');
+      img.src = msg.messageContext;
+      img.style.maxWidth = '100%';
+      bubble.appendChild(img);
     } else {
-      bubble.textContent = content;
+      bubble.textContent = msg.messageContext;
     }
 
-    contentDiv.appendChild(bubble);
+    const time = document.createElement("div");
+    time.className = 'chat-time';
+    time.textContent = formatTime(msg.createdAt);
 
-    const timeDiv = document.createElement("div");
-    timeDiv.className = 'chat-time';
-    timeDiv.textContent = createdAt ? formatTime(createdAt) : '';
-    contentDiv.appendChild(timeDiv);
+    li.appendChild(bubble);
+    li.appendChild(time);
 
-    li.appendChild(contentDiv);
-    document.getElementById("messageList").appendChild(li);
-
-    adjustTimestamps();
-    scrollToBottom();
+    return li;
   }
+
 
   function formatTime(isoString) {
     const date = new Date(isoString);
@@ -259,25 +232,36 @@
   }
 
   function adjustTimestamps() {
-    const items = Array.from(document.querySelectorAll('#messageList li'));
-    let lastTime = null;
-
-    for (let i = items.length - 1; i >= 0; i--) {
+    const items = Array.from(chatList.querySelectorAll('li'));
+    for (let i = 0; i < items.length; i++) {
       const timeEl = items[i].querySelector('.chat-time');
       if (!timeEl) continue;
-      const current = timeEl.textContent.trim();
-      if (current !== lastTime) {
-        timeEl.classList.add('show');
-        lastTime = current;
+
+      const thisTime = timeEl.textContent.trim();
+      const nextItem = items[i + 1];
+      const nextTime = nextItem ? nextItem.querySelector('.chat-time')?.textContent.trim() : null;
+
+      if (thisTime === nextTime) {
+        timeEl.style.display = 'none';
       } else {
-        timeEl.classList.remove('show');
+        timeEl.style.display = 'block';
       }
     }
   }
 
   function scrollToBottom() {
-    chatList.scrollTop = chatList.scrollHeight;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
   }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const roomId = chatRoomIdInput.value;
+    if (roomId) {
+      connectWebSocket(roomId);
+    }
+    restoreTempMessage();
+    adjustTimestamps();
+    scrollToBottom();
+  });
 </script>
 </body>
 </html>

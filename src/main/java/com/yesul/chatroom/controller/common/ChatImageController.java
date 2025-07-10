@@ -1,4 +1,4 @@
-package com.yesul.chatroom.controller;
+package com.yesul.chatroom.controller.common;
 
 import com.yesul.chatroom.service.ChatImageService;
 import java.util.HashMap;
@@ -22,7 +22,6 @@ public class ChatImageController {
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> upload(@RequestParam("image") MultipartFile image) {
-        log.info("채팅 이미지 업로드 요청: {}", image.getOriginalFilename());
 
         String imageUrl = chatImageService.uploadChatImage(image);
 

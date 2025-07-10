@@ -1,7 +1,8 @@
-package com.yesul.chatroom.controller;
+package com.yesul.chatroom.controller.user;
 
 import com.yesul.chatroom.model.dto.ChatRoomResult;
 import com.yesul.chatroom.model.entity.Message;
+import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.service.ChatRoomService;
 import com.yesul.chatroom.service.MessageService;
 import com.yesul.user.service.PrincipalDetails;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -54,8 +54,8 @@ public class ChatController {
         if (Boolean.TRUE.equals(isNew)) {
             messageSlice = new SliceImpl<>(List.of()); // 새로 만든 방이면 빈 메시지
         } else {
-            // 커서 조건 null → Service에서 알아서 분기됨!
-            messageSlice = messageService.getMessagesWithCursor(roomId, null, size);
+            // 커서 조건 null → Service에서 알아서 분기
+            messageSlice = messageService.getMessagesWithCursor(roomId, null, size, Type.USER);
         }
 
         List<Message> messages = new ArrayList<>(messageSlice.getContent());

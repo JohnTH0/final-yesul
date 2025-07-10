@@ -31,9 +31,11 @@ public class ChatRoom extends BaseTimeEntity {
     @Column(name = "last_message", nullable = false)
     private String lastMessage;
 
+    @Column(name = "admin_unread_count", nullable = false)
+    private int adminUnreadCount;
 
-    @Column(name = "unread_count", nullable = false)
-    private Integer unreadCount;
+    @Column(name = "user_unread_count", nullable = false)
+    private int userUnreadCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -43,6 +45,20 @@ public class ChatRoom extends BaseTimeEntity {
     @JoinColumn(name = "admin_id", nullable = false)
     private Admin admin;
 
+    public void increaseAdminUnreadCount() {
+        this.adminUnreadCount++;
+    }
 
+    public void increaseUserUnreadCount() {
+        this.userUnreadCount++;
+    }
 
+    public void resetAdminUnreadCount() {
+        this.adminUnreadCount = 0;
+    }
+
+    public void resetUserUnreadCount() {
+        this.userUnreadCount = 0;
+    }
 }
+

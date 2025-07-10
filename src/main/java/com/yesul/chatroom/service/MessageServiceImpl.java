@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +24,24 @@ public class MessageServiceImpl implements MessageService {
     private final ChatRoomRepository chatRoomRepository;
 
     @Override
-    @Transactional(readOnly = true)
-    public Slice<Message> getMessagesWithCursor(Long chatRoomId, Long lastMessageId, int size) {
+    @Transactional
+    public Slice<Message> getMessagesWithCursor(Long chatRoomId, Long lastMessageId, int size, Type readerType) {
         Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "id"));
+
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new ChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
+
+        if (readerType == Type.ADMIN) {
+            chatRoom.resetAdminUnreadCount();
+        } else {
+            chatRoom.resetUserUnreadCount();
+        }
+
         if (lastMessageId == null) {
+            // 커서 없이 첫 페이지라면 새 JPQL 메서드 사용
             return messageRepository.getMessagesFirstPage(chatRoomId, pageable);
         } else {
+            // 커서가 있으면 기존 방식 유지 (예시)
             return messageRepository.getMessagesWithCursor(chatRoomId, lastMessageId, pageable);
         }
     }
@@ -39,11 +50,9 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public MessageResponseDto saveMessage(MessageRequestDto messageDto, Long senderId) {
-
         ChatRoom chatRoom = chatRoomRepository.findById(messageDto.getChatRoomId())
                 .orElseThrow(() -> new ChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
 
-        //발신자 타입 확인
         Type senderType = messageDto.getSenderType();
 
         Message message = Message.builder()
@@ -55,17 +64,19 @@ public class MessageServiceImpl implements MessageService {
 
         messageRepository.save(message);
 
+        // 수신자 정보 파악
         Type receiverType;
         Long receiverId;
-        //수신자 타입 확인
-        if(senderType == Type.USER){
-            receiverType = Type.ADMIN;
-            receiverId = message.getChatRoom().getAdmin().getId();
-        }else{
-            receiverType = Type.USER;
-            receiverId = message.getChatRoom().getUser().getId();
-        }
 
+        if (senderType == Type.USER) {
+            receiverType = Type.ADMIN;
+            receiverId = chatRoom.getAdmin().getId();
+            chatRoom.increaseAdminUnreadCount(); // 관리자 안 읽은 메시지 증가
+        } else {
+            receiverType = Type.USER;
+            receiverId = chatRoom.getUser().getId();
+            chatRoom.increaseUserUnreadCount(); // 유저 안 읽은 메시지 증가
+        }
 
         return MessageResponseDto.builder()
                 .messageId(message.getId())
@@ -74,10 +85,9 @@ public class MessageServiceImpl implements MessageService {
                 .receiverType(receiverType)
                 .messageContext(message.getMessageContext())
                 .messageType(message.getMessageType())
-                .chatRoomId(message.getChatRoom().getId())
+                .chatRoomId(chatRoom.getId())
                 .createdAt(message.getCreatedAt())
                 .build();
     }
-
 
 }

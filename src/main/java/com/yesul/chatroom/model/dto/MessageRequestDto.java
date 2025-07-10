@@ -2,18 +2,22 @@ package com.yesul.chatroom.model.dto;
 
 import com.yesul.chatroom.model.entity.enums.MessageType;
 import com.yesul.chatroom.model.entity.enums.Type;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageRequestDto {
 
-    private final Long chatRoomId;
-    private final Long userId;
-    private final Type senderType;
-    private final String messageContext;
-    private final MessageType messageType;
+    private Long chatRoomId;
+    private Type senderType;
+    private String messageContext;
+    private MessageType messageType;
 
 }
