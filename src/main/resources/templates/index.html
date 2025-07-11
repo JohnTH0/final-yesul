@@ -744,15 +744,55 @@
                     <h2 class="d-none">Offers</h2>
                     <div class="gi-bnr-detail">
                         <div class="gi-bnr-info">
-                            <h2>AI 주락이 <br>추천을 받아보세요</h2>
-                            <h3>주류 추천받고 <span>공유해봐요!</span></h3>
-                            <a href="shop-left-sidebar-col-3.html" class="gi-btn-2">추천 받기</a>
+                            <h2>
+                                <span style="--i:0">A</span>
+                                <span style="--i:1">I</span>
+                                <span style="--i:2"> </span>
+                                <span style="--i:3">주</span>
+                                <span style="--i:4">락</span>
+                                <span style="--i:5">이</span>
+                                <span style="--i:6"> </span>
+                                <span style="--i:7">추</span>
+                                <span style="--i:8">천</span>
+                                <span style="--i:9">을</span>
+                                <span style="--i:10"> </span>
+                                <span style="--i:11">받</span>
+                                <span style="--i:12">아</span>
+                                <span style="--i:13">보</span>
+                                <span style="--i:14">세</span>
+                                <span style="--i:15">요</span>
+                            </h2>
+                            <br>
+<!--                            <h3 style="color: white;">주류 추천받고 <span style="color: white;">공유해봐요!</span></h3>-->
+                            <a th:href="@{/alcohols/ai}" class="gi-btn-2">추천 받으러 가기</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        .gi-bnr-info h2 {
+            display: inline-block;
+            color: white;
+        }
+
+        .gi-bnr-info h2 span {
+            display: inline-block;
+            animation: wave 1.5s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.15s);
+            color: white;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 </section>
 <!-- Banner section End -->
 
@@ -930,10 +970,12 @@
         <div class="col-md-6">
             <div id="gi-popnews-box-content">
                 <h2>전통주 추천받기</h2>
-                <p>원하시는 전통주를 AI로 추천해 드립니다!</p>
+                <p>AI <strong>주락이</strong>가
+                    <br>
+                    전통주를 취향에 맞춰 추천해 드립니다!</p>
+                <br>
                 <form id="gi-popnews-form" action="#" method="post">
-                    <input type="email" name="newsemail" placeholder="입력하세요" required>
-                    <button type="button" class="gi-btn-2" name="subscribe">추천 받기</button>
+                    <a th:href="@{/alcohols/ai}" class="gi-btn-2">추천 받기</a>
                 </form>
             </div>
         </div>
