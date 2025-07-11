@@ -3,7 +3,7 @@ package com.yesul.chatroom.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.yesul.chatroom.model.dto.ChatRoomSummaryResponse;
+import com.yesul.chatroom.model.dto.response.ChatRoomSummaryResponse;
 import com.yesul.chatroom.model.entity.QChatRoom;
 import com.yesul.user.model.entity.QUser;
 import java.util.List;

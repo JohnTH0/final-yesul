@@ -1,5 +1,7 @@
 package com.yesul.chatroom.controller.common;
 
+import static com.yesul.common.constants.RedisConstants.TEMP_MESSAGE_DB_INDEX;
+
 import com.yesul.chatroom.service.TempMessageService;
 import com.yesul.user.service.PrincipalDetails;
 import com.yesul.admin.model.dto.auth.LoginAdmin;
@@ -23,7 +25,7 @@ public class TempMessageController {
             @RequestParam String message
     ) {
         Long userId = extractUserId(principal);
-        tempMessageService.saveTempMessage(chatRoomId, userId, message);
+        tempMessageService.saveTempMessage(chatRoomId, userId, message,  TEMP_MESSAGE_DB_INDEX);
     }
 
     @GetMapping
@@ -32,7 +34,7 @@ public class TempMessageController {
             @RequestParam Long chatRoomId
     ) {
         Long userId = extractUserId(principal);
-        String tempMessage = tempMessageService.getTempMessage(chatRoomId, userId);
+        String tempMessage = tempMessageService.getTempMessage(chatRoomId, userId,TEMP_MESSAGE_DB_INDEX);
         return tempMessage;
     }
 
@@ -42,7 +44,7 @@ public class TempMessageController {
             @RequestParam Long chatRoomId
     ) {
         Long userId = extractUserId(principal);
-        tempMessageService.deleteTempMessage(chatRoomId, userId);
+        tempMessageService.deleteTempMessage(chatRoomId, userId,TEMP_MESSAGE_DB_INDEX);
     }
 
     /**

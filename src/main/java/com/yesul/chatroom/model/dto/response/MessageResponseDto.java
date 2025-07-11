@@ -1,4 +1,4 @@
-package com.yesul.chatroom.model.dto;
+package com.yesul.chatroom.model.dto.response;
 
 import com.yesul.chatroom.model.entity.enums.MessageType;
 import com.yesul.chatroom.model.entity.enums.Type;

@@ -1,7 +1,7 @@
 package com.yesul.chatroom.controller.admin;
 
-import com.yesul.chatroom.model.dto.AdminChatRoomsResponse;
-import com.yesul.chatroom.model.dto.ChatRoomSummaryResponse;
+import com.yesul.chatroom.model.dto.response.AdminChatRoomsResponse;
+import com.yesul.chatroom.model.dto.response.ChatRoomSummaryResponse;
 import com.yesul.chatroom.model.entity.Message;
 import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.service.ChatRoomService;

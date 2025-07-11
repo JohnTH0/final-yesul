@@ -1,9 +1,8 @@
-package com.yesul.chatroom.model.dto;
+package com.yesul.chatroom.model.dto.response;
 
 import com.yesul.chatroom.model.entity.ChatRoom;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor

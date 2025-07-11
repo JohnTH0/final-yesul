@@ -1,6 +1,5 @@
-package com.yesul.chatroom.model.dto;
+package com.yesul.chatroom.model.dto.response;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

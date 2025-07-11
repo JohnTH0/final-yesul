@@ -1,4 +1,4 @@
-package com.yesul.chatroom.model.dto;
+package com.yesul.chatroom.model.dto.response;
 
 import java.util.List;
 import lombok.Builder;

@@ -2,9 +2,9 @@ package com.yesul.chatroom.service;
 
 import com.yesul.admin.model.entity.Admin;
 import com.yesul.admin.repository.AdminRepository;
-import com.yesul.chatroom.model.dto.AdminChatRoomsResponse;
-import com.yesul.chatroom.model.dto.ChatRoomResult;
-import com.yesul.chatroom.model.dto.ChatRoomSummaryResponse;
+import com.yesul.chatroom.model.dto.response.AdminChatRoomsResponse;
+import com.yesul.chatroom.model.dto.response.ChatRoomResult;
+import com.yesul.chatroom.model.dto.response.ChatRoomSummaryResponse;
 import com.yesul.chatroom.model.entity.ChatRoom;
 import com.yesul.chatroom.repository.ChatRoomRepository;
 import com.yesul.chatroom.repository.ChatRoomRepositoryCustom;

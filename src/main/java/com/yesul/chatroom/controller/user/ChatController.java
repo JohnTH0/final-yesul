@@ -1,6 +1,6 @@
 package com.yesul.chatroom.controller.user;
 
-import com.yesul.chatroom.model.dto.ChatRoomResult;
+import com.yesul.chatroom.model.dto.response.ChatRoomResult;
 import com.yesul.chatroom.model.entity.Message;
 import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.service.ChatRoomService;
@@ -43,6 +43,7 @@ public class ChatController {
     // 채팅방 조회(메시지 조회, 무한 스크롤 구현)
     @GetMapping("/{roomId}")
     public String getChatRoom(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable Long roomId,
             @RequestParam(name = "new", required = false) Boolean isNew,
             Model model
@@ -72,6 +73,4 @@ public class ChatController {
 
         return "user/user-chat";
     }
-
-
 }
