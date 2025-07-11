@@ -4,21 +4,14 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title th:text="${title}">페이지 제목</title>
-  <link rel="icon" th:href="@{/assets/img/favicon/favicon.png}" sizes="32x32">
-  <link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/animate.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper-bundle.min.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/owl.carousel.min.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/owl.theme.default.min.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/slick.min.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/nouislider.css}">
-  <link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/responsive.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/user-mypage.css}">
 </head>
 <body>
+
+<!-- 공통 헤더 -->
+<div th:fragment="head">
+  <div th:replace="~{fragments/user/head :: head}"></div>
+</div>
+
 <!-- 공통 헤더 -->
 <div th:fragment="header">
   <div th:replace="~{fragments/user/header :: header}"></div>

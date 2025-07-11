@@ -13,6 +13,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.yesul.community.model.dto.LikePostDto;
+import com.yesul.community.service.LikeService;
 import com.yesul.exception.handler.EntityNotFoundException;
 import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.user.service.PrincipalDetails;
@@ -20,6 +22,8 @@ import com.yesul.user.service.UserAsyncService;
 import com.yesul.user.service.UserService;
 import com.yesul.user.model.entity.User;
 import com.yesul.user.model.dto.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -30,6 +34,8 @@ public class UserController {
     private final UserService userService;
     private final UserAsyncService asyncRegService;
     private final PasswordEncoder passwordEncoder;
+    private final LikeService likeService;
+
 
     // 회원가입 페이지 이동
     @GetMapping("/regist")
@@ -306,5 +312,16 @@ public class UserController {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/user/password-reset?email=" + email + "&token=" + token;
         }
+    }
+
+    @GetMapping("/like-post")
+    public String viewMyLikes(
+            @AuthenticationPrincipal PrincipalDetails principal,
+            Model model
+    ) {
+        Long userId = principal.getUser().getId();
+        List<LikePostDto> likePosts = likeService.getLikedPosts(userId);
+        model.addAttribute("likePosts", likePosts);
+        return "user/user-like-post";
     }
 }

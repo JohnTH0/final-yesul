@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/user-default :: head('로그인')}"></head>
 
+<head th:replace="~{fragments/user/head :: head}"></head>
 <body>
-<div th:replace="~{layout/user-default :: header}"></div>
+<div th:replace="~{fragments/user/header :: header}"></div>
+
 <section class="gi-login padding-tb-40">
   <div class="container">
     <div class="section-title-2">
@@ -67,11 +68,19 @@
   </div>
 </section>
 
-<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:fragment="feature">
+  <div th:replace="~{fragments/user/feature :: feature}"></div>
+</div>
 
-<div th:replace="~{layout/user-default :: footer}"></div>
+<!-- 공통 푸터 -->
+<div th:fragment="footer">
+  <div th:replace="~{fragments/user/footer :: footer}"></div>
+</div>
 
-<div th:replace="~{layout/user-default :: scripts}"></div>
+<!-- 공통 js -->
+<div th:fragment="js">
+  <div th:replace="~{fragments/user/js :: js}"></div>
+</div>
 
 </body>
 </html>

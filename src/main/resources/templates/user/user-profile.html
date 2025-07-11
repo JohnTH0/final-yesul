@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{layout/user-default :: head('내 정보')}"></head>
-
+<head th:replace="~{fragments/user/head :: head}"></head>
+<link rel="stylesheet" th:href="@{/assets/css/user-mypage.css}">
+<link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
 <body>
-<div th:replace="~{layout/user-default :: header}"></div>
+<div th:replace="~{fragments/user/header :: header}"></div>
 
 <div class="gi-breadcrumb m-b-40">
   <div class="container">
@@ -36,7 +37,7 @@
               <li><a th:href="@{/user/profile}">내정보</a></li>
               <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
               <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
-              <li><a th:href="@{/user/history}">좋아요 한 글 보기</a></li>
+              <li><a th:href="@{/user/user-like-post}">좋아요 한 글 보기</a></li>
             </ul>
           </div>
         </div>
@@ -118,11 +119,19 @@
   </div>
 </section>
 
-<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:fragment="feature">
+  <div th:replace="~{fragments/user/feature :: feature}"></div>
+</div>
 
-<div th:replace="~{layout/user-default :: feature}"></div>
+<!-- 공통 푸터 -->
+<div th:fragment="footer">
+  <div th:replace="~{fragments/user/footer :: footer}"></div>
+</div>
 
-<div th:replace="~{layout/user-default :: scripts}"></div>
+<!-- 공통 js -->
+<div th:fragment="js">
+  <div th:replace="~{fragments/user/js :: js}"></div>
+</div>
 
 </body>
 

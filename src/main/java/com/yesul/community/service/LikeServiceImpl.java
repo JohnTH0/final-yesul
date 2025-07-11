@@ -1,15 +1,18 @@
 package com.yesul.community.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import com.yesul.community.model.dto.LikePostDto;
 import com.yesul.community.model.entity.Like;
 import com.yesul.community.model.entity.Post;
 import com.yesul.user.model.entity.User;
 import com.yesul.community.repository.LikeRepository;
 import com.yesul.community.repository.PostRepository;
 import com.yesul.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +49,10 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public int getLikeCount(Long postId) {
         return likeRepository.countByPostId(postId);
+    }
+
+    @Override
+    public List<LikePostDto> getLikedPosts(Long userId) {
+        return likeRepository.findLikedPostsByUserId(userId);
     }
 }

@@ -1,6 +1,12 @@
 package com.yesul.community.service;
 
+import java.util.List;
+
+import com.yesul.community.model.dto.LikePostDto;
+
 public interface LikeService {
-    boolean toggleLike(Long postId, Long userId); // 좋아요 토글
-    int getLikeCount(Long postId);                // 좋아요 수 토글
+    boolean toggleLike(Long postId, Long userId);
+    int getLikeCount(Long postId);
+
+    List<LikePostDto> getLikedPosts(Long userId);
 }

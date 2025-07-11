@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 헤드 -->
+<!--<head th:replace="~{fragments/user/head :: head}"></head>-->
+<link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
+
+<body>
+
+<!-- 공통 헤더 -->
+<!--<div th:replace="~{fragments/user/header :: header}"></div>-->
+
+<!-- Loader -->
+<div id="gi-overlay">
+  <div class="loader"></div>
+</div>
+
+<!-- Breadcrumb start -->
+<div class="gi-breadcrumb m-b-40">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="row gi_breadcrumb_inner">
+          <div class="col-md-6 col-sm-12">
+            <h2 class="gi-breadcrumb-title">Wishlist</h2>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <!-- gi-breadcrumb-list start -->
+            <ul class="gi-breadcrumb-list">
+              <li class="gi-breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="gi-breadcrumb-item active">Wishlist</li>
+            </ul>
+            <!-- gi-breadcrumb-list end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb end -->
+
+<!-- User Wishlist section -->
+<section class="gi-Wishlist padding-tb-40">
+  <div class="container">
+    <div class="row mb-minus-24px">
+
+      <!-- 좋아요 리스트 -->
+      <div class="col-lg-9 col-md-12 mb-24">
+        <div class="gi-vendor-dashboard-card">
+          <div class="gi-vendor-card-header">
+            <h5>내가 좋아요한 글</h5>
+          </div>
+          <div class="gi-vendor-card-body">
+            <table class="table gi-vender-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>썸네일</th>
+                <th>제목</th>
+                <th>좋아요한 날짜</th>
+                <th>액션</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="dto : ${likePosts}">
+                <!-- 1) ID -->
+                <td th:text="${dto.postId}"></td>
+
+                <!-- 2) 썸네일 -->
+                <td>
+                  <img th:src="@{${dto.thumbnail}}" class="prod-img" alt="thumbnail"/>
+                </td>
+
+                <!-- 3) 제목 -->
+                <td th:text="${dto.subject}"></td>
+
+                <!-- 4) 날짜 포맷 -->
+                <td th:text="${#dates.format(dto.createdAt, 'yyyy년MM월dd일')}"></td>
+
+                <!-- 5) 액션: 빨간 × 버튼만 -->
+                <td>
+                  <a href="javascript:void(0)"
+                     th:attr="data-post-id=${dto.postId}"
+                     class="btn-unlike"
+                     title="좋아요 취소">×</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a class="gi-back-to-top"></a>
+
+<!-- 공통 feature -->
+<div th:fragment="feature">
+  <div th:replace="~{fragments/user/feature :: feature}"></div>
+</div>
+
+<!-- 공통 푸터 -->
+<div th:fragment="footer">
+  <div th:replace="~{fragments/user/footer :: footer}"></div>
+</div>
+
+<!-- 공통 js -->
+<div th:fragment="js">
+  <div th:replace="~{fragments/user/js :: js}"></div>
+</div>
+
+<script>
+  document.querySelectorAll('.btn-unlike').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const postId = btn.getAttribute('data-post-id');
+      fetch('/likes/' + postId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+          // CSRF 토큰 관련 라인 모두 삭제
+        }
+      })
+        .then(res => {
+          if (res.ok) location.reload();
+          else alert('취소에 실패했습니다.');
+        });
+    });
+  });
+</script>
+
+
+</body>
+
+</html>
+
+</body>
+
+</html>
