@@ -8,6 +8,6 @@ spring:
 
   data:
     redis:
-      host: redis-container
+      host: ${DEV_REDIS_HOST}
       port: 6379
       password: ${DEV_REDIS_PASSWORD}
