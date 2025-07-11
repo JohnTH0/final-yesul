@@ -67,6 +67,7 @@ jobs:
             -e NCP_BUCKET=${{ secrets.NCP_BUCKET }} \
             -e NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY }} \
             -e NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }} \
+            -e DEV_REDIS_HOST=${{ secrets.DEV_REDIS_HOST }} \
             -e DEV_REDIS_PASSWORD=${{ secrets.DEV_REDIS_PASSWORD }} \
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
             
