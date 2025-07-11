@@ -75,7 +75,7 @@
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
     // 3. API 요청
-    fetch('http://localhost:8080/alcohols/clova', {
+    fetch('http://223.130.132.13:8080/alcohols/clova', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ask: text})
