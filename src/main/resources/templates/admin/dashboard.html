@@ -1,15 +1,405 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/admin/head :: adminHead"></head>
+<head>
+    <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
+    <style>
+        .gi-chatapp, .gi-card.chatapp-card {
+            height: 100%;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0 !important;
+        }
+        .gi-card.chatapp-card {
+            padding: 0 !important;
+            box-shadow: none !important;
+
+            border-top-left-radius: 24px !important;
+            border-top-right-radius: 24px !important;
+
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+
+        .col-xxl-4.col-xl-12.p-0 {
+            height: 100%;
+            padding: 0 12px 24px !important;
+        }
+        .row.same-height-row {
+            height: 100%;
+            align-items: stretch;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        th {
+            border-bottom: 1px solid #f0f0f0;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px !important;
+        }
+        #best_seller_data_table th {
+            padding: 8px 12px 12px 12px;
+        }
+        #top_product_data_table th {
+            padding: 8px 24px 12px 18px;
+        }
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .full-cell-link {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: #000;
+            padding: 8px 12px;
+            transition: background-color 0.2s;
+        }
+        tr:hover td {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
 <body>
-    <main class="wrapper sb-default ecom">
-        <div th:replace="fragments/admin/header :: adminHeader"></div>
-        <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+<main class="wrapper sb-default ecom">
+    <div th:replace="fragments/admin/header :: adminHeader"></div>
+    <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+    <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
 
-        <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
-        <div th:replace="fragments/admin/footer :: adminFooter"></div>
+    <!-- main content -->
+    <div class="gi-main-content">
+        <div class="container-fluid" style="min-height: 100vh;">
+            <!-- Page title & breadcrumb -->
+            <div class="gi-page-title gi-page-title-2">
+                <div class="gi-breadcrumb">
+                    <h5>DashBoard</h5>
+                    <ul>
+                        <li> YeSul 관리자 페이지 </li>
+                    </ul>
+                </div>
 
-        <div th:replace="fragments/admin/script :: adminScripts"></div>
-    </main>
+                <!-- 내 코드 -->
+
+                <!-- 시간되면 이거 구현
+                <div class="gi-tools">
+                    <div id="pagedate">
+                        <div class="gi-date-range" title="Date">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+
+            <!-- 시스템 모니터링-->
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gi-card">
+                                <div class="gi-card-content label-card">
+                                    <div class="title">
+                                        <span class="icon"><i class="ri-shield-user-line"></i></span>
+                                        <div class="growth-numbers">
+                                            <h4>Today 방문자</h4>
+                                            <h5 th:text="${todayVisitor} + '명'"></h5>
+                                        </div>
+                                    </div>
+                                    <p class="card-groth up">
+                                        <i class="ri-arrow-up-line"></i>
+                                        25%
+                                        <span>Last Month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gi-card">
+                                <div class="gi-card-content label-card">
+                                    <div class="title">
+                                        <span class="icon"><i class="ri-shopping-bag-3-line"></i></span>
+                                        <div class="growth-numbers">
+                                            <h4>실시간 접속자</h4>
+                                            <h5 th:text="${realTimeUser} + '명'"></h5>
+                                        </div>
+                                    </div>
+                                    <p class="card-groth down">
+                                        <i class="ri-arrow-down-line"></i>
+                                        .5%
+                                        <span>Last Month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gi-card">
+                                <div class="gi-card-content label-card">
+                                    <div class="title">
+                                        <span class="icon"><i class="ri-money-dollar-circle-line"></i></span>
+                                        <div class="growth-numbers">
+                                            <h4>전체 회원</h4>
+                                            <h5 th:text="${totalUser + '명'}"></h5>
+                                        </div>
+                                    </div>
+                                    <p class="card-groth down">
+                                        <i class="ri-arrow-down-line"></i>
+                                        2.1%
+                                        <span>Last Month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gi-card">
+                                <div class="gi-card-content label-card">
+                                    <div class="title">
+                                        <span class="icon"><i class="ri-exchange-dollar-line"></i></span>
+                                        <div class="growth-numbers">
+                                            <h4>등록된 전통주</h4>
+                                            <h5 th:text="${totalAlcohol}  + '개'"></h5>
+                                        </div>
+                                    </div>
+                                    <p class="card-groth up">
+                                        <i class="ri-arrow-up-line"></i>
+                                        9%
+                                        <span>Last Month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row same-height-row" style="display: flex; align-items: stretch; height: 100%;">
+                <div class="col-xxl-8 col-xl-12" style="height: 100%;">
+                    <div class="gi-card revenue-overview" style="height: 100%;">
+                        <div class="gi-card-header header-575">
+                            <h4 class="gi-card-title">차트... 뭐보여주지...</h4>
+                            <div class="header-tools">
+                                <a href="javascript:void(0)" class="m-r-10 gi-full-card" title="Full Screen"><i
+                                        class="ri-fullscreen-line"></i></a>
+                                <div class="gi-date-range date">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-card-content">
+                            <div class="gi-chart-header">
+                                <div class="block">
+                                    <h6>Orders</h6>
+                                    <h5>825
+                                        <span class="up"><i class="ri-arrow-up-line"></i>24%</span>
+                                    </h5>
+                                </div>
+                                <div class="block">
+                                    <h6>Revenue</h6>
+                                    <h5>$89k
+                                        <span class="up"><i class="ri-arrow-up-line"></i>24%</span>
+                                    </h5>
+                                </div>
+                                <div class="block">
+                                    <h6>Expence</h6>
+                                    <h5>$68k
+                                        <span class="down"><i class="ri-arrow-down-line"></i>24%</span>
+                                    </h5>
+                                </div>
+                                <div class="block">
+                                    <h6>Profit</h6>
+                                    <h5>$21k
+                                        <span class="up"><i class="ri-arrow-up-line"></i>24%</span>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="gi-chart-content">
+                                <div id="allmixChart" class="mb-m-24"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-4 col-xl-12 p-0" style="height: 680px;">
+                    <div class="gi-chatapp" style="border-radius: 24px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); width: 100%; height: 100%;">
+                        <div class="gi-card chatapp-card" style="width: 100%; box-sizing: border-box; border-radius: 24px; padding: 0; height: 100%; display: flex; flex-direction: column; ">
+                            <!-- 프로필 영역 -->
+                            <div style="display: flex; align-items: center; gap: 16px; padding: 24px 24px 24px 24px;  border-bottom: 1px solid #f0f0f0;">
+                                <div>
+                                    <div style="font-weight: bold; font-size: 18px;">1:1 문의</div>
+                                </div>
+                            </div>
+                            <!-- 채팅 목록 -->
+                            <ul style="list-style: none; margin: 0; padding: 0 0 24px 0; flex: 1; overflow-y: auto; min-height: 0;">
+                                <li th:each="chat : ${chatList}"
+                                    style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #f0f0f0;">
+
+                                    <div>
+                                        <div style="font-weight: bold;" >고객 이름</div>  <!--th:text="${chat.username}"-->
+                                        <div style="color: #888;">메시지 내용 ~~</div>   <!--th:text="${chat.message}"-->
+                                    </div>
+
+                                    <span th:if="${chat.unreadCount > 0}"
+                                          style="margin-left: auto; background: #6366f1; color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">3</span> <!--th:text="${chat.unreadCount}"-->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- 인기게시글-->
+                <div class="col-xxl-6 col-xl-12">
+                    <div class="gi-card" id="best_seller_tbl">
+                        <div class="gi-card-header">
+                            <h4 class="gi-card-title">HOT 게시글 TOP 10</h4>
+                            <div class="header-tools">
+                                <a href="javascript:void(0)" class="m-r-10 gi-full-card" title="Full Screen"><i
+                                        class="ri-fullscreen-line"></i></a>
+                                <div class="gi-date-range dots">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-card-content card-default">
+                            <div class="best-seller-table">
+                                <div class="table-responsive">
+                                    <table id="best_seller_data_table" class="table">
+                                        <thead>
+                                        <tr style="padding: 8px 12px 12px 12px;">
+                                            <th>순위</th>
+                                            <th>제목</th>
+                                            <th>좋아요</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="post, stat : ${popularPosts}">
+                                            <td>
+                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${stat.count}">1</a>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.title}">제목</a>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.likeCount}">1,026</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 인기주류순위-->
+                <div class="col-xxl-6 col-xl-12">
+                    <div class="gi-card" id="top_product_tbl">
+                        <div class="gi-card-header">
+                            <h4 class="gi-card-title">인기 주류 순위 TOP 10</h4>
+                            <div class="header-tools">
+                                <a href="javascript:void(0)" class="m-r-10 gi-full-card" title="Full Screen"><i
+                                        class="ri-fullscreen-line"></i></a>
+                                <div class="gi-date-range dots">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-card-content card-default">
+                            <div class="top-product-table">
+                                <div class="table-responsive">
+                                    <table id="top_product_data_table" class="table">
+                                        <thead>
+                                        <tr style="padding: 8px 12px 12px 24px;">
+                                            <th>순위</th>
+                                            <th>주류명</th>
+                                            <th>제조사</th>
+                                            <th>가격</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="post, stat : ${popularPosts}">
+                                            <td>
+                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${stat.count}">1</a>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.title}">제목</a>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.likeCount}">1,026</a>
+                                            </td>
+                                            <td>40,000원</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="fragments/admin/footer :: adminFooter"></div>
+    <div th:replace="fragments/admin/script :: adminScripts"></div>
+</main>
 </body>
 </html>
+<script>
+    var options = {
+        chart: {
+            height: 450,
+            type: 'line',
+            stacked: false
+        },
+        stroke: {
+            width: [2, 2, 3, 0],
+            curve: 'smooth',
+            dashArray: [0, 0, 5, 0]
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '10%'
+            }
+        },
+        series: [
+            {
+                name: '자유게시판',
+                type: 'line',
+                data: [23, 11, 22, 27, 13, 35, 25]
+            },
+            {
+                name: '레시피게시판',
+                type: 'line',
+                data: [30, 20, 25, 45, 38, 18, 28]
+            },
+            {
+                name: '정보게시판',
+                type: 'line',
+                data: [13, 15, 20, 30, 40, 15, 25]
+            },
+            {
+                name: '방문자 수',
+                type: 'column',
+                data: [23, 11, 22, 27, 13, 35, 25]
+            }
+        ],
+        colors: ['#6366f1', '#10b981', '#ec4899','#f59e0b'],
+        xaxis: {
+            categories: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        },
+        yaxis: {
+            title: {
+                text: 'Count'
+            }
+        },
+        legend: {
+            position: 'bottom'
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#allmixChart"), options);
+    chart.render();
+</script>

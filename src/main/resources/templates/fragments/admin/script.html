@@ -23,7 +23,7 @@
 
   <!-- Main JS -->
   <script th:src="@{/asserts/js/main.js}"></script>
-<!--  <script th:src="@{/assets/js/data/ecommerce-chart-data.js}"></script>-->
+  <script th:src="@{/assets/js/data/ecommerce-chart-data.js}"></script>
 
   <script>
     window.onpageshow = function(event) {
@@ -32,6 +32,57 @@
         location.reload();
       }
     };
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelector(".login-log-btn")?.addEventListener("click", function () {
+        fetch('/admin/login-logs')
+                .then(response => response.json())
+                .then(data => {
+                  let ul = document.createElement('ul');
+                  ul.style.padding = '16px';
+
+                  const tbody = document.getElementById("login-log-tbody");
+                  tbody.innerHTML = ''; // 기존 내용 비우기
+
+                  data.forEach(log => {
+                    const row = document.createElement('tr');
+
+                    const ipCell = document.createElement('td');
+                    ipCell.textContent = log.ip;
+                    row.appendChild(ipCell);
+
+                    const timeCell = document.createElement('td');
+                    timeCell.textContent = log.loginTime.replace('T', ' ');
+                    row.appendChild(timeCell);
+
+                    const uaCell = document.createElement('td');
+                    uaCell.textContent = log.userAgent;
+                    row.appendChild(uaCell);
+
+                    tbody.appendChild(row);
+                  });
+
+                  // 모달 보여주기
+                  document.getElementById("loginLogModal").style.display = "flex";
+
+                  // 모달 보여주기
+                  document.getElementById("loginLogModal").style.display = "flex";
+                });
+      });
+
+      // 모달 닫기 버튼
+      document.getElementById("closeLoginLogModal")?.addEventListener("click", function () {
+        document.getElementById("loginLogModal").style.display = "none";
+      });
+
+      // 모달 바깥 영역 클릭 시 닫기
+      window.addEventListener("click", function (e) {
+        const modal = document.getElementById("loginLogModal");
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    });
   </script>
 
 </th:block>

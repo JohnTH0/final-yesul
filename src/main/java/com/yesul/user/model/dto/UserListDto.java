@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class UserListDto {
     private Long id;
     private String nickname;

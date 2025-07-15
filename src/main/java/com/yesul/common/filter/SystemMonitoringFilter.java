@@ -1,4 +1,4 @@
-package com.yesul.config;
+package com.yesul.common.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;

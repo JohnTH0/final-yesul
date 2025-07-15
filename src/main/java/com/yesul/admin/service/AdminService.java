@@ -1,8 +1,11 @@
-package com.yesul.monitoring.service;
+package com.yesul.admin.service;
 
-import com.yesul.login.model.dto.AdminLoginLogDto;
-import com.yesul.login.model.entity.AdminLoginLog;
-import com.yesul.monitoring.repository.AdminLoginLogRepository;
+import com.yesul.admin.model.dto.AdminLoginLogDto;
+import com.yesul.admin.model.entity.AdminLoginLog;
+import com.yesul.admin.repository.AdminLoginLogRepository;
+import com.yesul.alcohol.repository.AlcoholRepository;
+import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.redis.core.Cursor;
@@ -16,10 +19,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MonitoringService {
+public class AdminService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final AdminLoginLogRepository logRepository;
+    private final PostRepository postRepository;
+    private final PostRepository userRepository;
+    private final AlcoholRepository alcoholRepository;
     private final ModelMapper modelMapper;
 
     public int getTodayVisitorCount() {
@@ -57,8 +63,26 @@ public class MonitoringService {
     }
 
     public List<AdminLoginLogDto> getAllLoginLogs() {
-        List<AdminLoginLog> logs = logRepository.findAll();
+        List<AdminLoginLog> logs = logRepository.findAllByOrderByCreatedAtDesc();
 
-        return logs.stream().map(log -> modelMapper.map(log, AdminLoginLogDto.class)).collect(Collectors.toList());
+        return logs.stream()
+                .map(AdminLoginLogDto::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getPopularPosts() {
+        return postRepository.findPopularPostsByLikes();
+    }
+
+    //public List<PostResponseDto> getPopularAlcohol() {
+    //    return AlcoholRepository.findPopularAlcoholByLikes();
+    //}
+
+    public int getUserCount() {
+        return (int) userRepository.count();
+    }
+
+    public int getAlcoholCount() {
+        return (int) alcoholRepository.count();
     }
 }

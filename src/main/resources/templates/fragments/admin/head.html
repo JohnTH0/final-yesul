@@ -10,9 +10,8 @@
 
     <title>YeSul - Admin Page</title>
 
-
     <!-- App favicon -->
-    <link rel="shortcut icon" th:href="@{/asserts/img/favicon/favicon.ico}">
+    <link rel="shortcut icon" th:href="@{/asserts/img/favicon/favicon.png}" sizes="32x32">
 
     <!-- Icon CSS -->
     <link th:href="@{/asserts/css/vendor/materialdesignicons.min.css}" rel="stylesheet">
@@ -49,6 +48,87 @@
             color: #aaa;
         }
 
+         #loginLogModal {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100vw;
+             height: 100vh;
+             background-color: rgba(0, 0, 0, 0.6); /* 어두운 배경 */
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             z-index: 9999;
+         }
+
+        .modal-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            width: 80%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            max-height: calc(80vh - 60px);
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .login-log-table {
+            font-size: 0.95rem;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .login-log-table thead {
+            background-color: #f1f1f1;
+        }
+
+        .login-log-table thead th {
+            padding: 12px 16px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .login-log-table tbody td {
+            padding: 10px 16px;
+            font-size: 0.95rem;
+            border-top: 1px solid #eee;
+            word-break: break-word;
+            vertical-align: top;
+        }
+
+        .login-log-table td:nth-child(1),
+        .login-log-table th:nth-child(1) {
+            width: 160px;
+        }
+
+        .login-log-table td:nth-child(2),
+        .login-log-table th:nth-child(2) {
+            width: 200px;
+        }
     </style>
 
 </head>

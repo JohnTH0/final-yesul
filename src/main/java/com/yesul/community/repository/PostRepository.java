@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
     Page<Post> findByBoardName(String boardName, Pageable pageable);
     List<Post> findByBoardName(String boardName); // 비페이징 용도
     @Query("SELECT p FROM Post p LEFT JOIN FETCH p.images WHERE p.id = :id")

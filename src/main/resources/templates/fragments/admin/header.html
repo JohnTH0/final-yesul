@@ -12,7 +12,6 @@
                 <div class="right-header">
                     <div class="gi-right-tool apps">
                         <div class="gi-hover-drop">
-                            <!-- app 지원 삭제 -->
                         </div>
                     </div>
                     <div class="gi-right-tool display-screen">
@@ -47,10 +46,12 @@
                                     <h6>YeSul</h6>
                                     <p>admin1@yesul.com</p>
                                 </div>
+
                                 <ul class="border-top">
+
                                     <li>
-                                        <a th:href="@{/admin/login-log}">
-                                            <i class="ri-logout-circle-r-line"></i>로그인 이력
+                                        <a href="javascript:void(0)" class="login-log-btn">
+                                            <i class="ri-admin-line"></i> 로그인 이력
                                         </a>
                                     </li>
                                     <li>
@@ -59,6 +60,7 @@
                                         </a>
                                     </li>
                                 </ul>
+
                             </div>
                         </div>
                     </div>
@@ -66,4 +68,28 @@
             </div> <!-- gi-header-items -->
         </div> <!-- container-fluid -->
     </header>
+    <div id="loginLogModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">관리자 로그인 이력</span>
+                <span class="modal-close" id="closeLoginLogModal">&times;</span>
+            </div>
+            <div class="modal-body" id="login-log-content">
+                <table class="login-log-table">
+                    <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>로그인 시간</th>
+                        <th>접속 환경</th>
+                    </tr>
+                    </thead>
+                    <tbody id="login-log-tbody">
+                    <!-- 자바스크립트로 tbody에 행이 추가됨 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+

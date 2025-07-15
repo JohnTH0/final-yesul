@@ -5,12 +5,15 @@ import com.yesul.admin.model.dto.auth.LoginAdmin;
 import com.yesul.admin.model.entity.Admin;
 import com.yesul.exception.handler.AdminNotFoundException;
 import com.yesul.login.repository.AdminLoginRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +31,7 @@ public class AdminOtpService {
         return fetchedAdmin;
     }
 
-    public boolean verifyOtpAndAuthenticate (int otpCode, Authentication authentication){
+    public boolean verifyOtpAndAuthenticate (int otpCode, Authentication authentication, HttpServletRequest request){
         LoginAdmin loginAdmin = (LoginAdmin) authentication.getPrincipal();
         String loginId = loginAdmin.getUsername();
 
@@ -54,8 +57,12 @@ public class AdminOtpService {
                 newAuthorities
         );
 
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(newAuth);
+        SecurityContextHolder.setContext(context);
 
+        HttpSessionSecurityContextRepository repo = new HttpSessionSecurityContextRepository();
+        repo.saveContext(context, request, null);
         return true;
     }
 }

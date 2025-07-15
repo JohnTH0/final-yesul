@@ -1,11 +1,8 @@
-package com.yesul.login.model.entity;
+package com.yesul.admin.model.entity;
 
-import com.yesul.alcohol.model.dto.ClovaRequestDto;
 import com.yesul.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "admin_login_log")

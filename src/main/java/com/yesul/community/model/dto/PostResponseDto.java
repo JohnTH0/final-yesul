@@ -35,6 +35,12 @@ public class PostResponseDto {
     @Builder.Default
     private List<CommentResponseDto> comments = new ArrayList<>();  // 댓글 리스트
 
+    public PostResponseDto(Long id, String title, Integer likeCount) {
+        this.id = id;
+        this.title = title;
+        this.likeCount = likeCount;
+    }
+
     // Post → PostResponseDto 변환 메서드 (기본값만 설정)
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
