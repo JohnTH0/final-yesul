@@ -1,148 +1,99 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/user/head :: head}"></head>
+<head th:replace="~{layout/user-default :: head}"></head>
 <link rel="stylesheet" th:href="@{/assets/css/user-mypage.css}">
-<link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
+
 <body>
-<div th:replace="~{fragments/user/header :: header}"></div>
-<!-- Loader -->
-<div id="gi-overlay">
-  <div class="loader"></div>
-</div>
 
-<!-- Breadcrumb start -->
-<div class="gi-breadcrumb m-b-40">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="row gi_breadcrumb_inner">
-          <div class="col-md-6 col-sm-12">
-            <h2 class="gi-breadcrumb-title">Vendor settings</h2>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <!-- gi-breadcrumb-list start -->
-            <ul class="gi-breadcrumb-list">
-              <li class="gi-breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="gi-breadcrumb-item active">settings</li>
-            </ul>
-            <!-- gi-breadcrumb-list end -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Breadcrumb end -->
+<div th:replace="~{layout/user-default :: header}"></div>
 
-<!-- Vendor setting section start -->
 <section class="gi-vendor-setting padding-tb-40">
-  <div class="container">
-    <div class="row mb-minus-24px">
-      <div class="col-lg-3 col-md-12 mb-24">
-        <div class="gi-sidebar-wrap gi-border-box gi-sticky-sidebar">
-          <div class="gi-vendor-block-items">
-            <ul>
-              <li><a th:href="@{/user/profile}">내정보</a></li>
-              <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
-              <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
-              <li><a th:href="@{/user/history}">좋아요 한 글 보기</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-9 col-md-12 mb-24">
-        <div class="gi-vendor-settings-card gi-vendor-profile-card">
-          <form th:action="@{/user/profile/update}" th:object="${user}" method="post" enctype="multipart/form-data">
-            <!-- Account Information -->
-            <!-- Profile Image -->
-            <div class="gi-vendor-settings-card">
-              <h5>Profile Image</h5>
+    <div class="container">
+        <div class="row mb-minus-24px">
+            <div class="col-lg-3 col-md-12 mb-24">
+                <div class="gi-sidebar-wrap gi-border-box gi-sticky-sidebar">
+                    <div class="gi-vendor-block-items">
+                        <ul>
+                            <li><a th:href="@{/user/profile}">내정보</a></li>
+                            <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
+                            <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
+                            <li><a th:href="@{/user/like-post}">좋아요 한 글 보기</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="profile-upload-wrapper-wrapper text-center mb-4">
-              <div class="profile-upload-wrapper mx-auto">
-                <!-- 화면에 보이는 프로필 사진 -->
-                <img class="profile-img"
-                     th:src="@{${user != null and user.profile != null ? user.profile : '/assets/img/app/default_profile.jpg'}}"
-                     alt="프로필 사진">
-                <!-- 카메라 아이콘 (label 누르면 아래 file input 클릭) -->
-                <label for="profileInput" class="camera-overlay">
-                  <i class="fa fa-camera"></i>
-                </label>
-                <!-- 실제 파일 인풋 (숨김) -->
-                <input type="file" id="profileInput" th:field="*{profileImage}" accept="image/*" class="d-none"/>
-              </div>
-            </div>
-            <div class="gi-vendor-settings-card">
-              <h5>Account Information</h5>
-            </div>
-            <div class="row">
-              <!-- Name -->
-              <div class="col-md-6 mb-24">
-                <div class="gi-vendor-detail-block">
-                  <h6>Name</h6>
-                  <input type="text" th:field="*{name}" class="form-control"/>
-                </div>
-              </div>
-              <!-- Nickname -->
-              <div class="col-md-6 mb-24">
-                <div class="gi-vendor-detail-block">
-                  <h6>Nickname</h6>
-                  <input type="text" th:field="*{nickname}" class="form-control"/>
-                </div>
-              </div>
-              <!-- Email (readonly) -->
-              <div class="col-md-6 mb-24">
-                <div class="gi-vendor-detail-block">
-                  <h6>E-mail address</h6>
-                  <input type="email" th:field="*{email}" class="form-control" readonly/>
-                </div>
-              </div>
-              <!-- Birthday -->
-              <div class="col-md-6 mb-24">
-                <div class="gi-vendor-detail-block">
-                  <h6>Birthday (YYYYMMDD)</h6>
-                  <input type="text" th:field="*{birthday}" class="form-control" placeholder="YYYYMMDD"/>
-                </div>
-              </div>
-              <!-- Address -->
-              <div class="col-12 mb-24">
-                <div class="gi-vendor-detail-block">
-                  <h6>Address</h6>
-                  <div class="form-group address-group d-flex align-items-stretch mb-24">
-                  <input type="text" th:field="*{address}" class="form-control" readonly/>
-                    <button type="button" class="gi-btn-1 address-btn" onclick="openPostcode()">주소 검색</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="col-lg-9 col-md-12 mb-24">
+                <div class="gi-vendor-profile-card gi-vendor-profile-card">
+                    <div class="gi-vendor-card-body">
+                        <form th:action="@{/user/profile/update}" th:object="${user}" method="post" enctype="multipart/form-data">
+                            <div class="gi-vendor-card-body">
+                                <div class="profile-header text-center mb-4">
+                                    <img class="profile-img" th:src="@{${user != null and user.profile != null ? user.profile : '/assets/img/app/default_profile.jpg'}}" alt="프로필 사진">
+                                    <label for="profileInput" class="camera-overlay">
+                                        <i class="fa fa-camera"></i>
+                                    </label>
+                                    <input type="file" id="profileInput" th:field="*{profileImage}" accept="image/*" class="d-none"/>
+                                </div>
+                            </div>
+                            <div class="gi-vender-about-block">
+                                <h5>Account Information</h5>
+                            </div>
+                            <div class="row mb-minus-24px">
+                                <div class="col-md-6 col-sm-12 mb-24">
+                                    <div class="gi-vendor-detail-block">
+                                        <h6>Name</h6>
+                                        <input type="text" th:field="*{name}" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 mb-24">
+                                    <div class="gi-vendor-detail-block">
+                                        <h6>Nickname</h6>
+                                        <input type="text" th:field="*{nickname}" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 mb-24">
+                                    <div class="gi-vendor-detail-block">
+                                        <h6>E-mail address</h6>
+                                        <input type="email" th:field="*{email}" class="form-control" readonly/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 mb-24">
+                                    <div class="gi-vendor-detail-block">
+                                        <h6>Birthday (YYYYMMDD)</h6>
+                                        <input type="text" th:field="*{birthday}" class="form-control" placeholder="YYYYMMDD"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 mb-24">
+                                    <div class="gi-vendor-detail-block">
+                                        <h6>Address</h6>
+                                        <div class="form-group address-group d-flex align-items-stretch mb-24">
+                                            <input type="text" th:field="*{address}" class="form-control" readonly/>
+                                            <button type="button" class="gi-btn-1 address-btn" onclick="openPostcode()">
+                                                주소 검색
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            <!-- 저장 버튼 -->
-            <div class="edit text-center mt-4">
-              <button type="submit" class="gi-btn-2">
-                <i class="ri-save-line"></i> 정보 저장
-              </button>
+                            <div class="edit text-center mt-4">
+                                <button type="submit" class="gi-btn-2">
+                                  <i class="ri-save-line"></i> 정보 저장
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
 </section>
-<!-- Vendor setting section end -->
 
-<div th:replace="~{layout/user-default :: feature}"></div>
-
-<!-- 공통 푸터 -->
-<div th:fragment="footer">
-  <div th:replace="~{fragments/user/footer :: footer}"></div>
-</div>
-
-<div th:replace="~{layout/user-default :: scripts}"></div>
-
-<!-- Back to top  -->
 <a class="gi-back-to-top"></a>
 
+<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:replace="~{layout/user-default :: user-js}"></div>
 <script th:src="'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'"></script>
 
 </body>
@@ -150,11 +101,11 @@
 </html>
 
 <script>
-  function openPostcode() {
-    new daum.Postcode({
-      oncomplete: function (data) {
-        document.getElementById('address').value = data.address;
-      }
-    }).open();
-  }
+    function openPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                document.getElementById('address').value = data.address;
+            }
+        }).open();
+    }
 </script>

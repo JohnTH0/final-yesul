@@ -1,50 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<!-- 공통 헤드 -->
-<!--<head th:replace="~{fragments/user/head :: head}"></head>-->
-<link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
+<head th:replace="~{layout/user-default :: head}"></head>
 
 <body>
 
-<!-- 공통 헤더 -->
-<!--<div th:replace="~{fragments/user/header :: header}"></div>-->
+<div th:replace="~{layout/user-default :: header}"></div>
 
-<!-- Loader -->
-<div id="gi-overlay">
-  <div class="loader"></div>
-</div>
-
-<!-- Breadcrumb start -->
-<div class="gi-breadcrumb m-b-40">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="row gi_breadcrumb_inner">
-          <div class="col-md-6 col-sm-12">
-            <h2 class="gi-breadcrumb-title">Wishlist</h2>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <!-- gi-breadcrumb-list start -->
-            <ul class="gi-breadcrumb-list">
-              <li class="gi-breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="gi-breadcrumb-item active">Wishlist</li>
-            </ul>
-            <!-- gi-breadcrumb-list end -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Breadcrumb end -->
-
-<!-- User Wishlist section -->
 <section class="gi-Wishlist padding-tb-40">
   <div class="container">
     <div class="row mb-minus-24px">
+      <div class="col-lg-3 col-md-12 mb-24">
+        <div class="gi-sidebar-wrap gi-border-box gi-sticky-sidebar">
+          <div class="gi-vendor-block-items">
+            <ul>
+              <li><a th:href="@{/user/profile}">내정보</a></li>
+              <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
+              <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
+              <li><a th:href="@{/user/like-post}">좋아요 한 글 보기</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-      <!-- 좋아요 리스트 -->
       <div class="col-lg-9 col-md-12 mb-24">
         <div class="gi-vendor-dashboard-card">
           <div class="gi-vendor-card-header">
@@ -62,22 +38,17 @@
               </tr>
               </thead>
               <tbody>
-              <tr th:each="dto : ${likePosts}">
-                <!-- 1) ID -->
+              <tr th:each="dto : ${likePosts}"
+                  th:data-post-url="@{/community/postDetail(id=${dto.postId})}">
                 <td th:text="${dto.postId}"></td>
-
-                <!-- 2) 썸네일 -->
                 <td>
-                  <img th:src="@{${dto.thumbnail}}" class="prod-img" alt="thumbnail"/>
+                  <img th:src="@{${dto.thumbnail}}" class="prod-img" alt="thumbnail" width="48" height="48" style="object-fit: cover;"/>
                 </td>
 
-                <!-- 3) 제목 -->
                 <td th:text="${dto.subject}"></td>
 
-                <!-- 4) 날짜 포맷 -->
-                <td th:text="${#dates.format(dto.createdAt, 'yyyy년MM월dd일')}"></td>
+                <td th:text="${#temporals.format(dto.createdAt, 'yyyy년 MM월 dd일')}"></td>
 
-                <!-- 5) 액션: 빨간 × 버튼만 -->
                 <td>
                   <a href="javascript:void(0)"
                      th:attr="data-post-id=${dto.postId}"
@@ -96,22 +67,24 @@
 
 <a class="gi-back-to-top"></a>
 
-<!-- 공통 feature -->
-<div th:fragment="feature">
-  <div th:replace="~{fragments/user/feature :: feature}"></div>
-</div>
+<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:replace="~{layout/user-default :: user-js}"></div>
 
-<!-- 공통 푸터 -->
-<div th:fragment="footer">
-  <div th:replace="~{fragments/user/footer :: footer}"></div>
-</div>
-
-<!-- 공통 js -->
-<div th:fragment="js">
-  <div th:replace="~{fragments/user/js :: js}"></div>
-</div>
+</body>
+</html>
 
 <script>
+  $(document).ready(function() {
+    $(".clickable-row").click(function() {
+      var url = $(this).data("post-url"); // 또는 $(this).attr("data-post-url");
+
+      if (url) {
+        window.location.href = url;
+      }
+    });
+  });
+
   document.querySelectorAll('.btn-unlike').forEach(btn => {
     btn.addEventListener('click', () => {
       const postId = btn.getAttribute('data-post-id');
@@ -119,7 +92,6 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-          // CSRF 토큰 관련 라인 모두 삭제
         }
       })
         .then(res => {
@@ -131,10 +103,3 @@
 </script>
 
 
-</body>
-
-</html>
-
-</body>
-
-</html>

@@ -1,31 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/user/head :: head}"></head>
+<head th:replace="~{layout/user-default :: head}"></head>
 <link rel="stylesheet" th:href="@{/assets/css/user-mypage.css}">
-<link rel="stylesheet" id="main_style" th:href="@{/assets/css/style.css}">
-<body>
-<div th:replace="~{fragments/user/header :: header}"></div>
 
-<div class="gi-breadcrumb m-b-40">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="row gi_breadcrumb_inner">
-          <div class="col-md-6 col-sm-12">
-            <h2 class="gi-breadcrumb-title">User Profile</h2>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <ul class="gi-breadcrumb-list">
-              <li class="gi-breadcrumb-item"><a th:href="@{/}">Home</a></li>
-              <li class="gi-breadcrumb-item active">Profile</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<body>
+
+<div th:replace="~{layout/user-default :: header}"></div>
 
 <section class="gi-vendor-profile padding-tb-40">
   <div class="container">
@@ -37,7 +17,7 @@
               <li><a th:href="@{/user/profile}">내정보</a></li>
               <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
               <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
-              <li><a th:href="@{/user/user-like-post}">좋아요 한 글 보기</a></li>
+              <li><a th:href="@{/user/like-post}">좋아요 한 글 보기</a></li>
             </ul>
           </div>
         </div>
@@ -119,19 +99,11 @@
   </div>
 </section>
 
-<div th:fragment="feature">
-  <div th:replace="~{fragments/user/feature :: feature}"></div>
-</div>
+<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:replace="~{layout/user-default :: user-js}"></div>
 
-<!-- 공통 푸터 -->
-<div th:fragment="footer">
-  <div th:replace="~{fragments/user/footer :: footer}"></div>
-</div>
-
-<!-- 공통 js -->
-<div th:fragment="js">
-  <div th:replace="~{fragments/user/js :: js}"></div>
-</div>
+<a class="gi-back-to-top"></a>
 
 </body>
 

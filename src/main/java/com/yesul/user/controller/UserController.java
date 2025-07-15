@@ -217,10 +217,9 @@ public class UserController {
         }
 
         if (!passwordEncoder.matches(dto.getCurrentPassword(), principalDetails.getPassword())) {
+
             bindingResult.rejectValue("currentPassword", "wrongPassword", "현재 비밀번호가 올바르지 않습니다.");
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.passwordResetDto",
-                    bindingResult);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordResetDto", bindingResult);
             redirectAttributes.addFlashAttribute("passwordResetDto", dto);
             return "redirect:/user/change-password";
         }
@@ -230,7 +229,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "비밀번호 변경 중 오류가 발생했습니다.");
-            return "redirect:/user/reset-password";
+            return "redirect:/user/change-password";
         }
 
         return "redirect:/user/profile";

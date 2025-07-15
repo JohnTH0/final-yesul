@@ -1,34 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{layout/user-default :: head('회원 가입')}"></head>
+<head th:replace="~{layout/user-default :: head}"></head>
+<link rel="stylesheet" th:href="@{/assets/css/user-mypage.css}">
 
 <body>
+
 <div th:replace="~{layout/user-default :: header}"></div>
-
-<div id="gi-overlay">
-  <div class="loader"></div>
-</div>
-
-<div class="gi-breadcrumb m-b-40">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="row gi_breadcrumb_inner">
-          <div class="col-md-6 col-sm-12">
-            <h2 class="gi-breadcrumb-title">Register Page</h2>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <ul class="gi-breadcrumb-list">
-              <li class="gi-breadcrumb-item"><a th:href="@{/}">Home</a></li>
-              <li class="gi-breadcrumb-item active">Register Page</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <section class="gi-register padding-tb-40">
   <div class="container">
@@ -108,16 +85,12 @@
     </div>
   </div>
 </div>
-
-<div th:replace="~{layout/user-default :: footer}"></div>
-
-<div th:replace="~{layout/user-default :: feature}"></div>
-
-<div th:replace="~{layout/user-default :: scripts}"></div>
-<script th:src="'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'"></script>
-
 <a class="gi-back-to-top"></a>
 
+<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:replace="~{layout/user-default :: user-js}"></div>
+<script th:src="'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'"></script>
 </body>
 
 </html>

@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LikePostDto {
-    private Long postId;            // 게시글 PK
-    private String subject;         // post.title
-    private String thumbnail;       // post.thumbnail
-    private LocalDateTime createdAt;// 좋아요 생성일
+    private Long postId;
+    private String subject;
+    private String thumbnail;
+    private LocalDateTime createdAt;
 }
