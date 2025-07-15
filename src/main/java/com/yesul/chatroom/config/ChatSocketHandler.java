@@ -6,6 +6,9 @@ import com.yesul.chatroom.model.dto.request.MessageRequestDto;
 import com.yesul.chatroom.model.dto.response.MessageResponseDto;
 import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.service.MessageService;
+import com.yesul.notification.model.dto.request.CreateNotificationRequestDto;
+import com.yesul.notification.model.entity.enums.NotificationType;
+import com.yesul.notification.service.NotificationService;
 import com.yesul.user.service.PrincipalDetails;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +29,7 @@ public class ChatSocketHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
     private final MessageService messageService;
+    private final NotificationService notificationService;
     // userId -> WebSocketSession
     private final Map<Long, WebSocketSession> sessions = new HashMap<>();
 
@@ -48,11 +52,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             } else if (principalObj instanceof LoginAdmin) {
                 loginAdmin = (LoginAdmin) principalObj;
             }
-        }
-
-        if (principalDetails == null && loginAdmin == null) {
-            session.close();
-            return;
         }
 
         Long userId = principalDetails != null ? principalDetails.getUser().getId() : loginAdmin.getId();
@@ -88,11 +87,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             }
         }
 
-        if (principalDetails == null && loginAdmin == null) {
-            session.close();
-            return;
-        }
-
         Long senderId = principalDetails != null
                 ? principalDetails.getUser().getId()
                 : loginAdmin.getId();
@@ -124,6 +118,20 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         } else {
             log.info("송신자 세션 없음: {}", senderId);
         }
+
+        String content = messageResponseDto.getReceiverType() == Type.ADMIN
+                ? "새로운 문의가 도착했습니다."
+                : "관리자의 답변이 도착했습니다.";
+        notificationService.sendNotification(CreateNotificationRequestDto.builder()
+                .senderId(senderId)
+                .senderType(messageRequestDto.getSenderType())
+                .receiverId(messageResponseDto.getReceiverId())
+                .receiverType(messageResponseDto.getReceiverType())
+                .targetId(messageRequestDto.getChatRoomId())
+                .type(NotificationType.CHAT)
+                .content(content)
+                .build());
+
     }
 
 
@@ -131,5 +139,4 @@ public class ChatSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         sessions.entrySet().removeIf(entry -> entry.getValue().equals(session));
     }
-
 }

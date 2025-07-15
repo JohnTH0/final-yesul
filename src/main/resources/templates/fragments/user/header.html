@@ -66,16 +66,32 @@
                 </a>
                 <!-- Header wishlist End -->
                 <!-- Header Cart Start -->
-                <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="Cart">
-                  <div class="header-icon">
+                <!-- 종 아이콘 -->
+                <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="알림">
+                  <div class="header-icon" style="position: relative;">
                     <i class="fi-rr-comments-question"></i>
-                    <span class="main-label-note-new"></span>
+                    <span id="header-notify-badge"
+                          style="
+        position: absolute;
+        top: -4px;
+        right: -8px;
+        min-width: 16px;
+        height: 16px;
+        background: red;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 16px;
+      ">
+
+    </span>
                   </div>
                   <div class="gi-btn-desc">
-                    <span class="gi-btn-title">문의</span>
-                    <span class="gi-btn-stitle"><b class="gi-cart-count">0</b>-messages</span>
+                    <span class="gi-btn-title">알림</span>
                   </div>
                 </a>
+
                 <!-- Header Cart End -->
               </div>
             </div>
@@ -307,14 +323,14 @@
     </div>
     <!-- Mobile Menu sidebar End -->
   </header>
-<!--  <script>-->
-<!--    window.addEventListener('load', function () {-->
-<!--      const overlay = document.getElementById('gi-overlay');-->
-<!--      if (overlay) {-->
-<!--        overlay.style.display = 'none';-->
-<!--      }-->
-<!--    });-->
-<!--  </script>-->
+  <script>
+    window.addEventListener('load', function () {
+      const overlay = document.getElementById('gi-overlay');
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+    });
+  </script>
   <!-- Header End  -->
 
   <!-- Cart sidebar Start -->
@@ -330,8 +346,8 @@
         </div>
         <ul class="gi-cart-pro-items">
           <li>
-<!--            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img">-->
-<!--              <img src="assets/img/product-images/25_1.jpg" alt="product"></a>-->
+            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
+              src="assets/img/product-images/25_1.jpg" alt="product"></a>
             <div class="gi-pro-content">
               <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Fresh Lichi</a>
               <span class="cart-price"><span>$25.00</span> x 1 kg</span>
@@ -342,8 +358,8 @@
             </div>
           </li>
           <li>
-<!--            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img">-->
-<!--              <img src="assets/img/product-images/17_1.jpg" alt="product"></a>-->
+            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
+              src="assets/img/product-images/17_1.jpg" alt="product"></a>
             <div class="gi-pro-content">
               <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Ginger - Organic</a>
               <span class="cart-price"><span>$5.00</span> x 1 250g</span>
@@ -354,8 +370,8 @@
             </div>
           </li>
           <li>
-<!--            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img">-->
-<!--              <img src="assets/img/product-images/2_1.jpg" alt="product"></a>-->
+            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
+              src="assets/img/product-images/2_1.jpg" alt="product"></a>
             <div class="gi-pro-content">
               <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Dates Value Pack Pouch</a>
               <span class="cart-price"><span>$59.00</span> x 1 pack</span>
@@ -386,12 +402,59 @@
             </tbody>
           </table>
         </div>
-        <div class="cart_btn">
-          <a th:href="@{/cart.html}" class="gi-btn-1">View Cart</a>
-          <a th:href="@{/checkout.html}" class="gi-btn-2">Checkout</a>
+        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+      </div>`;
+            list.appendChild(li);
+          });
+
+          attachCloseEvent();
+        });
+
+      //  실시간 알림 Push
+      const socket = new WebSocket(`ws://${location.host}/ws/notification`);
+      socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
+      socket.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (msg.type !== 'CHAT') return;
+
+        const list = document.getElementById('message-list');
+        const li = document.createElement('li');
+        li.innerHTML = `
+        <div class="icon gi-success">
+          <i class="ri-check-double-line"></i>
         </div>
-      </div>
-    </div>
+        <div class="detail">
+          <div>
+            <a href="/admin/chatroom/${msg.targetId}" class="name">${msg.senderId}</a>
+            <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+            <p class="message">${msg.content}</p>
+          </div>
+          <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+        </div>
+      `;
+        list.insertBefore(li, list.firstChild);
+
+        const badge = document.getElementById('notify-count');
+        badge.textContent = parseInt(badge.textContent) + 1;
+
+        attachCloseEvent();
+      };
+
+      // X 버튼 클릭 이벤트
+      function attachCloseEvent() {
+        document.querySelectorAll('.close-alert-btn').forEach(btn => {
+          btn.onclick = () => {
+            const li = btn.closest('li');
+            li.remove();
+
+            const badge = document.getElementById('notify-count');
+            badge.textContent = Math.max(parseInt(badge.textContent) - 1, 0);
+
+            const id = btn.dataset.id;
+            fetch(`/notifications/${id}/read`, { method: 'PATCH' });
+          };
+        });
+      }
+    </script>
   </div>
-  <!-- Cart sidebar End -->
 </div>

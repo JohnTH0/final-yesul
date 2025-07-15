@@ -149,7 +149,7 @@
 <div th:replace="fragments/user/footer :: footer"></div>
 
 <script>
-  let socket;
+  let chatWebSocket;
   const messageInput = document.getElementById('messageInput');
   const chatRoomIdInput = document.getElementById('chatRoomId');
   const sendBtn = document.getElementById('sendBtn');
@@ -239,12 +239,12 @@
       alert("방 선택 후 메시지를 입력하세요!");
       return;
     }
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
+    if (!chatWebSocket || chatWebSocket.readyState !== WebSocket.OPEN) {
       alert("WebSocket 연결 실패");
       return;
     }
 
-    socket.send(JSON.stringify({
+    chatWebSocket.send(JSON.stringify({
       chatRoomId: roomId,
       senderType: "ADMIN",
       messageContext: message,
@@ -302,7 +302,7 @@
     })
       .then(res => res.json())
       .then(data => {
-        socket.send(JSON.stringify({
+        chatWebSocket.send(JSON.stringify({
           chatRoomId: roomId,
           senderType: "ADMIN",
           messageContext: data.imageUrl,
@@ -312,9 +312,9 @@
   }
 
   function connectWebSocket(roomId) {
-    socket = new WebSocket("ws://" + window.location.host + "/ws/chat");
-    socket.onopen = () => console.log("✅ WebSocket 연결됨");
-    socket.onmessage = (event) => {
+    chatWebSocket = new WebSocket("ws://" + window.location.host + "/ws/chat");
+    chatWebSocket.onopen = () => console.log("✅ WebSocket 연결됨");
+    chatWebSocket.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       const li = buildMessageLi(msg);
       chatList.appendChild(li);

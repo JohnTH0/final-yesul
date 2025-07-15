@@ -2,6 +2,7 @@ package com.yesul.exception;
 
 import com.yesul.exception.handler.AdminNotFoundException;
 import com.yesul.exception.handler.ChatRoomNotFoundException;
+import com.yesul.exception.handler.NotificationNotFoundException;
 import com.yesul.exception.handler.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,12 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(AdminNotFoundException.class)
     public String handleAdminNotFound(AdminNotFoundException e, HttpServletRequest request) {
         log.warn("[AdminNotFoundException] {} {} - {}", request.getMethod(), request.getRequestURI(), e.getMessage());
+        return "404.html";
+    }
+
+    @ExceptionHandler(NotificationNotFoundException.class)
+    public String NotificationNotFound(NotificationNotFoundException e, HttpServletRequest request) {
+        log.warn("[NotificationNotFoundException] {} {} - {}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return "404.html";
     }
 

@@ -94,7 +94,7 @@
 <div th:replace="fragments/user/footer :: footer"></div>
 
 <script>
-  let socket;
+  let chatSocket;
   const messageInput = document.getElementById('messageInput');
   const chatRoomIdInput = document.getElementById('chatRoomId');
   const sendBtn = document.getElementById('sendBtn');
@@ -141,12 +141,12 @@
     const message = messageInput.value.trim();
     const roomId = chatRoomIdInput.value;
 
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      alert("WebSocket 연결 실패");
+    if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
+      alert("채팅 WebSocket 연결 실패");
       return;
     }
 
-    socket.send(JSON.stringify({
+    chatSocket.send(JSON.stringify({
       chatRoomId: roomId,
       receiverType: "Admin",
       messageContext: message,
@@ -156,6 +156,7 @@
     messageInput.value = '';
     fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, { method: "DELETE", credentials: "include" });
   }
+
 
   function uploadImage(input) {
     const file = input.files[0];
@@ -172,7 +173,7 @@
     })
       .then(res => res.json())
       .then(data => {
-        socket.send(JSON.stringify({
+        chatSocket.send(JSON.stringify({
           chatRoomId: roomId,
           senderType: "USER",
           messageContext: data.imageUrl,
@@ -181,10 +182,10 @@
       });
   }
 
-  function connectWebSocket(roomId) {
-    socket = new WebSocket("ws://" + window.location.host + "/ws/chat");
-    socket.onopen = () => console.log("WebSocket 연결됨");
-    socket.onmessage = (event) => {
+  function connectChatWebSocket(roomId) {
+    chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat");
+    chatSocket.onopen = () => console.log("WebSocket 연결됨");
+    chatSocket.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       const li = buildMessageLi(msg);
       chatList.appendChild(li);
@@ -256,7 +257,7 @@
   window.addEventListener("DOMContentLoaded", () => {
     const roomId = chatRoomIdInput.value;
     if (roomId) {
-      connectWebSocket(roomId);
+      connectChatWebSocket(roomId);
     }
     restoreTempMessage();
     adjustTimestamps();
