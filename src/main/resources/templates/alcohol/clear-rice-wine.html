@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 헤드 -->
+<head th:replace="~{fragments/user/head :: head}"></head>
+<style>
+  .badge {
+    font-size: 0.75rem;
+    background-color: #f5eee0;
+    color: #5a3a1b;
+    margin-right: 4px;
+    padding: 4px 6px;
+    border-radius: 6px;
+  }
+  .alcohol-card {
+    background-color: #fffaf3;
+    border: 1px solid #e6dcc4;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .alcohol-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .alcohol-card img {
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0e6d1;
+  }
+
+  .alcohol-info {
+    padding: 16px;
+    flex-grow: 1;
+  }
+
+  .alcohol-info h5 {
+    font-size: 1.1rem;
+    color: #4a2f13;
+    margin-bottom: 0.6rem;
+  }
+
+  .alcohol-info p {
+    font-size: 0.95rem;
+    color: #5e4935;
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .alcohol-price {
+    font-weight: bold;
+    color: #a25b0d;
+    margin-top: 12px;
+  }
+
+  .items {
+    font-size: 0.95rem;
+    color: #6b4c1b;
+  }
+
+  .gi-cat-icon.selected {
+    position: relative;
+    border-radius: 12px;
+    padding: 10px;
+    background-color: #fff8e6; /* 배경은 고정 */
+    z-index: 1;
+  }
+
+  /* 무지개 테두리용 가상 요소 */
+  .gi-cat-icon.selected::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: linear-gradient(270deg, #f6e6ff, #ffe8e8, #fffce0, #e6fff2, #e0f0ff, #f6e6ff);
+    background-size: 600% 600%;
+    border-radius: 14px;
+    animation: rainbowBorder 6s ease infinite;
+  }
+
+  @keyframes rainbowBorder {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .gi-cat-icon.selected .gi-cat-title {
+    color: #7a4a00;
+    font-weight: bold;
+  }
+</style>
+<body>
+
+<!-- 공통 헤더 -->
+<div th:replace="~{fragments/user/header :: header}"></div>
+
+<!-- Category section -->
+<section class="gi-category body-bg padding-tb-40 wow fadeInUp" data-wow-duration="2s">
+  <div class="container">
+    <div class="row m-b-minus-15px">
+      <div class="col-xl-12 border-content-color">
+        <div class="gi-category-block owl-carousel">
+          <div class="gi-cat-box gi-cat-box-1">
+            <div class="gi-cat-icon">
+              <div class="gi-cat-detail">
+                <a href="/alcohols/unrefined-rice-wine">
+                  <h4 class="gi-cat-title">탁주</h4>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="gi-cat-box gi-cat-box-2">
+            <div class="gi-cat-icon">
+              <div class="gi-cat-detail">
+                <a href="/alcohols/herbal-rice-wine">
+                  <h4 class="gi-cat-title">약주</h4>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="gi-cat-box gi-cat-box-3">
+            <div class="gi-cat-icon selected">
+              <div class="gi-cat-detail">
+                <a href="/alcohols/clear-rice-wine">
+                  <h4 class="gi-cat-title">청주</h4>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="gi-cat-box gi-cat-box-4">
+            <div class="gi-cat-icon">
+              <div class="gi-cat-detail">
+                <a href="/alcohols/fruit-wine">
+                  <h4 class="gi-cat-title">과실주</h4>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="gi-cat-box gi-cat-box-5">
+            <div class="gi-cat-icon">
+              <div class="gi-cat-detail">
+                <a href="/alcohols/distilled-liquor">
+                  <h4 class="gi-cat-title">증류주</h4>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="gi-cat-box gi-cat-box-6">
+            <div class="gi-cat-icon">
+              <div class="gi-cat-detail">
+                <a href="s/alcohols/liqueur">
+                  <h4 class="gi-cat-title">리큐르</h4>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Category section End -->
+
+
+
+<!-- Alcohol List Section Start -->
+<section class="alcohol-list-section padding-tb-40">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="mb-4">
+          청주 목록
+          <span class="items text-muted" style="font-size: 1rem;" th:text="'(' + ${alcohols.totalElements} + '건)'">(0건)</span>
+        </h3>
+        <div class="row">
+          <div class="col-sm-6 col-lg-4 col-xl-3 mb-4" th:each="alcohol : ${alcohols.content}">
+            <div class="alcohol-card"
+                 th:onclick="|window.location.href='/alcohols/detail/${alcohol.id}'|"
+                 style="cursor: pointer;">
+              <img th:src="@{${alcohol.image}}" alt="술 이미지">
+              <div class="alcohol-info">
+                <h5 class="card-title text-center" th:text="${alcohol.name}">술 이름</h5>
+                <p><strong>브랜드:</strong> <span th:text="${alcohol.brand}">브랜드</span></p>
+                <p>
+                  <strong>지역:</strong>
+                  <span th:text="${alcohol.province} + ' ' + ${alcohol.city}">지역</span>
+                </p>
+                <p>
+                  <strong>도수:</strong> <span th:text="${alcohol.abv}">0.0</span>%　
+                  <strong>용량:</strong> <span th:text="${alcohol.volumeMl}">500</span>ml
+                </p>
+                <div>
+                  <span class="badge badge-light border" th:if="${alcohol.sweetnessLevel >= 3}">#달콤</span>
+                  <span class="badge badge-light border" th:if="${alcohol.acidityLevel >= 3}">#산미</span>
+                  <span class="badge badge-light border" th:if="${alcohol.sparklingLevel >= 2}">#탄산</span>
+                  <span class="badge badge-light border" th:if="${alcohol.bodyLevel >= 3}">#바디감</span>
+                  <span class="badge badge-light border" th:if="${alcohol.aromaLevel >= 3}">#향긋</span>
+                  <span class="badge badge-light border" th:if="${alcohol.tanninLevel >= 3}">#떫은맛</span>
+                  <span class="badge badge-light border" th:if="${alcohol.finishLevel >= 3}">#여운</span>
+                </div>
+                <p class="alcohol-price mt-2">
+                  ₩ <span th:text="${#numbers.formatInteger(alcohol.price, 3, 'COMMA')}">15,000</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination Start -->
+        <div class="gi-pro-pagination mt-4">
+          <span th:text="'총 ' + ${alcohols.totalElements} + '건 중 ' + (${alcohols.number} + 1) + '페이지'">총 0건</span>
+          <ul class="gi-pro-pagination-inner">
+            <li th:if="${alcohols.hasPrevious()}">
+              <a th:href="@{/alcohols/unrefined-rice-wine(page=${alcohols.number - 1})}"> < </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, alcohols.totalPages - 1)}">
+              <a th:href="@{/alcohols/unrefined-rice-wine(page=${i})}"
+                 th:classappend="${i == alcohols.number} ? 'active' : ''"
+                 th:text="${i + 1}">1</a>
+            </li>
+            <li th:if="${alcohols.hasNext()}">
+              <a th:href="@{/alcohols/unrefined-rice-wine(page=${alcohols.number + 1})}"> > </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Pagination End -->
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Alcohol List Section End -->
+
+<!-- 공통 feature -->
+<div th:replace="~{fragments/user/feature :: feature}"></div>
+
+<!-- 공통 푸터 -->
+<div th:replace="~{fragments/user/footer :: footer}"></div>
+
+<!-- 공통 js -->
+<div th:replace="~{fragments/user/js :: js}"></div>
+
+</body>
+
+</html>

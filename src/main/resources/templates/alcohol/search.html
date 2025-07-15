@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 헤드 -->
+<head th:replace="~{fragments/user/head :: head}"></head>
+<style>
+  .badge {
+    font-size: 0.75rem;
+    background-color: #f5eee0;
+    color: #5a3a1b;
+    margin-right: 4px;
+    padding: 4px 6px;
+    border-radius: 6px;
+  }
+  .alcohol-card {
+    background-color: #fffaf3;
+    border: 1px solid #e6dcc4;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .alcohol-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .alcohol-card img {
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0e6d1;
+  }
+
+  .alcohol-info {
+    padding: 16px;
+    flex-grow: 1;
+  }
+
+  .alcohol-info h5 {
+    font-size: 1.1rem;
+    color: #4a2f13;
+    margin-bottom: 0.6rem;
+  }
+
+  .alcohol-info p {
+    font-size: 0.95rem;
+    color: #5e4935;
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .alcohol-price {
+    font-weight: bold;
+    color: #a25b0d;
+    margin-top: 12px;
+  }
+
+  .items {
+    font-size: 0.95rem;
+    color: #6b4c1b;
+  }
+
+  #noResultModal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-content {
+    position: relative;
+    margin: 15% auto;
+    background: #fffaf3;
+    padding: 20px 30px;
+    border-radius: 12px;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    color: #5a3a1b;
+    font-size: 1rem;
+    z-index: 1;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: #8a4f18;
+    cursor: pointer;
+  }
+</style>
+<body>
+
+<!-- 공통 헤더 -->
+<div th:replace="~{fragments/user/header :: header}"></div>
+
+<!-- Alcohol List Section Start -->
+<section class="alcohol-list-section padding-tb-40">
+  <span id="noResultFlag" th:if="${alcohols.totalElements == 0}" style="display:none;"></span>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="mb-4">
+  <span th:if="${condition.name != null}">
+    '<span th:text="${condition.name}">검색어</span>' 검색 결과
+  </span>
+          <span class="items text-muted" style="font-size: 1rem;" th:text="'(총 ' + ${alcohols.totalElements} + '건)'">(0건)</span>
+        </h3>
+        <div class="row">
+          <div class="col-sm-6 col-lg-4 col-xl-3 mb-4" th:each="alcohol : ${alcohols.content}">
+            <div class="alcohol-card"
+                 th:onclick="|window.location.href='/alcohols/detail/${alcohol.id}'|"
+                 style="cursor: pointer;">
+              <img th:src="@{${alcohol.image}}" alt="술 이미지">
+              <div class="alcohol-info">
+                <h5 class="card-title text-center" th:text="${alcohol.name}">술 이름</h5>
+                <p><strong>브랜드:</strong> <span th:text="${alcohol.brand}">브랜드</span></p>
+                <p>
+                  <strong>지역:</strong>
+                  <span th:text="${alcohol.province} + ' ' + ${alcohol.city}">지역</span>
+                </p>
+                <p>
+                  <strong>도수:</strong> <span th:text="${alcohol.abv}">0.0</span>%　
+                  <strong>용량:</strong> <span th:text="${alcohol.volumeMl}">500</span>ml
+                </p>
+                <div>
+                  <span class="badge badge-light border" th:if="${alcohol.sweetnessLevel >= 3}">#달콤</span>
+                  <span class="badge badge-light border" th:if="${alcohol.acidityLevel >= 3}">#산미</span>
+                  <span class="badge badge-light border" th:if="${alcohol.sparklingLevel >= 2}">#탄산</span>
+                  <span class="badge badge-light border" th:if="${alcohol.bodyLevel >= 3}">#바디감</span>
+                  <span class="badge badge-light border" th:if="${alcohol.aromaLevel >= 3}">#향긋</span>
+                  <span class="badge badge-light border" th:if="${alcohol.tanninLevel >= 3}">#떫은맛</span>
+                  <span class="badge badge-light border" th:if="${alcohol.finishLevel >= 3}">#여운</span>
+                </div>
+                <p class="alcohol-price mt-2">
+                  ₩ <span th:text="${#numbers.formatInteger(alcohol.price, 3, 'COMMA')}">15,000</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination Start -->
+        <div class="gi-pro-pagination mt-4">
+          <span th:text="'총 ' + ${alcohols.totalElements} + '건 중 ' + (${alcohols.number} + 1) + '페이지'">총 0건</span>
+          <ul class="gi-pro-pagination-inner">
+            <li th:if="${alcohols.hasPrevious()}">
+              <a th:href="@{/alcohols/unrefined-rice-wine(page=${alcohols.number - 1})}"> < </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, alcohols.totalPages - 1)}">
+              <a th:href="@{/alcohols/unrefined-rice-wine(page=${i})}"
+                 th:classappend="${i == alcohols.number} ? 'active' : ''"
+                 th:text="${i + 1}">1</a>
+            </li>
+            <li th:if="${alcohols.hasNext()}">
+              <a th:href="@{/alcohols/unrefined-rice-wine(page=${alcohols.number + 1})}"> > </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Pagination End -->
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Alcohol List Section End -->
+
+<div id="noResultModal" style="display: none;" onclick="closeModal(event)">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal(event)">&times;</button>
+    <p>검색 결과가 없습니다.<br>다시 검색해 주세요.</p>
+  </div>
+</div>
+
+<!-- 공통 feature -->
+<div th:replace="~{fragments/user/feature :: feature}"></div>
+
+<!-- 공통 푸터 -->
+<div th:replace="~{fragments/user/footer :: footer}"></div>
+
+<!-- 공통 js -->
+<div th:replace="~{fragments/user/js :: js}"></div>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const hasNoResult = [[${alcohols.totalElements == 0}]];
+  if (hasNoResult) {
+    document.getElementById('noResultModal').style.display = 'block';
+  }
+
+  function closeModal(event) {
+    if (
+      event.target.id === 'noResultModal' ||
+      event.target.classList.contains('modal-overlay') ||
+      event.target.classList.contains('modal-close')
+    ) {
+      document.getElementById('noResultModal').style.display = 'none';
+    }
+  }
+  /*]]>*/
+</script>
+
+</body>
+
+</html>
