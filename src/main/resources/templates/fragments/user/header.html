@@ -314,77 +314,124 @@
   <!-- Header End  -->
 
   <!-- Cart sidebar Start -->
-  <div class="gi-side-cart-overlay"></div>
-  <div id="gi-side-cart" class="gi-side-cart">
-    <div class="gi-cart-inner">
-      <div class="gi-cart-top">
-        <div class="gi-cart-title">
-          <span class="cart_title">문의 채팅</span>
-          <a href="javascript:void(0)" class="gi-cart-close">
-            <i class="fi-rr-cross-small"></i>
-          </a>
+  <div th:fragment="adminNotifySidebar">
+    <!-- 오버레이 -->
+    <div class="gi-side-cart-overlay"></div>
+
+    <!-- 사이드 알림 패널 -->
+    <div id="gi-side-cart" class="gi-side-cart">
+      <div class="gi-cart-inner">
+        <!-- 상단 타이틀 -->
+        <div class="gi-cart-top">
+          <div class="gi-cart-title">
+            <span class="cart_title">알림센터</span>
+            <span id="notify-count" class="main-label-note-new">0</span>
+            <a href="javascript:void(0)" class="gi-cart-close">
+              <i class="fi-rr-cross-small"></i>
+            </a>
+          </div>
+
+          <!-- 탭 버튼 -->
+          <ul class="nav nav-tabs">
+            <li>
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#alert-tab" type="button">
+                알림
+              </button>
+            </li>
+            <li>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#message-tab" type="button">
+                1:1 문의
+              </button>
+            </li>
+          </ul>
         </div>
-        <ul class="gi-cart-pro-items">
-          <li>
-            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
-              src="assets/img/product-images/25_1.jpg" alt="product"></a>
-            <div class="gi-pro-content">
-              <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Fresh Lichi</a>
-              <span class="cart-price"><span>$25.00</span> x 1 kg</span>
-              <div class="qty-plus-minus">
-                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
-              </div>
-              <a href="javascript:void(0)" class="remove">×</a>
+
+        <!-- 탭 컨텐츠 -->
+        <div class="tab-content">
+          <!-- 일반 알림 탭 -->
+          <div id="alert-tab" class="tab-pane fade show active" role="tabpanel">
+            <ul id="alert-list">
+              <li class="check">
+              </li>
+            </ul>
+          </div>
+
+          <!-- 1:1 문의 탭 -->
+          <div id="message-tab" class="tab-pane fade" role="tabpanel">
+            <div class="gi-message-list">
+              <ul id="message-list">
+                <li class="check">
+                </li>
+              </ul>
             </div>
-          </li>
-          <li>
-            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
-              src="assets/img/product-images/17_1.jpg" alt="product"></a>
-            <div class="gi-pro-content">
-              <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Ginger - Organic</a>
-              <span class="cart-price"><span>$5.00</span> x 1 250g</span>
-              <div class="qty-plus-minus">
-                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
-              </div>
-              <a href="javascript:void(0)" class="remove">×</a>
-            </div>
-          </li>
-          <li>
-            <a th:href="@{/product-left-sidebar.html}" class="gi-pro-img"><img
-              src="assets/img/product-images/2_1.jpg" alt="product"></a>
-            <div class="gi-pro-content">
-              <a th:href="@{/product-left-sidebar.html}" class="cart-pro-title">Dates Value Pack Pouch</a>
-              <span class="cart-price"><span>$59.00</span> x 1 pack</span>
-              <div class="qty-plus-minus">
-                <input class="qty-input" type="text" name="gi-qtybtn" value="1">
-              </div>
-              <a href="javascript:void(0)" class="remove">×</a>
-            </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
-      <div class="gi-cart-bottom">
-        <div class="cart-sub-total">
-          <table class="table cart-table">
-            <tbody>
-            <tr>
-              <td class="text-left">Sub-Total :</td>
-              <td class="text-right">$300.00</td>
-            </tr>
-            <tr>
-              <td class="text-left">VAT (20%) :</td>
-              <td class="text-right">$60.00</td>
-            </tr>
-            <tr>
-              <td class="text-left">Total :</td>
-              <td class="text-right primary-color">$360.00</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
-      </div>`;
-            list.appendChild(li);
+    </div>
+
+    <!--  알림 닫기용 버튼 스타일 -->
+    <style>
+      .gi-message-list,
+      #message-list {
+        display: flex;
+        flex-direction: column !important;
+      }
+
+      .close-alert-btn {
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 8px;
+        color: #888;
+        transition: color 0.2s ease;
+      }
+      .close-alert-btn:hover {
+        color: #ff4d4f;
+      }
+      .detail {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .detail div {
+        flex: 1;
+      }
+    </style>
+
+
+
+
+    <!-- Cart sidebar End -->
+    <script th:inline="javascript">
+      const receiverId = [[${receiverId}]];
+      const receiverType = 'USER';
+
+      // [1:1 문의] 초기 안 읽은 알림 가져오기
+      fetch(`/notifications/${receiverType}/${receiverId}`)
+        .then(res => res.json())
+        .then(data => {
+          const count = data.length;
+          document.getElementById('notify-count').textContent = count;
+
+
+          const list = document.getElementById('message-list');
+          data.forEach(msg => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+            <div class="icon gi-success">
+              <i class="ri-check-double-line"></i>
+            </div>
+            <div class="detail">
+              <div>
+                <a href="/users/chatroom?adminId=${msg.senderId}" class="name">${msg.senderId}</a>
+                <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+                <p class="message">${msg.content}</p>
+              </div>
+              <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+            </div>
+          `;
+            list.insertBefore(li, list.firstChild);
+
           });
 
           attachCloseEvent();
