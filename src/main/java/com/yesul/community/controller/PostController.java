@@ -2,6 +2,8 @@ package com.yesul.community.controller;
 
 import com.yesul.community.model.dto.PostRequestDto;
 import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.model.entity.enums.PointType;
+import com.yesul.community.service.PointService;
 import com.yesul.community.service.PostImageService;
 import com.yesul.community.service.PostService;
 import com.yesul.user.service.PrincipalDetails;
@@ -22,6 +24,7 @@ public class PostController {
 
     private final PostService postService;
     private final PostImageService postImageService;
+    private final PointService pointService;
 
     @GetMapping
     public String redirectToRecipe() {
@@ -110,6 +113,9 @@ public class PostController {
         }
 
         PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
+
+        pointService.earnPoint(userId, PointType.POST_CREATE, String.valueOf(createdPost.getId()));
+
         return "redirect:/community/" + createdPost.getBoardName() + "/" + createdPost.getId();
     }
 
@@ -186,7 +192,7 @@ public class PostController {
 
         Long userId = principalDetails.getUser().getId();
         postService.deletePost(id, userId);
-
+        pointService.usePoint(userId, PointType.POST_CREATE);
         return "redirect:/community/" + boardName;
     }
 }

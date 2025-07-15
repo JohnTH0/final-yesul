@@ -19,7 +19,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Override
-    public void save(CommentRequestDto dto, long userId) {
+    public Long save(CommentRequestDto dto, long userId) {
         Post post = postRepository.findById(dto.getPostId())
                 .orElseThrow(() -> new RuntimeException("해당 게시글을 찾을 수 없습니다."));
 
@@ -33,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
                 .build();
 
         commentRepository.save(comment);
+        return comment.getId();
     }
 
     @Override

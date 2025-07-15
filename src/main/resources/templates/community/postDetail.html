@@ -1,17 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>게시글 상세</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
-  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
-  <!-- site Favicon -->
-  <link rel="icon" th:href="@{/assets/img/yesul/favicon/favicon.png}" sizes="32x32">
-  <!-- css Icon Font -->
-  <link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
-
+<head th:replace="~{layout/user-default :: head}"></head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
   <style>
     .like-btn { cursor: pointer; font-size: 1.5rem; }
     .like-btn.liked {}
@@ -84,7 +74,7 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/user/header :: header}"></div>
+<div th:replace="~{layout/user-default :: header}"></div>
 
 <section class="gi-blog padding-tb-40">
   <div class="container" style="max-width: 700px;">
@@ -162,9 +152,9 @@
   </div>
 </section>
 
-<div th:insert="~{fragments/user/footer :: footer}"></div>
-
-<script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>
+<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:replace="~{layout/user-default :: user-js}"></div>
 <script th:inline="javascript">
   document.addEventListener('DOMContentLoaded', function() {
     const likeBtn = document.getElementById('likeBtn');
