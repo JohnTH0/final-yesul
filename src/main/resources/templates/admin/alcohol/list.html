@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
+    <style>
+        .alcohol-list-section .card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .alcohol-list-section .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .alcohol-list-section .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .alcohol-list-section .card-body {
+            padding: 16px;
+        }
+
+        .alcohol-list-section .card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding-left: 0;
+            gap: 6px;
+            margin-top: 20px;
+        }
+
+        .page-item {
+            display: inline-block;
+            overflow: visible !important;
+        }
+
+        .page-item.active .page-link {
+            background-color: #e6e6e6;
+            color: #111;
+            border-color: #ddd;
+            font-weight: bold;
+            border-radius: 6px !important;
+        }
+
+        .pagination li {
+            display: inline-block;
+        }
+
+        .pagination li a {
+            display: block;
+            padding: 6px 12px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .pagination li.active a {
+            background-color: #343a40;
+            color: white;
+            border-color: #343a40;
+        }
+
+        .gi-page-title h5 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .page-link {
+            display: block;
+            padding: 6px 12px;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #fff;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .page-link:hover {
+            background-color: #f1f1f1;
+            color: #000;
+        }
+
+        .gi-breadcrumb ul {
+            padding-left: 0;
+            list-style: none;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<main class="wrapper sb-default ecom">
+    <div th:replace="fragments/admin/header :: adminHeader"></div>
+    <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+    <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
+
+    <!-- main content -->
+    <div class="gi-main-content">
+        <div class="container-fluid" style="min-height: 100vh;">
+            <!-- Page title & breadcrumb -->
+            <div class="gi-page-title gi-page-title-2">
+                <div class="gi-breadcrumb">
+                    <h5>주류관리</h5>
+                    <ul>
+                        <li>주류관리</li>
+                        <li>목록조회</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 주류 카드 목록 -->
+            <section class="alcohol-list-section py-4">
+                <div class="container">
+                    <div class="row">
+                        <!-- 한 개의 주류 카드 -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3 mb-4" th:each="alcohol : ${alcoholList}">
+                            <div class="card h-100 shadow-sm"
+                                 th:onclick="|window.location.href='/admin/alcohols/${alcohol.id}'|"
+                                 style="cursor: pointer; transition: transform 0.2s;">
+                                <img th:src="@{${alcohol.image}}" alt="술 이미지"
+                                     class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title text-center" th:text="${alcohol.name}">술 이름</h5>
+                                    <p class="mb-1"><strong>브랜드:</strong> <span th:text="${alcohol.brand}">브랜드</span>
+                                    </p>
+                                    <p class="mb-1">
+                                        <strong>지역:</strong>
+                                        <span th:text="${alcohol.province} + ' ' + ${alcohol.city}">지역</span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <strong>도수:</strong> <span th:text="${alcohol.abv}">0.0</span>%　
+                                        <strong>용량:</strong> <span th:text="${alcohol.volumeMl}">500</span>ml
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${alcoholList.hasPrevious()}">
+                            <a th:href="@{|?page=${alcoholList.number - 1}|}">이전</a>
+                        </li>
+
+                        <li th:each="i : ${#numbers.sequence(
+                      T(java.lang.Math).max(0, alcoholList.number - 2),
+                      T(java.lang.Math).min(alcoholList.totalPages - 1, alcoholList.number + 2))}"
+                            th:class="'page-item' + (${alcoholList.number} == ${i} ? ' active' : '')">
+                            <a class="page-link" th:href="@{|?page=${i}|}" th:text="${i + 1}">1</a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${alcoholList.hasNext()}">
+                            <a th:href="@{|?page=${alcoholList.number + 1}|}">다음</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div th:replace="fragments/admin/footer :: adminFooter"></div>
+    <div th:replace="fragments/admin/script :: adminScripts"></div>
+</main>
+</body>
+</html>

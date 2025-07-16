@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
+    <style>
+        .alcohol-detail-container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 40px;
+        }
+
+        .detail-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 45px;
+        }
+
+        .image-section {
+            flex: 1 1 40%;
+        }
+
+        .image-section img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .image-section img.zoomed {
+            transform: scale(2);
+            cursor: zoom-out;
+            z-index: 1000;
+            position: relative;
+        }
+
+        .info-section {
+            flex: 1 1 55%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 12px;
+        }
+
+        .info-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .info-item strong {
+            min-width: 80px;
+            color: #666;
+        }
+
+        .section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+            border-left: 4px solid #f0c27b;
+            padding-left: 12px;
+        }
+
+        .section p {
+            line-height: 1.6;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .chart-wrapper {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        #tasteRadar {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 1 / 1;
+        }
+
+        @media screen and (max-width: 768px) {
+            .detail-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="wrapper sb-default ecom">
+    <div th:replace="fragments/admin/header :: adminHeader"></div>
+    <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+    <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
+
+    <!-- main content -->
+    <div class="gi-main-content">
+        <div class="container-fluid" style="min-height: 100vh;">
+            <!-- Page title & breadcrumb -->
+            <div class="gi-page-title gi-page-title-2">
+                <div class="gi-breadcrumb">
+                    <h5>주류관리</h5>
+                    <ul>
+                        <li>주류관리</li>
+                        <li>목록조회</li>
+                        <li>상세조회</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alcohol-detail-container">
+
+                <!-- 상세 정보 -->
+                <div class="detail-grid">
+                    <div class="image-section">
+                        <img id="zoomImage" th:src="@{${alcohol.image}}" alt="술 이미지">
+                    </div>
+
+                    <div class="info-section">
+                        <div class="info-title" th:text="${alcohol.name}">술 이름</div>
+                        <div class="info-item"><strong>브랜드</strong><span th:text="${alcohol.brand}">브랜드</span></div>
+                        <div class="info-item"><strong>도수</strong><span th:text="${alcohol.abv} + '%'">0.0%</span></div>
+                        <div class="info-item"><strong>용량</strong><span
+                                th:text="${alcohol.volumeMl} + 'ml'">500ml</span></div>
+                        <div class="info-item"><strong>지역</strong><span
+                                th:text="${alcohol.province} + ' ' + ${alcohol.city}">지역</span></div>
+                        <div class="info-item"><strong>종류</strong><span th:text="${alcohol.type}">탁주</span></div>
+                        <div class="info-item"><strong>재료</strong><span th:text="${alcohol.ingredients}">쌀, 누룩</span>
+                        </div>
+                        <div class="info-item"><strong>가격</strong>₩<span
+                                th:text="${#numbers.formatInteger(alcohol.price, 3, 'COMMA')}">15,000</span></div>
+                    </div>
+                </div>
+
+                <!-- 풍미 그래프 -->
+                <div class="section">
+                    <h4>풍미 그래프</h4>
+                    <p style="font-size: 0.9rem; color: #777; margin-top: -10px;">
+                        술의 특성을 0~5 단계로 시각화했습니다.
+                    </p>
+                    <div class="chart-wrapper">
+                        <canvas id="tasteRadar"></canvas>
+                    </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const ctx = document.getElementById('tasteRadar').getContext('2d');
+
+                        const data = {
+                            labels: ['단맛', '산미', '바디감', '향', '떫은맛', '여운', '탄산감'],
+                            datasets: [{
+                                label: '풍미 레벨 (0~5)',
+                                data: [
+                                    [[${alcohol.sweetnessLevel}]],
+                                    [[${alcohol.acidityLevel}]],
+                                    [[${alcohol.bodyLevel}]],
+                                    [[${alcohol.aromaLevel}]],
+                                    [[${alcohol.tanninLevel}]],
+                                    [[${alcohol.finishLevel}]],
+                                    [[${alcohol.sparklingLevel}]]
+                                ],
+                                fill: true,
+                                backgroundColor: 'rgba(162, 91, 13, 0.3)',
+                                borderColor: 'rgba(162, 91, 13, 0.8)',
+                                pointBackgroundColor: 'rgba(162, 91, 13, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(162, 91, 13, 1)',
+                                borderWidth: 1, // 선 두께 얇게
+                                pointRadius: 0, // 점 제거
+                                pointHoverRadius: 0, // 호버시 점도 제거
+                            }]
+                        };
+
+                        const options = {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scales: {
+                                r: {
+                                    min: 0,
+                                    max: 5,
+                                    ticks: {stepSize: 1},
+                                    pointLabels: {font: {size: 13}}
+                                }
+                            },
+                            plugins: {
+                                legend: {display: false},
+                                tooltip: {backgroundColor: 'rgba(162, 91, 13, 0.8)', bodyFont: {size: 14}}
+                            }
+                        };
+
+                        new Chart(ctx, {type: 'radar', data: data, options: options});
+                    });
+                </script>
+
+                <!-- 풍미 설명 -->
+                <div class="section">
+                    <h4>풍미 설명</h4>
+                    <p th:text="${alcohol.tasteDescription}">은은한 단맛과 상큼한 산미가 어우러진 부드러운 풍미</p>
+                </div>
+
+                <!-- 술 소개 -->
+                <div class="section">
+                    <h4>술 소개</h4>
+                    <p th:text="${alcohol.description}">전통적인 방식으로 양조된 이 술은...</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/admin/footer :: adminFooter"></div>
+    <div th:replace="fragments/admin/script :: adminScripts"></div>
+
+</main>
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const img = document.getElementById('zoomImage');
+        img.addEventListener('click', function () {
+            img.classList.toggle('zoomed');
+        });
+    });
+</script>

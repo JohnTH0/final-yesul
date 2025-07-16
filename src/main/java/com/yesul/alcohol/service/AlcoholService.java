@@ -50,4 +50,9 @@ public class AlcoholService {
     public Map<String, Object> registAlcohol(AlcoholDto alcohol) {
         return Map.of();
     }
+
+    public Page<AlcoholDto> getAlcoholList(Pageable pageable) {
+        Page<AlcoholDto> alcoholListPageable = alcoholRepository.findAlcoholList(pageable);
+        return alcoholListPageable;
+    }
 }
