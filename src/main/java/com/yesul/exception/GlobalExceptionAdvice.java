@@ -1,9 +1,6 @@
 package com.yesul.exception;
 
-import com.yesul.exception.handler.AdminNotFoundException;
-import com.yesul.exception.handler.ChatRoomNotFoundException;
-import com.yesul.exception.handler.NotificationNotFoundException;
-import com.yesul.exception.handler.UserNotFoundException;
+import com.yesul.exception.handler.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +12,6 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFound(UserNotFoundException e, HttpServletRequest request) {
-        // 로그 남기기
         log.warn("[UserNotFoundException] {} {} - {}", request.getMethod(), request.getRequestURI(), e.getMessage());
         return "404.html";
     }
@@ -37,6 +33,21 @@ public class GlobalExceptionAdvice {
         return "404.html";
     }
 
+    @ExceptionHandler(DuplicateException.class)
+    public String handleConflict(DuplicateException e, HttpServletRequest req) {
+        log.warn("[409 DuplicateException] {} {} - {}", req.getMethod(), req.getRequestURI(), e.getMessage());
+        return "409";
+    }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public String handleUnauthorized(UnauthorizedException e, HttpServletRequest req) {
+        log.warn("[401 UnauthorizedException] {} {} - {}", req.getMethod(), req.getRequestURI(), e.getMessage());
+        return "401";
+    }
 
+    @ExceptionHandler(Exception.class)
+    public String handleServerError(Exception e, HttpServletRequest req) {
+        log.error("[500] {} {} - {}", req.getMethod(), req.getRequestURI(), e.getMessage(), e);
+        return "500";
+    }
 }

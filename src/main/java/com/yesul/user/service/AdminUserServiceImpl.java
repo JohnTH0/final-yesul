@@ -1,6 +1,6 @@
 package com.yesul.user.service;
 
-import com.yesul.user.model.dto.UserListDto;
+import com.yesul.user.model.dto.response.UserListResponseDto;
 import com.yesul.exception.handler.UpdateFailedException;
 import com.yesul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,10 @@ import static com.yesul.admin.model.enums.StatusType.*;
 public class AdminUserServiceImpl implements AdminUserService {
     private final UserRepository userRepository;
 
-    public List<UserListDto> getAllUsersInfo() {
-        List<UserListDto> userList = userRepository.findAllUserInfoDto();
+    public List<UserListResponseDto> getAllUsersInfo() {
+        List<UserListResponseDto> userList = userRepository.findAllUserInfoDto();
 
-        for (UserListDto dto : userList) {
+        for (UserListResponseDto dto : userList) {
 
             String displayStatus = statusToDisplayStatus(dto.getStatus());
             dto.setDisplayStatus(displayStatus);

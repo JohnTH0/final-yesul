@@ -405,19 +405,20 @@
     <script th:inline="javascript">
       const receiverId = [[${receiverId}]];
       const receiverType = 'USER';
+      if (receiverId != null && receiverId !== 0) {
 
-      // [1:1 문의] 초기 안 읽은 알림 가져오기
-      fetch(`/notifications/${receiverType}/${receiverId}`)
-        .then(res => res.json())
-        .then(data => {
-          const count = data.length;
-          document.getElementById('notify-count').textContent = count;
+        // [1:1 문의] 초기 안 읽은 알림 가져오기
+        fetch(`/notifications/${receiverType}/${receiverId}`)
+          .then(res => res.json())
+          .then(data => {
+            const count = data.length;
+            document.getElementById('notify-count').textContent = count;
 
 
-          const list = document.getElementById('message-list');
-          data.forEach(msg => {
-            const li = document.createElement('li');
-            li.innerHTML = `
+            const list = document.getElementById('message-list');
+            data.forEach(msg => {
+              const li = document.createElement('li');
+              li.innerHTML = `
             <div class="icon gi-success">
               <i class="ri-check-double-line"></i>
             </div>
@@ -430,23 +431,23 @@
               <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
             </div>
           `;
-            list.insertBefore(li, list.firstChild);
+              list.insertBefore(li, list.firstChild);
 
+            });
+
+            attachCloseEvent();
           });
 
-          attachCloseEvent();
-        });
+        //  실시간 알림 Push
+        const socket = new WebSocket(`ws://${location.host}/ws/notification`);
+        socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
+        socket.onmessage = (event) => {
+          const msg = JSON.parse(event.data);
+          if (msg.type !== 'CHAT') return;
 
-      //  실시간 알림 Push
-      const socket = new WebSocket(`ws://${location.host}/ws/notification`);
-      socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
-      socket.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
-        if (msg.type !== 'CHAT') return;
-
-        const list = document.getElementById('message-list');
-        const li = document.createElement('li');
-        li.innerHTML = `
+          const list = document.getElementById('message-list');
+          const li = document.createElement('li');
+          li.innerHTML = `
         <div class="icon gi-success">
           <i class="ri-check-double-line"></i>
         </div>
@@ -459,14 +460,14 @@
           <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
         </div>
       `;
-        list.insertBefore(li, list.firstChild);
+          list.insertBefore(li, list.firstChild);
 
-        const badge = document.getElementById('notify-count');
-        badge.textContent = parseInt(badge.textContent) + 1;
+          const badge = document.getElementById('notify-count');
+          badge.textContent = parseInt(badge.textContent) + 1;
 
-        attachCloseEvent();
-      };
-
+          attachCloseEvent();
+        };
+      }
       // X 버튼 클릭 이벤트
       function attachCloseEvent() {
         document.querySelectorAll('.close-alert-btn').forEach(btn => {

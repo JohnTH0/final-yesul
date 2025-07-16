@@ -1,20 +1,22 @@
-package com.yesul.user.model.dto;
+package com.yesul.user.model.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import com.yesul.user.model.entity.User;
 
 @Getter
-@Setter
-@ToString
-public class UserRegisterDto {
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "일반 사용자의 회원가입 요청 ")
+public class UserRegisterRequestDto {
+
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "유효한 이메일 주소를 입력해주세요.")
     @Size(max = 50, message = "이메일은 50자를 초과할 수 없습니다.")

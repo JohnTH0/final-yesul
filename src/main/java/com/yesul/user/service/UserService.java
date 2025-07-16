@@ -2,19 +2,19 @@ package com.yesul.user.service;
 
 import java.util.Optional;
 
-import com.yesul.user.model.dto.UserRegisterDto;
-import com.yesul.user.model.dto.UserUpdateDto;
+import com.yesul.user.model.dto.request.UserRegisterRequestDto;
+import com.yesul.user.model.dto.request.UserUpdateRequestDto;
 import com.yesul.user.model.entity.User;
 
 
 public interface UserService {
     /**
      * 일반 사용자 회원가입 처리 (이메일 인증 대기 상태로 인증 메일 발송)
-     * @param userRegisterDto 회원가입 요청 DTO
+     * @param userRegisterRequestDto 회원가입 요청 DTO
      * @return User Entity
      * @throws IllegalArgumentException 중복검증
      */
-    User registerUser(UserRegisterDto userRegisterDto);
+    User registerUser(UserRegisterRequestDto userRegisterRequestDto);
 
     /**
      * 이메일 중복 확인
@@ -31,12 +31,6 @@ public interface UserService {
     boolean isNicknameDuplicated(String nickname);
 
     /**
-     * 이메일 인증 메일 발송
-     * @param user 인증 메일을 받을 사용자 엔티티
-     */
-    void sendVerificationEmail(User user);
-
-    /**
      * 이메일 인증 링크를 통한 사용자 활성화 처리
      * @param email 인증을 요청한 사용자의 이메일
      * @param token 이메일로 발송된 인증 토큰
@@ -51,7 +45,7 @@ public interface UserService {
      */
     Optional<User> findUserByEmail(String email);
 
-    void updateUserProfile(Long userId, UserUpdateDto userUpdateDto);
+    User updateUserProfile(Long userId, UserUpdateRequestDto dto);
 
     void changePassword(Long userId, String newPassword);
 
@@ -63,5 +57,9 @@ public interface UserService {
      */
     void resignUser(Long userId, String rawPassword);
 
+    /**
+     * @throws IllegalArgumentException 유효하지 않은 토큰이거나 만료된 경우
+     */
     void resetPassword(String email, String token, String newPassword);
+
 }

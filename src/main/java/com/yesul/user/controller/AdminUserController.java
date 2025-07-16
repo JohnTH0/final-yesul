@@ -1,6 +1,6 @@
 package com.yesul.user.controller;
 
-import com.yesul.user.model.dto.UserListDto;
+import com.yesul.user.model.dto.response.UserListResponseDto;
 import com.yesul.user.service.AdminUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ public class AdminUserController {
     @GetMapping
     public String userInfoPage(Model model) {
 
-        List<UserListDto> userInfoList = adminUserService.getAllUsersInfo();
+        List<UserListResponseDto> userInfoList = adminUserService.getAllUsersInfo();
         model.addAttribute("userInfoList", userInfoList);
 
         return "admin/user/user-management";

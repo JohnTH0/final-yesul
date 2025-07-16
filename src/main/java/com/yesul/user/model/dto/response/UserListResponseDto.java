@@ -1,14 +1,17 @@
-package com.yesul.user.model.dto;
-
-import lombok.*;
+package com.yesul.user.model.dto.response;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+
 @Getter
 @Setter
-public class UserListDto {
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "유저 목록 조회")
+public class UserListResponseDto {
     private Long id;
     private String nickname;
     private String email;
@@ -18,7 +21,7 @@ public class UserListDto {
 
     private String displayStatus;
 
-    public UserListDto(Long id, String email, String nickname, String birthday, Character status, LocalDateTime createdAt) {
+    public UserListResponseDto(Long id, String email, String nickname, String birthday, Character status, LocalDateTime createdAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;

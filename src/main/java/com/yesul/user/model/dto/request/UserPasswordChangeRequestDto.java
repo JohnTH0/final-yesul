@@ -1,13 +1,17 @@
-package com.yesul.user.model.dto;
+package com.yesul.user.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Getter
-@Setter
-public class UserPasswordChangeDto {
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "로그인한 유저의 비밀번호 변경")
+public class UserPasswordChangeRequestDto {
 
     @NotBlank(message = "현재 비밀번호를 입력해주세요.")
     private String currentPassword;

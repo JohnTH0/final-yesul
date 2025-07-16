@@ -25,10 +25,10 @@
             <div class="col-lg-9 col-md-12 mb-24">
                 <div class="gi-vendor-profile-card gi-vendor-profile-card">
                     <div class="gi-vendor-card-body">
-                        <form th:action="@{/user/profile/update}" th:object="${user}" method="post" enctype="multipart/form-data">
+                        <form th:action="@{/user/profile/update}" th:object="${userUpdateRequestDto}" method="post" enctype="multipart/form-data">
                             <div class="gi-vendor-card-body">
                                 <div class="profile-header text-center mb-4">
-                                    <img class="profile-img" th:src="@{${user != null and user.profile != null ? user.profile : '/assets/img/app/default_profile.jpg'}}" alt="프로필 사진">
+                                    <img class="profile-img" th:src="@{${user != null and user.profileImage != null ? user.profileImage : '/assets/img/app/default_profile.jpg'}}" alt="프로필 사진">
                                     <label for="profileInput" class="camera-overlay">
                                         <i class="fa fa-camera"></i>
                                     </label>
@@ -54,7 +54,7 @@
                                 <div class="col-md-6 col-sm-12 mb-24">
                                     <div class="gi-vendor-detail-block">
                                         <h6>E-mail address</h6>
-                                        <input type="email" th:field="*{email}" class="form-control" readonly/>
+                                        <input type="email" th:value="${userProfile.email}" class="form-control" readonly/>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 mb-24">
