@@ -55,6 +55,7 @@ public class UserRegisterRequestDto {
                 .type('1')
                 .status('2')
                 .profile(null)
+                .point(0)
                 .build();
     }
 }

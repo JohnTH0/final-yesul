@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yesul.community.model.dto.PostResponseDto;
-import com.yesul.community.model.entity.QLike;
+import com.yesul.like.model.entity.QPostLike;
 import com.yesul.community.model.entity.QPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     @Override
     public List<PostResponseDto> findPopularPostsByLikes() {
         QPost post = QPost.post;
-        QLike like = QLike.like;
+        QPostLike like = QPostLike.postLike;
 
         NumberTemplate<Integer> likeCount = Expressions.numberTemplate(
                 Integer.class, "count({0})", like.id);

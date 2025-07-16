@@ -15,12 +15,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.yesul.user.model.entity.User;
 import com.yesul.user.model.dto.request.UserPasswordResetMailRequestDto;
 import com.yesul.user.service.UserService;
 import com.yesul.user.service.UserAsyncService;
 
+@Tag(name = "사용자 로그인/비밀번호 초기화", description = "로그인 폼, 비밀번호 초기화 요청을 처리합니다.")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -29,31 +32,31 @@ public class UserLoginController {
     private final UserService userService;
     private final UserAsyncService userAsyncService;
 
+    @Operation(summary="로그인 폼", description="이미 로그인되어 있지 않은 사용자의 로그인 화면을 반환합니다.")
     @GetMapping("/login")
     public String loginForm() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // 로그인 확인
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             return "redirect:/";
         }
-        // 로그인 상태가 아닐 시
         return "login/login";
     }
 
+    @Operation(summary="로그아웃 리디렉션", description="로그아웃 후 로그인 페이지로 이동합니다.")
     @GetMapping("/logout")
     public String logout() {
         return "redirect:/login/login";
     }
 
-    // 비밀번호 초기화 페이지 이동
+    @Operation(summary="비밀번호 초기화 메일 요청폼", description="비밀번호 초기화 메일 요청 화면을 보여줍니다.")
     @GetMapping("/reset-password")
     public String showRequestForm(Model model) {
         model.addAttribute("resetMailDto", UserPasswordResetMailRequestDto.builder().build());
         return "login/password-reset-request";
     }
 
-    // 비밀번호 초기화
+    @Operation(summary="비밀번호 초기화 메일 발송", description="유효한 이메일에 한해 초기화 링크가 담긴 메일을 발송합니다.")
     @PostMapping("/reset-password")
     public String handleRequest(
             @Validated @ModelAttribute("resetMailDto") UserPasswordResetMailRequestDto dto,
@@ -84,7 +87,6 @@ public class UserLoginController {
             userAsyncService.resendSignUpVerification(user);
         }
 
-
         String msg = (user.getStatus() == '1')
                 ? "비밀번호 재설정 메일을 발송했습니다."
                 : "가입 인증 메일을 재발송했습니다.";
@@ -92,6 +94,7 @@ public class UserLoginController {
         return "redirect:/password-reset-complete";
     }
 
+    @Operation(summary="비밀번호 초기화 완료 페이지", description="비밀번호 초기화 메일 발송 후 보여줄 완료 화면입니다.")
     @GetMapping("/password-reset-complete")
     public String showRequestComplete() {
         return "login/password-reset-complete";

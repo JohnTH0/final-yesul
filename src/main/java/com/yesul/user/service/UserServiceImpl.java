@@ -17,7 +17,7 @@ import com.yesul.user.model.dto.request.UserRegisterRequestDto;
 import com.yesul.user.repository.UserRepository;
 import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.exception.handler.DuplicateException;
-import com.yesul.utill.ImageUpload;
+import com.yesul.util.ImageUpload;
 
 @Service
 @RequiredArgsConstructor

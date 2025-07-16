@@ -2,7 +2,7 @@ package com.yesul.notice.controller;
 
 import com.yesul.notice.model.dto.NoticeDto;
 import com.yesul.notice.service.NoticeService;
-import com.yesul.utill.ImageUpload;
+import com.yesul.util.ImageUpload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

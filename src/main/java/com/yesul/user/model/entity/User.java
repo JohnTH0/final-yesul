@@ -3,13 +3,14 @@ package com.yesul.user.model.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.yesul.like.model.entity.PostLike;
 import jakarta.persistence.*;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.*;
 
 import com.yesul.common.BaseTimeEntity;
-import com.yesul.community.model.entity.Like;
 
 @Entity
 @Table(name = "user")
@@ -123,7 +124,7 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<Like> likes = new ArrayList<>();
+    private List<PostLike> likes = new ArrayList<>();
 
     // 포인트 적립
     public void earnPoint(Integer amount) {

@@ -17,7 +17,9 @@
               <li><a th:href="@{/user/profile}">내정보</a></li>
               <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
               <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
-              <li><a th:href="@{/user/like-post}">좋아요 한 글 보기</a></li>
+              <li><a th:href="@{/user/like-post}">좋아요한 게시글 보기</a></li>
+              <li><a th:href="@{/user/like-alcohol}">찜한 술 목록 </a></li>
+              <li><a th:href="@{/user/resign}">회원탈퇴</a></li>
             </ul>
           </div>
         </div>
@@ -51,10 +53,10 @@
               </div>
               <div class="col-md-6 col-sm-12 mb-24">
                 <div class="gi-vendor-detail-block">
-                  <h6>Birthday</h6>
+                  <h6>Point</h6>
                   <ul>
-                    <li><strong>생년월일 : </strong><span
-                      th:text="${user != null and user.birthday != null ? user.birthday : '정보 없음'}"></span></li>
+                    <li><strong>포인트 : </strong><span
+                      th:text="${user != null and user.point != null ? user.point : '정보 없음'}"></span></li>
                   </ul>
                 </div>
               </div>

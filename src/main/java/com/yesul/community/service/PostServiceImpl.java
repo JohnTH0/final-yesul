@@ -5,7 +5,7 @@ import com.yesul.community.model.dto.PostRequestDto;
 import com.yesul.community.model.dto.PostResponseDto;
 import com.yesul.community.model.entity.Post;
 import com.yesul.community.model.entity.PostImage;
-import com.yesul.community.repository.LikeRepository;
+import com.yesul.like.repository.PostLikeRepository;
 import com.yesul.community.repository.PostImageRepository;
 import com.yesul.community.repository.PostRepository;
 import com.yesul.user.model.entity.User;
@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PostImageRepository postImageRepository;
-    private final LikeRepository likeRepository;
+    private final PostLikeRepository likeRepository;
     private final PostImageService postImageService;
 
     // 게시글 등록 처리

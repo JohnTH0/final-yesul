@@ -1,4 +1,4 @@
-package com.yesul.utill;
+package com.yesul.util;
 
 import java.util.List;
 import java.util.stream.Collectors;

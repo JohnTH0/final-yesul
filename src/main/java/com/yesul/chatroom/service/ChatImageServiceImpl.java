@@ -1,6 +1,6 @@
 package com.yesul.chatroom.service;
 
-import com.yesul.utill.ImageUpload;
+import com.yesul.util.ImageUpload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

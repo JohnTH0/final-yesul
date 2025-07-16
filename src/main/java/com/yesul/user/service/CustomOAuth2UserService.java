@@ -50,6 +50,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .status('1')
                             .provider(userInfo.getProvider())
                             .providerId(userInfo.getProviderId())
+                            .point(0)
                             .build();
                     return userRepository.save(u);
                 });

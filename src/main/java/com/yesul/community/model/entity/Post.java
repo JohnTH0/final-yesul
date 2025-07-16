@@ -2,13 +2,11 @@ package com.yesul.community.model.entity;
 
 import com.yesul.common.BaseTimeEntity;
 import com.yesul.community.model.dto.PostRequestDto;
-import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.like.model.entity.PostLike;
 import com.yesul.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +50,7 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<Like> likes = new ArrayList<>();
+    private List<PostLike> likes = new ArrayList<>();
 
     public void update(PostRequestDto dto) {
         this.title = dto.getTitle();

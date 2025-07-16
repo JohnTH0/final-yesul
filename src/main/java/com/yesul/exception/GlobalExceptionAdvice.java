@@ -16,6 +16,12 @@ public class GlobalExceptionAdvice {
         return "404.html";
     }
 
+    @ExceptionHandler(AlcoholNotFoundException.class)
+    public String handleAlcoholNotFound(AlcoholNotFoundException e, HttpServletRequest request) {
+        log.warn("[AlcoholNotFouneException] {} {} - {}", request.getMethod(), request.getRequestURI(), e.getMessage());
+        return "404.html";
+    }
+
     @ExceptionHandler(ChatRoomNotFoundException.class)
     public String handleChatRoomNotFound(ChatRoomNotFoundException e, HttpServletRequest request) {
         log.warn("[ChatRoomNotFoundException] {} {} - {}", request.getMethod(), request.getRequestURI(), e.getMessage());
