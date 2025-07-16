@@ -9,7 +9,7 @@ import lombok.*;
  * 활동별 포인트 값 관리 테이블
  */
 @Entity
-@Table(name = "points")
+@Table(name = "point")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

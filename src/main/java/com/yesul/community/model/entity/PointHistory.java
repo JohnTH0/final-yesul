@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 유저별 포인트 적립/차감 내역 기록 테이블
  */
 @Entity
-@Table(name = "points_history")
+@Table(name = "point_history")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

@@ -65,7 +65,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "point")
+    @Column(name = "point", nullable = false)
     private Integer point;
 
     public void encodePassword(PasswordEncoder passwordEncoder) {

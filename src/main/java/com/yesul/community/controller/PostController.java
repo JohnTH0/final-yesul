@@ -85,11 +85,16 @@ public class PostController {
      * 게시글 작성 폼으로 이동
      */
     @GetMapping("/create")
-    public String createForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String createForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails,
+                             @RequestParam(value = "boardName", required = false) String boardName) {
         if (principalDetails == null) {
             return "redirect:/login";
         }
-        model.addAttribute("postRequestDto", new PostRequestDto());
+        PostRequestDto dto = new PostRequestDto();
+        if (boardName != null) {
+            dto.setBoardName(boardName);
+        }
+        model.addAttribute("postRequestDto", dto);
         return "community/postCreate";
     }
 
@@ -100,10 +105,13 @@ public class PostController {
     public String createPost(@ModelAttribute PostRequestDto postRequestDto,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if (principalDetails == null) {
+            System.out.println("❌ 중복 활동 감지됨!");
             return "redirect:/login";
         }
 
         Long userId = principalDetails.getUser().getId();
+
+        System.out.println("👉 createPost 들어옴 userId=" + userId);
 
         if (postRequestDto.getThumbnail() == null || postRequestDto.getThumbnail().isBlank()) {
             String extractedThumbnail = postImageService.extractFirstImageUrl(postRequestDto.getContent());
@@ -112,9 +120,18 @@ public class PostController {
             }
         }
 
+        // 중복 글쓰기 방지 로직 추가
+        if (pointService.isDuplicateActivity(userId, PointType.POST_CREATE)) {
+            return "redirect:/community/create?error=duplicate";
+        }
+
+        // 글 등록
         PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
 
-        pointService.earnPoint(userId, PointType.POST_CREATE, String.valueOf(createdPost.getId()));
+        System.out.println("✅ earnPoint 호출 직전");
+
+        // 포인트 적립
+        pointService.earnPoint(userId, PointType.POST_CREATE);
 
         return "redirect:/community/" + createdPost.getBoardName() + "/" + createdPost.getId();
     }

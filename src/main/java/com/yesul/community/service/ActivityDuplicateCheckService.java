@@ -21,29 +21,35 @@ public class ActivityDuplicateCheckService {
 
     /**
      * 최근 활동 저장
+     * @param userId 유저 ID
+     * @param activityType 활동 종류
+     * @param expireSeconds 제한 시간(초)
      */
-    public void saveActivity(Long userId, PointType activityType, String content, int expireMinutes) {
-        System.out.println("saveActivity 호출됨: userId=" + userId + ", type=" + activityType + ", content=" + content);
+    public void saveActivity(Long userId, PointType activityType, int expireSeconds) {
         RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(RedisConstants.USER_POINT_DB_INDEX);
-        String key = generateKey(userId, activityType, content);
-        redisTemplate.opsForValue().set(key, "1", Duration.ofMinutes(expireMinutes));
+        String key = generateKey(userId, activityType);
+        redisTemplate.opsForValue().set(key, "1", Duration.ofSeconds(expireSeconds));
     }
 
     /**
      * 최근 활동 중복 여부 확인
+     * @param userId 유저 ID
+     * @param activityType 활동 종류
+     * @return true = 중복(도배), false = 정상
      */
-    public boolean isDuplicate(Long userId, PointType activityType, String content) {
+    public boolean isDuplicate(Long userId, PointType activityType) {
         RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(RedisConstants.USER_POINT_DB_INDEX);
-
-        String key = generateKey(userId, activityType, content);
-        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+        String key = generateKey(userId, activityType);
+        Boolean exists = redisTemplate.hasKey(key);
+        System.out.println("🧪 중복 체크: key = " + key + ", exists = " + exists);
+        return Boolean.TRUE.equals(exists);
     }
 
     /**
      * Redis 키 생성
-     * 예: activity:123:comment_create:927362
+     * 예: activity:123:POST_CREATE
      */
-    private String generateKey(Long userId, PointType activityType, String content) {
-        return "activity:" + userId + ":" + activityType + ":" + content.trim();
+    public String generateKey(Long userId, PointType activityType) {
+        return "activity:" + userId + ":" + activityType;
     }
 }

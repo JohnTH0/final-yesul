@@ -2,33 +2,33 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <!--<head th:replace="~{fragments/user/head :: head}">-->
 
-  <meta charset="UTF-8">
-  <title>게시글 작성</title>
+<meta charset="UTF-8">
+<title>게시글 작성</title>
 
-  <!-- Toast UI Editor CSS -->
-  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+<!-- Toast UI Editor CSS -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
 
-  <!-- 외부 플러그인 CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-  <!-- site Favicon -->
-  <link rel="icon" th:href="@{/assets/img/yesul/favicon/favicon.png}" sizes="32x32">
-  <!-- css Icon Font -->
-  <link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
-  <!-- 기본 CSS -->
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
-  <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
+<!-- 외부 플러그인 CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<!-- site Favicon -->
+<link rel="icon" th:href="@{/assets/img/yesul/favicon/favicon.png}" sizes="32x32">
+<!-- css Icon Font -->
+<link rel="stylesheet" th:href="@{/assets/css/vendor/gicons.css}">
+<!-- 기본 CSS -->
+<link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main_style">
 
-  <!-- 에디터 이미지 스타일 추가 -->
-  <style>
-    .toastui-editor-contents img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-  </style>
+<!-- 에디터 이미지 스타일 추가 -->
+<style>
+  .toastui-editor-contents img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+</style>
 <!--</head>-->
 <body>
 
@@ -68,8 +68,8 @@
 
           <!-- 썸네일 -->
           <div class="form-group mb-3">
-            <label for="thumbnail">썸네일 URL</label>
-            <input type="text" id="thumbnail" name="thumbnail" class="form-control" th:field="*{thumbnail}" />
+            <label for="thumbnail"> </label>
+            <input type="hidden" id="thumbnail" name="thumbnail" class="form-control" th:field="*{thumbnail}" />
           </div>
 
           <!-- 등록 버튼 -->
