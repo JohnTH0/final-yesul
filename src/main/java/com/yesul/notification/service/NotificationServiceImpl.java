@@ -1,10 +1,15 @@
 package com.yesul.notification.service;
 
+import com.yesul.chatroom.model.entity.enums.Type;
+import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.notification.handler.NotificationHandler;
 import com.yesul.notification.model.dto.request.CreateNotificationRequestDto;
 import com.yesul.notification.model.dto.response.NotificationResponseDto;
 import com.yesul.notification.model.entity.Notification;
+import com.yesul.notification.model.entity.enums.NotificationType;
 import com.yesul.notification.repository.NotificationRepository;
+import com.yesul.user.model.entity.User;
+import com.yesul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -16,10 +21,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
+    private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
     private final NotificationHandler notificationHandler;
 
-    @Async("asyncExecutor")
+    @Async("asyncExecutor")// 공통 로직
     public void sendNotification(CreateNotificationRequestDto dto) {
         // 1. 같은 조건의 안 읽은 알림이 이미 있으면 새로 만들지 않는다.
         boolean exists = notificationRepository.existsBySenderIdAndReceiverIdAndTargetIdAndIsReadFalse(
@@ -59,6 +65,24 @@ public class NotificationServiceImpl implements NotificationService {
                 .build();
 
         notificationHandler.sendNotification(saved.getReceiverId(), responseDto);
+    }
+
+    public void sendPostOwnerCommentNotification(Long postId, Long commenterId, Long postOwnerId) {
+
+        User user = userRepository.findById(commenterId)
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+
+        CreateNotificationRequestDto dto = CreateNotificationRequestDto.builder()
+                .senderId(commenterId)
+                .senderType(Type.USER)
+                .receiverId(postOwnerId)
+                .receiverType(Type.USER)
+                .targetId(postId)
+                .type(NotificationType.COMMENT)
+                .content(user.getName() + "님이 댓글을 달았습니다.")
+                .build();
+
+        sendNotification(dto);
     }
 
 

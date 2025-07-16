@@ -5,6 +5,7 @@ import com.yesul.community.model.entity.Comment;
 import com.yesul.community.model.entity.Post;
 import com.yesul.community.repository.CommentRepository;
 import com.yesul.community.repository.PostRepository;
+import com.yesul.notification.service.NotificationService;
 import com.yesul.user.model.entity.User;
 import com.yesul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
+    private final NotificationService notificationService;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -33,6 +35,9 @@ public class CommentServiceImpl implements CommentService {
                 .build();
 
         commentRepository.save(comment);
+
+        notificationService.sendPostOwnerCommentNotification(dto.getPostId(), userId, post.getUser().getId());
+
         return comment.getId();
     }
 

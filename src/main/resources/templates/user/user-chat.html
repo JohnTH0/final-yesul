@@ -102,7 +102,10 @@
   const chatHistory = document.querySelector('.chat-history');
   const chatPartnerName = document.getElementById('chatPartnerName').textContent.trim();
 
-  sendBtn.addEventListener('click', sendMessage);
+  sendBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // 혹시 모를 submit or 버블링 방지
+    sendMessage();
+  });
   messageInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -181,8 +184,12 @@
         }));
       });
   }
+  let socketConnected = false;
 
   function connectChatWebSocket(roomId) {
+    if (socketConnected) return;
+    socketConnected = true;
+
     chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat");
     chatSocket.onopen = () => console.log("WebSocket 연결됨");
     chatSocket.onmessage = (event) => {

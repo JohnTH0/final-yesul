@@ -415,53 +415,96 @@
             const count = data.length;
             document.getElementById('notify-count').textContent = count;
 
+            const messageList = document.getElementById('message-list'); // 1:1 문의
+            const alertList = document.getElementById('alert-list');     // 댓글 알림
 
-            const list = document.getElementById('message-list');
             data.forEach(msg => {
-              const li = document.createElement('li');
-              li.innerHTML = `
-            <div class="icon gi-success">
-              <i class="ri-check-double-line"></i>
-            </div>
-            <div class="detail">
-              <div>
-                <a href="/users/chatroom?adminId=${msg.senderId}" class="name">${msg.senderId}</a>
-                <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
-                <p class="message">${msg.content}</p>
-              </div>
-              <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
-            </div>
-          `;
-              list.insertBefore(li, list.firstChild);
+              let li = document.createElement('li');
 
+              if (msg.type === 'CHAT') {
+                // 👉 1:1 문의 알림
+                li.innerHTML = `
+          <div class="icon gi-success">
+            <i class="ri-check-double-line"></i>
+          </div>
+          <div class="detail">
+            <div>
+              <a href="/users/chatroom?adminId=${msg.senderId}" class="name">${msg.senderId}</a>
+              <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+              <p class="message">${msg.content}</p>
+            </div>
+            <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+          </div>
+        `;
+                messageList.insertBefore(li, messageList.firstChild);
+
+              } else if (msg.type === 'COMMENT') {
+                // 👉 댓글 알림
+                li.innerHTML = `
+          <div class="icon gi-info">
+            <i class="ri-chat-3-line"></i>
+          </div>
+          <div class="detail">
+            <div>
+              <a href="community/recipe/${msg.targetId}" class="name">USER${msg.senderId}님이 댓글을 남겼습니다.</a>
+              <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+              <p class="message">${msg.content}</p>
+            </div>
+            <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+          </div>
+        `;
+                alertList.insertBefore(li, alertList.firstChild);
+              }
             });
 
             attachCloseEvent();
           });
+
 
         //  실시간 알림 Push
         const socket = new WebSocket(`ws://${location.host}/ws/notification`);
         socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
         socket.onmessage = (event) => {
           const msg = JSON.parse(event.data);
-          if (msg.type !== 'CHAT') return;
+          console.log('✅ 파싱 결과', msg);
+          if (msg.type === 'CHAT') {
+            // 기존 채팅 알림
+            const list = document.getElementById('message-list');
+            const li = document.createElement('li');
+            li.innerHTML = `
+      <div class="icon gi-success">
+        <i class="ri-check-double-line"></i>
+      </div>
+      <div class="detail">
+        <div>
+          <a href="/admin/chatroom/${msg.targetId}" class="name">${msg.senderId}</a>
+          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+          <p class="message">${msg.content}</p>
+        </div>
+        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+      </div>
+    `;
+            list.insertBefore(li, list.firstChild);
 
-          const list = document.getElementById('message-list');
-          const li = document.createElement('li');
-          li.innerHTML = `
-        <div class="icon gi-success">
-          <i class="ri-check-double-line"></i>
+          } else if (msg.type === 'COMMENT') {
+            //  댓글 알림 처리
+            const list = document.getElementById('alert-list');
+            const li = document.createElement('li');
+            li.innerHTML = `
+      <div class="icon gi-info">
+        <i class="ri-chat-3-line"></i>
+      </div>
+      <div class="detail">
+        <div>
+          <a href="/posts/${msg.targetId}" class="name">${msg.senderId}님이 댓글을 남겼습니다.</a>
+          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+          <p class="message">${msg.content}</p>
         </div>
-        <div class="detail">
-          <div>
-            <a href="/admin/chatroom/${msg.targetId}" class="name">${msg.senderId}</a>
-            <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
-            <p class="message">${msg.content}</p>
-          </div>
-          <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
-        </div>
-      `;
-          list.insertBefore(li, list.firstChild);
+        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+      </div>
+    `;
+            list.insertBefore(li, list.firstChild);
+          }
 
           const badge = document.getElementById('notify-count');
           badge.textContent = parseInt(badge.textContent) + 1;
