@@ -85,5 +85,21 @@ public class NotificationServiceImpl implements NotificationService {
         sendNotification(dto);
     }
 
+    public void sendPostOwnerLikeNotification(Long postId, Long likeOwnerId, Long postOwnerId) {
 
+        User user = userRepository.findById(likeOwnerId)
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+
+        CreateNotificationRequestDto dto = CreateNotificationRequestDto.builder()
+                .senderId(likeOwnerId)
+                .senderType(Type.USER)
+                .receiverId(postOwnerId)
+                .receiverType(Type.USER)
+                .targetId(postId)
+                .type(NotificationType.LIKE)
+                .content(user.getName() + "님이 좋아요를 눌렀습니다.")
+                .build();
+
+        sendNotification(dto);
+    }
 }

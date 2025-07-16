@@ -422,7 +422,7 @@
               let li = document.createElement('li');
 
               if (msg.type === 'CHAT') {
-                // 👉 1:1 문의 알림
+                // 1:1 문의 알림
                 li.innerHTML = `
           <div class="icon gi-success">
             <i class="ri-check-double-line"></i>
@@ -439,7 +439,7 @@
                 messageList.insertBefore(li, messageList.firstChild);
 
               } else if (msg.type === 'COMMENT') {
-                // 👉 댓글 알림
+                //  댓글 알림
                 li.innerHTML = `
           <div class="icon gi-info">
             <i class="ri-chat-3-line"></i>
@@ -454,11 +454,24 @@
           </div>
         `;
                 alertList.insertBefore(li, alertList.firstChild);
+              }else if (msg.type === 'LIKE') {
+                //  좋아요 알림
+                li.innerHTML = `
+      <div class="icon gi-heart">
+        <i class="ri-heart-line"></i>
+      </div>
+      <div class="detail">
+        <div>
+          <a href="/community/recipe/${msg.targetId}" class="name">USER${msg.senderId}님이 좋아요를 눌렀습니다.</a>
+          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+        </div>
+        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+      </div>
+    `;
+                alertList.insertBefore(li, alertList.firstChild);
               }
             });
 
-            attachCloseEvent();
-          });
 
 
         //  실시간 알림 Push
@@ -466,7 +479,6 @@
         socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
         socket.onmessage = (event) => {
           const msg = JSON.parse(event.data);
-          console.log('✅ 파싱 결과', msg);
           if (msg.type === 'CHAT') {
             // 기존 채팅 알림
             const list = document.getElementById('message-list');
@@ -504,6 +516,20 @@
       </div>
     `;
             list.insertBefore(li, list.firstChild);
+          } else if (msg.type === 'LIKE') {
+            li.innerHTML = `
+      <div class="icon gi-heart">
+        <i class="ri-heart-line"></i>
+      </div>
+      <div class="detail">
+        <div>
+          <a href="/posts/${msg.targetId}" class="name">USER${msg.senderId}님이 좋아요를 눌렀습니다.</a>
+          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+        </div>
+        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
+      </div>
+    `;
+            alertList.insertBefore(li, alertList.firstChild);
           }
 
           const badge = document.getElementById('notify-count');
@@ -511,7 +537,7 @@
 
           attachCloseEvent();
         };
-      }
+      });
       // X 버튼 클릭 이벤트
       function attachCloseEvent() {
         document.querySelectorAll('.close-alert-btn').forEach(btn => {
@@ -523,10 +549,10 @@
             badge.textContent = Math.max(parseInt(badge.textContent) - 1, 0);
 
             const id = btn.dataset.id;
-            fetch(`/notifications/${id}/read`, { method: 'PATCH' });
+            fetch(`/notifications/${id}/read`, {method: 'PATCH'});
           };
         });
-      }
+      }}
     </script>
   </div>
 </div>

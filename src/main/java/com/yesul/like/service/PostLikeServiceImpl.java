@@ -1,5 +1,6 @@
 package com.yesul.like.service;
 
+import com.yesul.notification.service.NotificationService;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import com.yesul.user.repository.UserRepository;
 @RequiredArgsConstructor
 public class PostLikeServiceImpl implements PostLikeService {
 
+    private final NotificationService notificationService;
     private final PostLikeRepository likeRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -40,6 +42,7 @@ public class PostLikeServiceImpl implements PostLikeService {
                     .user(user)
                     .build();
             likeRepository.save(like);
+            notificationService.sendPostOwnerLikeNotification(postId, userId, post.getUser().getId());
             return true;
         }
     }
