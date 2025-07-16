@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 head -->
+<head th:replace="~{fragments/user/head :: head}"></head>
+
+<body>
+<style>
+  body {
+    background-color: #ffffff;
+    color: #3e2723;
+    margin: 0;
+    padding: 0;
+  }
+
+  .notice-heading {
+    /* 기존 스타일 유지 */
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #4a3c31;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+
+    border-bottom: 2px solid #e0dcd2; /* ✅ 경계선 추가 */
+    padding-bottom: 12px; /* ✅ 선과 제목 간 여백 */
+  }
+
+  .notice-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 32px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+    border: 1px solid #ddd;
+    font-family: 'Noto Sans KR', sans-serif; /* ✅ 박스 안만 변경 */
+  }
+
+  .notice-heading {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #4a3c31;
+    border-bottom: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .notice-heading .emoji {
+    font-size: 1.6rem;
+    user-select: none;
+  }
+
+  .notice-columns {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #7a5d3e;
+    padding: 10px 0;
+    margin-bottom: 8px;
+  }
+
+  .col-title {
+    flex: 2;
+    text-align: center;
+  }
+
+  .col-date {
+    flex: 1;
+    text-align: center;
+  }
+
+  .notice-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .notice-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #eae2db;
+  }
+
+  .notice-item:last-child {
+    border-bottom: 1px solid #eae2db; /* 마지막도 동일하게 유지 */
+  }
+
+  .notice-item a {
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: #4a3c31;
+    transition: color 0.25s ease;
+  }
+
+  .notice-item a:hover {
+    color: #9c7a54;
+  }
+
+  .notice-title {
+    flex: 2;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+  }
+
+  .notice-title::after {
+    content: '';
+  }
+
+  .notice-date {
+    flex: 1;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #a18f82;
+    white-space: nowrap;
+  }
+
+  /* ✅ 20자 제한 처리 (서버에서 제한 안 한다면 JS나 attr-based 처리 필요) */
+  .notice-title {
+    max-width: 100%;
+  }
+
+  .notice-title[th\\:text]::after {
+                            content: '';
+                          }
+
+  .notice-pagination {
+    margin-top: 36px;
+    text-align: center;
+    user-select: none;
+  }
+
+  .page-link,
+  .page-current {
+    display: inline-block;
+    margin: 0 8px;
+    padding: 6px 12px;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 6px;
+    color: #4a3c31;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .page-link:hover {
+    background-color: #f3e8dc;
+    border-color: #9c7a54;
+    color: #7a5d3e;
+  }
+
+  .page-current {
+    font-weight: 700;
+    border-color: #9c7a54;
+    background-color: #f9f3ec;
+    cursor: default;
+    pointer-events: none;
+  }
+</style>
+
+<!-- 공통 header -->
+<div th:replace="~{fragments/user/header :: header}"></div>
+
+<div class="notice-container">
+  <div class="notice-heading"><h2>공지사항</h2></div>
+<!--  <div class="notice-columns">-->
+<!--    <div class="col-title">제목</div>-->
+<!--    <div class="col-date">날짜</div>-->
+<!--  </div>-->
+
+  <ul class="notice-items">
+    <li class="notice-item" th:each="notice : ${noticeListPageable.content}">
+      <a th:href="@{/notices/{id}(id=${notice.id})}">
+        <span class="notice-title" th:text="${notice.title}">제목</span>
+        <span class="notice-date" th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">날짜</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="notice-pagination">
+    <a class="page-link" th:if="${noticeListPageable.hasPrevious()}"
+       th:href="@{/notices(page=${noticeListPageable.number - 1}, size=${noticeListPageable.size})}">← 이전</a>
+
+    <span th:each="i : ${#numbers.sequence(0, noticeListPageable.totalPages - 1)}">
+      <a th:if="${i != noticeListPageable.number}"
+         class="page-link"
+         th:href="@{/notices(page=${i}, size=${noticeListPageable.size})}"
+         th:text="${i + 1}">1</a>
+      <strong th:if="${i == noticeListPageable.number}"
+              class="page-current"
+              th:text="${i + 1}">1</strong>
+    </span>
+
+    <a class="page-link" th:if="${noticeListPageable.hasNext()}"
+       th:href="@{/notices(page=${noticeListPageable.number + 1}, size=${noticeListPageable.size})}">다음 →</a>
+  </div>
+</div>
+
+<!-- 공통 footer -->
+<div th:replace="~{fragments/user/footer :: footer}"></div>
+
+<!-- 공통 JS -->
+<div th:replace="~{fragments/user/js :: js}"></div>
+
+</body>
+</html>

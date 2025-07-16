@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 헤드 -->
+<head th:replace="~{fragments/user/head :: head}"></head>
+
+<body>
+<style>
+  .notice-detail-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 32px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+    border: 1px solid #ddd;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .notice-detail-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4a3c31;
+    margin-bottom: 8px;
+  }
+
+  .notice-detail-date {
+    font-size: 0.9rem;
+    color: #a18f82;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e0dcd2;
+    padding-bottom: 10px;
+    text-align: right; /* ✅ 오른쪽 정렬 */
+  }
+
+  .notice-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+  }
+
+  .notice-detail-content {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: #4e342e;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .notice-detail-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .notice-detail-back {
+    margin-top: 40px;
+    text-align: right;
+  }
+
+  .notice-detail-back a {
+    font-size: 0.95rem;
+    color: #5d4037;
+    text-decoration: none;
+    border: 1px solid #d7ccc8;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .notice-detail-back a:hover {
+    background-color: #f3e8dc;
+    color: #4e342e;
+  }
+</style>
+
+<!-- 공통 헤더 -->
+<div th:replace="~{fragments/user/header :: header}"></div>
+
+
+<div class="notice-detail-container">
+  <h1 class="notice-detail-title" th:text="${notice.title}">공지사항 제목</h1>
+  <p class="notice-detail-date" th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">2025.07.16</p>
+
+  <!-- 이미지 있을 때만 보여주기 -->
+  <img class="notice-image" th:if="${notice.imageUrl != null}" th:src="${notice.imageUrl}" alt="공지 이미지" />
+
+  <div class="notice-detail-content" th:utext="${notice.content}">
+    공지사항 본문 내용이 들어갑니다.
+  </div>
+
+  <div class="notice-detail-back">
+    <a th:href="@{/notices}">← 목록으로 돌아가기</a>
+  </div>
+</div>
+
+<!-- 공통 feature -->
+<div th:replace="~{fragments/user/feature :: feature}"></div>
+<!-- 공통 푸터 -->
+<div th:replace="~{fragments/user/footer :: footer}"></div>
+<!-- 공통 js -->
+<div th:replace="~{fragments/user/js :: js}"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const img = document.getElementById('zoomImage');
+    img.addEventListener('click', function () {
+      img.classList.toggle('zoomed');
+    });
+  });
+</script>
+
+</body>
+
+</html>

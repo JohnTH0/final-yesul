@@ -119,7 +119,8 @@ public class SecurityConfig {
                                 "/login/oauth2/**",
                                 "/oauth2/**",
                                 "/post-images/upload",
-                                "/alcohols/**"
+                                "/alcohols/**",
+                                "/notices/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
