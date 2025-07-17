@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<!-- 공통 헤드 -->
 <head th:replace="~{fragments/user/head :: head}"></head>
 
 <body>
-
-<!-- 공통 헤더 -->
 <div th:replace="~{fragments/user/header :: header}"></div>
-
-<!-- 공통 feature -->
 <div th:replace="~{fragments/user/feature :: feature}"></div>
 
-<!-- ✅ 중앙 채팅 화면 -->
+<!-- 채팅 인터페이스 -->
 <div class="chat-wrapper">
+  <!-- 정보 표시 영역 -->
+  <div class="info-wrapper">
+    <div id="info-content" class="info-box">
+      <p class="info-placeholder">
+        전통주와 어울리는 여행 일정을 추천해드립니다 🍶✈️<br>아래 입력창에 질문을 해보세요!
+      </p>
+    </div>
+
+    <!-- 저장 버튼 -->
+    <button type="button" class="save-button">저장</button>
+  </div>
+
+
+  <!-- 채팅 영역 -->
   <div class="chat-box">
-    <div class="chat-title">AI 주락이와의 대화</div>
+    <div class="chat-title">AI 주락이의 주류 추천</div>
     <div id="chat-messages" class="chat-messages"></div>
     <div class="chat-input-area">
-      <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." />
+      <input type="text" id="chat-input" placeholder="메시지를 입력하세요..."/>
       <button id="chat-send-btn">보내기</button>
     </div>
   </div>
 </div>
 
-<!-- 공통 푸터 -->
 <div th:replace="~{fragments/user/footer :: footer}"></div>
-
-<!-- 공통 js -->
 <div th:replace="~{fragments/user/js :: js}"></div>
-
-<!-- 채팅 js -->
 <script th:src="@{/assets/js/ai-chat/ai-chat.js}"></script>
 <script th:src="@{assets/js/chatapp.js}"></script>
 
-<!-- ✅ 채팅 동작 스크립트 -->
+<!-- JS -->
 <script th:inline="javascript">
   const chatInput = document.getElementById('chat-input');
   const chatSendBtn = document.getElementById('chat-send-btn');
   const chatMessages = document.getElementById('chat-messages');
+  const infoBox = document.getElementById('info-content');
 
   chatSendBtn.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keypress', function (e) {
+  chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendMessage();
   });
 
@@ -49,143 +54,393 @@
     const text = chatInput.value.trim();
     if (!text) return;
 
-    // 입력 막기
     chatInput.disabled = true;
     chatSendBtn.disabled = true;
 
-    // 1. 유저 메시지 추가
     const userMsg = document.createElement('div');
     userMsg.className = 'message user';
     userMsg.textContent = text;
     chatMessages.appendChild(userMsg);
     chatInput.value = '';
 
-    // 2. 로딩 메시지 표시
     const loadingMsg = document.createElement('div');
     loadingMsg.className = 'message ai loading';
-
     loadingMsg.innerHTML = `
-    <div class="spinner"></div>
-    <span>주락이가 생각 중입니다 </span>
-    <div class="typing-bubble">
-      <span></span><span></span><span></span>
-    </div>
-  `;
+      <div class="spinner"></div>
+      <span>주락이가 주류 창고를 확인하고 있습니다. </span>
+      <div class="typing-bubble"><span></span><span></span><span></span></div>
+    `;
     chatMessages.appendChild(loadingMsg);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    scrollToBottom(chatMessages);
 
-    // 3. API 요청
-    fetch('http://223.130.132.13:8080/alcohols/clova', {
+    fetch('http://localhost:8080/alcohols/clova', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ask: text})
     })
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
-        // 4. 로딩 메시지 제거
         chatMessages.removeChild(loadingMsg);
-
-        // 5. 응답 메시지 표시 (타이핑 효과)
         const aiText = data.result?.finalAnswer || 'AI 응답을 가져오지 못했어요.';
         typeAIMessage(aiText);
-
-        // 입력 활성화
-        chatInput.disabled = false;
-        chatSendBtn.disabled = false;
-        chatInput.focus();
+        // ⚠️ 이 시점엔 아직 입력창 활성화 안 함
+        fetchClovaSchedule(aiText);  // 일정까지 다 처리하고 나서 다시 열어야 함
       })
-      .catch(error => {
+      .catch(err => {
         chatMessages.removeChild(loadingMsg);
         typeAIMessage('오류가 발생했어요. 다시 시도해주세요.');
-        console.error('Error:', error);
-
-        // 입력 활성화
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
         chatInput.focus();
       });
   }
 
-  // ✅ 타이핑 효과 함수
-  function typeAIMessage(message, delay = 30) {
+  function typeAIMessage(message, delay = 15) {
     const aiMsg = document.createElement('div');
-    aiMsg.className = 'message ai';
+    aiMsg.className = 'message ai chat-bubble';
     chatMessages.appendChild(aiMsg);
 
     let index = 0;
-    function typeChar() {
+
+    (function typeChar() {
       if (index < message.length) {
-        aiMsg.textContent += message.charAt(index);
-        index++;
+        aiMsg.textContent += message.charAt(index++);
+        scrollToBottom(chatMessages);
         setTimeout(typeChar, delay);
       } else {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        // 링크 자동 적용 (다 타이핑하고 난 뒤에)
+        aiMsg.innerHTML = linkify(aiMsg.textContent);
       }
-    }
-    typeChar();
+    })();
   }
 
-  // ✅ 초기 인사
+  function fetchClovaSchedule(aiText) {
+    infoBox.innerHTML = `
+  <p class="info-placeholder">
+    여행 일정을 불러오는 중입니다   <span class="typing-bubble"><span></span><span></span><span></span>
+    </span>
+  </p>
+`;
+    fetch('http://localhost:8080/alcohols/clova2', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ask: aiText})
+    })
+      .then(res => res.json())
+      .then(data => {
+        const content = data.result?.message?.content || '추천 정보를 불러오지 못했습니다.';
+        typeInfoText(infoBox, content);
+        // ✅ 일정 정보 다 불러오고 나서 입력창 다시 활성화
+        chatInput.disabled = false;
+        chatSendBtn.disabled = false;
+        chatInput.focus();
+      })
+      .catch(err => {
+        console.error('일정 요청 오류:', err);
+        infoBox.innerHTML = '<p class="info-placeholder">여행 일정을 불러오는 데 실패했어요 🥲</p>';
+        // 실패했어도 다시 입력 가능하게 해야겠죠
+        chatInput.disabled = false;
+        chatSendBtn.disabled = false;
+        chatInput.focus();
+      });
+  }
+
+  function typeInfoText(targetElement, text, delay = 15) {
+    targetElement.innerHTML = ''; // 기존 내용 지우기
+
+    // typed-text용 div 생성
+    const typedDiv = document.createElement('div');
+    typedDiv.className = 'typed-text';
+    targetElement.appendChild(typedDiv);
+
+    let index = 0;
+    (function typeChar() {
+      if (index < text.length) {
+        // 특수문자 & 공백 보존을 위해 textContent 사용
+        typedDiv.textContent += text.charAt(index++);
+        typedDiv.scrollTop = typedDiv.scrollHeight; // 스크롤 따라가기
+        setTimeout(typeChar, delay);
+      }
+    })();
+  }
+
+  function scrollToBottom(element) {
+    element.scrollTop = element.scrollHeight;
+  }
+
+  // 응답 텍스트에서 URL을 자동 링크로 변환
+  function linkify(text) {
+    return text.replace(
+      /(https?:\/\/[^\s]+)/g,
+      function (url) {
+        const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(url);
+        if (isImage) {
+          return `<img src="${url}" alt="추천 이미지" style="max-width:100%; margin-top:10px; border-radius:12px;" />`;
+        } else {
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+        }
+      }
+    );
+  }
   window.addEventListener('DOMContentLoaded', () => {
     typeAIMessage('전통주 소믈리에 "주락이"입니다. 오늘 하루는 어땠나요? 기분이나 분위기에 어울리는 술을 추천해드릴게요 🍶', 50);
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const saveButton = document.querySelector('.save-button');
+
+    saveButton?.addEventListener('click', () => {
+      const infoTextEl = document.querySelector('#info-content .typed-text');
+      const content = infoTextEl ? infoTextEl.textContent.trim() : '';
+
+      if (!content) {
+        alert('저장할 여행 정보가 없습니다.');
+        return;
+      }
+
+      console.log(content)
+
+      fetch('http://localhost:8080/alcohols/saveSchedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({content})
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('저장 실패');
+          return res.json();
+        })
+        .then(data => {
+          alert('여행 일정이 저장되었습니다!');
+        })
+        .catch(err => {
+          console.error('저장 오류:', err);
+          alert('저장 중 오류가 발생했습니다.');
+        });
+    });
+  });
+
 </script>
 
-<!-- ✅ 채팅 CSS -->
+<!-- CSS -->
 <style>
-  /* 전체 배경 및 폰트 설정 */
   body {
     background-color: #f8f5f0;
+    margin: 0;
+    font-family: 'Nanum Myeongjo', serif;
   }
 
-  /* 중앙 정렬 및 채팅 박스 래퍼 */
+  input[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   .chat-wrapper {
     display: flex;
+    gap: 24px;
+    padding: 40px 20px;
     justify-content: center;
     align-items: flex-start;
-    min-height: 70vh;
-    margin: 40px 0;
+    min-height: 75vh;
   }
 
-  /* 채팅 박스 */
+  .save-button {
+    margin-top: 10px;
+    height: 60px;
+    background-color: #a17f4b;
+    color: #fff8e7;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Nanum Myeongjo', serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .save-button:hover {
+    background-color: #8b6a39;
+  }
+
+  .info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 400px;
+    height: 700px; /* 전체 높이 고정 */
+  }
+
+  #info-content {
+    flex: 1;
+    max-width: 400px;
+    height: 620px;
+    background: linear-gradient(135deg, #fff8f0, #f0e6d2);
+    border: 2px solid #c6a664;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(198, 166, 100, 0.3);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Nanum Myeongjo', serif;
+    color: #5a4427;
+    user-select: text;
+  }
+
+  #info-content::before {
+    content: '🗺️ 여행 정보 제공';
+    background: #a17f4b;
+    color: #fff8e7;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 18px 0;
+    text-align: center;
+    border-radius: 16px 16px 0 0;
+    user-select: none;
+    letter-spacing: 1px;
+    box-shadow: inset 0 -3px 5px rgba(0, 0, 0, 0.15);
+  }
+
+  .info-placeholder {
+    flex: 1;
+    padding: 24px 20px;
+    font-style: italic;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0 0 16px 16px;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6);
+    overflow-y: auto;
+    color: #7a613f;
+  }
+
+  /* 타이핑되는 텍스트용 스타일 (글자 영역) */
+  #info-content .typed-text {
+    flex: 1;
+    padding: 24px 20px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 0 0 16px 16px;
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.7);
+    overflow-y: auto;
+    color: #5a4427;
+    font-weight: 600;
+    font-family: 'Nanum Myeongjo', serif;
+    user-select: text;
+    min-height: 300px;
+  }
+
+  /* 스크롤바 예쁘게 */
+  #info-content::-webkit-scrollbar,
+  #info-content .typed-text::-webkit-scrollbar,
+  .info-placeholder::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #info-content::-webkit-scrollbar-thumb,
+  #info-content .typed-text::-webkit-scrollbar-thumb,
+  .info-placeholder::-webkit-scrollbar-thumb {
+    background-color: #bba55f;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
   .chat-box {
-    width: 100%;
-    max-width: 1000px;
+    flex: 2;
+    max-width: 800px;
+    height: 700px;
     background: #fffdf7;
     border: 1px solid #e5dcc9;
     border-radius: 12px;
-    box-shadow: none;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.15);
   }
 
-  /* 제목 헤더 */
   .chat-title {
     background: #6f4e37;
-    color: #fffdf7;
+    color: white;
     padding: 18px;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
+    border-radius: 12px 12px 0 0;
+    user-select: none;
   }
 
-  /* 채팅 메시지 영역 */
   .chat-messages {
+    flex: 1;
     padding: 20px;
     background-color: #faf7f2;
-    background-image: url('/assets/img/yesul/AI/bartender-ai-no-background.png'); /* 이미지 */
+    background-image: url('/assets/img/yesul/AI/bartender-ai-no-background.png');
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: 400px auto; /* 사이즈 */
-    height: 600px;
+    background-size: 400px auto;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 
-  /* 공통 메시지 박스 */
+  .chat-input-area {
+    display: flex;
+    padding: 8px;
+    background-color: #f7f3eb;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .chat-bubble {
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .chat-bubble a {
+    color: #2b6cb0;
+    text-decoration: underline;
+  }
+
+  #chat-input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 2px solid #a67c52;
+    border-radius: 20px 0 0 20px;
+    font-size: 15px;
+    background-color: #fefcf7;
+    outline: none;
+    font-family: 'Nanum Myeongjo', serif;
+  }
+
+  #chat-send-btn {
+    background: linear-gradient(to bottom, #b28b5e, #a07745);
+    color: white;
+    border: none;
+    border-radius: 0 20px 20px 0;
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: 'Nanum Myeongjo', serif;
+  }
+
+  #chat-send-btn:hover {
+    background: linear-gradient(to bottom, #8c6c45, #7a5836);
+  }
+
+  #chat-send-btn:disabled {
+    background-color: #d3c4a0;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
   .message {
     max-width: 80%;
     padding: 12px 16px;
@@ -194,7 +449,6 @@
     line-height: 1.6;
   }
 
-  /* 유저 메시지 스타일 */
   .message.user {
     align-self: flex-end;
     background-color: #dcead7;
@@ -202,7 +456,6 @@
     border: 1px solid #b6d7a8;
   }
 
-  /* AI 메시지 스타일 */
   .message.ai {
     align-self: flex-start;
     background-color: #fff1dd;
@@ -210,7 +463,6 @@
     border: 1px solid #f3d2a9;
   }
 
-  /* AI 로딩 메시지 */
   .message.ai.loading {
     font-style: italic;
     color: #888;
@@ -219,9 +471,8 @@
     gap: 10px;
   }
 
-  /* 타이핑 중 애니메이션 (버블) */
   .typing-bubble {
-    display: flex;
+    display: inline-flex; /* 또는 inline-block */
     gap: 6px;
     align-items: center;
     justify-content: center;
@@ -236,15 +487,25 @@
     opacity: 0.5;
   }
 
-  .typing-bubble span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-bubble span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes bounce {
-    0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
-    40% { transform: translateY(-6px); opacity: 1; }
+  .typing-bubble span:nth-child(2) {
+    animation-delay: 0.2s;
   }
 
-  /* 로딩 스피너 */
+  .typing-bubble span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: translateY(0);
+      opacity: 0.5;
+    }
+    40% {
+      transform: translateY(-6px);
+      opacity: 1;
+    }
+  }
+
   .spinner {
     width: 16px;
     height: 16px;
@@ -255,64 +516,10 @@
   }
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
-
-  /* 입력창 영역 */
-  .chat-input-area {
-    display: flex;
-    border-top: 1px solid #ddd;
-    background-color: #f7f3eb;
-    padding: 8px;
-    border-radius: 0 0 16px 16px;
-  }
-
-  #chat-input {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-    background-color: #fffaf4;
-  }
-
-  /* 보내기 버튼 */
-  #chat-input {
-    flex: 1;
-    padding: 14px 16px;
-    border: 2px solid #a67c52; /* 갈색 */
-    border-radius: 20px 0 0 20px;
-    font-size: 15px;
-    background-color: #fefcf7; /* 미색 종이 느낌 */
-    outline: none;
-    font-family: 'Nanum Myeongjo', serif;
-  }
-
-  #chat-send-btn {
-    background: linear-gradient(to bottom, #b28b5e, #a07745); /* 따뜻한 갈색 톤 */
-    color: white;
-    border: none;
-    border-radius: 0 20px 20px 0;
-    padding: 0 24px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    font-family: 'Nanum Myeongjo', serif;
-  }
-
-  #chat-send-btn:hover {
-    background: linear-gradient(to bottom, #8c6c45, #7a5836);
-  }
-
-  #chat-send-btn:disabled {
-    background-color: #d3c4a0;  /* 연한 베이지 톤 */
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
 </style>
-
 </body>
 </html>

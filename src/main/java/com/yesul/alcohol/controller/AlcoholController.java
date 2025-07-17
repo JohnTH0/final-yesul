@@ -173,6 +173,13 @@ public class AlcoholController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/clova2")
+    @ResponseBody
+    public ResponseEntity<String> ask2(@RequestBody ClovaAskRequestDto dto) {
+        String response = clovaService.callClovaAPI2(dto);
+        return ResponseEntity.ok(response);
+    }
+
     // 클로바(AI) 데이터 조회용
     @GetMapping("")
     @ResponseBody
