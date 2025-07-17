@@ -73,7 +73,7 @@
     chatMessages.appendChild(loadingMsg);
     scrollToBottom(chatMessages);
 
-    fetch('http://localhost:8080/alcohols/clova', {
+    fetch('http://223.130.132.13:8080/alcohols/clova', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ask: text})
@@ -121,7 +121,8 @@
     </span>
   </p>
 `;
-    fetch('http://localhost:8080/alcohols/clova2', {
+
+    fetch('http://223.130.132.13:8080/alcohols/clova2', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ask: aiText})

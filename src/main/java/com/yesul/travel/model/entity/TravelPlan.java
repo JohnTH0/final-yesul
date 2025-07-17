@@ -1,6 +1,8 @@
 package com.yesul.travel.model.entity;
 
 import com.yesul.common.BaseTimeEntity;
+import com.yesul.user.model.entity.User;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,4 +20,8 @@ public class TravelPlan extends BaseTimeEntity {
 
     @Column(name = "travel_plan", columnDefinition = "TEXT")
     private String travelPlan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
