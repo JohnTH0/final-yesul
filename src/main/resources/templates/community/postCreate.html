@@ -187,6 +187,23 @@
 <!-- 기본 JS -->
 <!--<script th:src="@{/assets/js/plugins/bootstrap.bundle.min.js}"></script>-->
 <!--<script th:src="@{/assets/js/main.js}"></script>-->
+<!-- ✨ SweetAlert2 라이브러리 로드 (head or body 맨 아래에 위치 가능) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- ✨ FlashAttribute(error) 값이 있으면 팝업으로 띄우기 -->
+<script th:inline="javascript">
+  /* FlashAttribute의 error 메시지를 가져와서 JS 문자열로 만듦 */
+  let errorMessage = /*[[${error}]]*/ null;
+
+  if (errorMessage) {
+    Swal.fire({
+      icon: 'warning',
+      title: '알림',
+      text: errorMessage,
+      confirmButtonText: '확인'
+    });
+  }
+</script>
 
 </body>
 </html>

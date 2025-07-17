@@ -29,12 +29,4 @@ public class PointHistory extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Boolean isEarned;  // true: 적립, false: 차감
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;  // 생성일시
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
 }

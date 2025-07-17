@@ -1,6 +1,6 @@
 package com.yesul.community.controller;
 
-import com.yesul.community.model.dto.PointRequest;
+import com.yesul.community.model.dto.PointRequestDto;
 import com.yesul.community.model.entity.PointHistory;
 import com.yesul.community.model.entity.enums.PointType;
 import com.yesul.community.service.PointService;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "Point", description = "포인트")
@@ -37,14 +36,14 @@ public class PointController {
     }
 
     @PostMapping("/use")
-    public String usePoint(@RequestBody PointRequest request) {
+    public String usePoint(@RequestBody PointRequestDto request) {
         pointService.usePoint(request.getUserId(), request.getType());
         return "포인트 차감 완료!";
     }
 
-    @Operation(summary = "출석 포인트 적립")
     @PostMapping("/attendance")
     public ResponseEntity<?> earnAttendancePoint(@RequestParam Long userId) {
+        System.out.println("== 출석 포인트 API 진입! userId=" + userId);
         pointService.earnPoint(userId, PointType.ATTENDANCE);
         return ResponseEntity.ok().build();
     }

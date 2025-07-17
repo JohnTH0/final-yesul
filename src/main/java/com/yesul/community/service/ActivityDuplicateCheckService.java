@@ -28,6 +28,7 @@ public class ActivityDuplicateCheckService {
     public void saveActivity(Long userId, PointType activityType, int expireSeconds) {
         RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(RedisConstants.USER_POINT_DB_INDEX);
         String key = generateKey(userId, activityType);
+        System.out.println("💾 Redis 저장 시도! key = " + key + ", expire = " + expireSeconds + "초");
         redisTemplate.opsForValue().set(key, "1", Duration.ofSeconds(expireSeconds));
     }
 
@@ -41,7 +42,6 @@ public class ActivityDuplicateCheckService {
         RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(RedisConstants.USER_POINT_DB_INDEX);
         String key = generateKey(userId, activityType);
         Boolean exists = redisTemplate.hasKey(key);
-        System.out.println("🧪 중복 체크: key = " + key + ", exists = " + exists);
         return Boolean.TRUE.equals(exists);
     }
 

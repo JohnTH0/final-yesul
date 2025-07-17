@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-
-<head th:replace="~{layout/user-default :: head}"></head>
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/user/user-head :: user-head}"></head>
 <body>
 
-
 <!-- 헤더 -->
-<div th:replace="~{layout/user-default :: header}"></div>
+<div th:replace="~{fragments/user/header :: header}"></div>
 
 <div class="container mt-4">
 
@@ -24,7 +22,7 @@
   </div>
   <!-- 등록 버튼 -->
   <div class="text-end mb-4">
-    <a th:href="@{/community/create}" class="oh-create-btn">게시글 등록</a>
+    <a th:href="@{/community/create(boardName='free')}" class="oh-create-btn">게시글 등록</a>
   </div>
 
   <!-- 기존 테이블 -->
@@ -224,5 +222,7 @@
     }
   }
 </style>
+
+<span th:text="'타임리프 동작 테스트'"></span>
 </body>
 </html>

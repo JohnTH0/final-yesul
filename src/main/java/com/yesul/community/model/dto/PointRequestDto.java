@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PointRequest {
+public class PointRequestDto {
 
     @Schema(description = "유저 ID")
     private Long userId;

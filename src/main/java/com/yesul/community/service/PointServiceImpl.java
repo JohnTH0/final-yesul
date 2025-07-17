@@ -7,7 +7,7 @@ import com.yesul.community.repository.PointHistoryRepository;
 import com.yesul.community.repository.PointRepository;
 import com.yesul.user.model.entity.User;
 import com.yesul.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/user-default :: head}"></head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -24,7 +24,7 @@
     </div>
     <!-- 등록 버튼 -->
     <div class="text-end mb-4">
-        <a th:href="@{/community/create}" class="oh-create-btn">게시글 등록</a>
+        <a th:href="@{/community/create(boardName='recipe')}" class="oh-create-btn">게시글 등록</a>
     </div>
 
     <!-- 게시글 목록 -->
@@ -82,8 +82,8 @@
             <div class="oh-search-wrap" style="margin:0;">
                 <form class="oh-search-form" method="get" th:action="@{/community/{boardName}(boardName=${boardName})}">
                     <input class="oh-search-input" type="text" name="keyword" th:value="${paramKeyword}" placeholder="게시글 검색">                    <button class="oh-search-btn" type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
                 </form>
             </div>
         </div>

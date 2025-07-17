@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.yesul.community.service.PointService;
 import com.yesul.community.model.entity.enums.PointType;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,13 +24,16 @@ public class CommentController {
     // 댓글 저장
     @PostMapping
     public String save(@ModelAttribute CommentRequestDto dto,
-                       @AuthenticationPrincipal PrincipalDetails principalDetails) {
+                       @AuthenticationPrincipal PrincipalDetails principalDetails,
+                       org.springframework.ui.Model model,
+                       RedirectAttributes redirectAttributes) {
 
         Long userId = principalDetails.getUser().getId();
 
         // 1. Redis 중복 체크 (내용 검사 X, 단순 시간 제한)
         if (activityDuplicateCheckService.isDuplicate(userId, PointType.COMMENT_CREATE)) {
-            throw new IllegalArgumentException("댓글은 잠시 후 다시 작성해주세요.");
+            redirectAttributes.addFlashAttribute("error", "20초 이내에는 중복 댓글 작성이 불가합니다.");
+            return "redirect:/community/" + dto.getBoardName() + "/" + dto.getPostId();
         }
 
         // 2. 댓글 저장

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/user-default :: head}"></head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -25,7 +25,7 @@
     </div>
     <!-- 등록 버튼 -->
     <div class="text-end mb-4">
-        <a th:href="@{/community/create}" class="oh-create-btn">게시글 등록</a>
+        <a th:href="@{/community/create(boardName='info')}" class="oh-create-btn">게시글 등록</a>
     </div>
 
     <!-- 게시글 목록 -->

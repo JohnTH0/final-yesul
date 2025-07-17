@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Builder
-public class PointHistoryResponse {
+public class PointHistoryResponseDto {
 
     @Schema(description = "활동 유형")
     private PointType type;
@@ -30,8 +30,8 @@ public class PointHistoryResponse {
     /**
      * Entity → DTO 변환 메서드
      */
-    public static PointHistoryResponse from(PointHistory history) {
-        return PointHistoryResponse.builder()
+    public static com.yesul.community.model.dto.response.PointHistoryResponseDto from(PointHistory history) {
+        return com.yesul.community.model.dto.response.PointHistoryResponseDto.builder()
                 .type(history.getPoint().getType())
                 .point(history.getPoint().getPoint())
                 .isEarned(history.getIsEarned())
