@@ -1,152 +1,160 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
   <meta charset="UTF-8" />
   <title>Admin Chatroom</title>
   <link rel="stylesheet" href="/assets/css/plugins/bootstrap.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <style>
-    body { margin: 0; background: #f5f6fa; height: 100vh;}
+    body { margin: 0; background: #f5f6fa; height: 100vh; }
+    .gi-main-content { padding-left: 280px; padding-top: 80px; }
     .admin-chat-wrapper {
       display: flex;
-      max-width: 1200px;
-      margin: 40px auto;         /* 가운데 정렬 */
-      height: calc(100vh - 160px); /* 헤더/푸터를 고려한 높이 조절 */
+      max-width: 900px;
+      margin: 40px auto;
+      height: calc(100vh - 160px);
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.07);
       overflow: hidden;
     }
-
     .chat-sidebar { width: 320px; border-right: 1px solid #ececec; display: flex; flex-direction: column; overflow-y: auto; }
     .chat-search { padding: 16px; border-bottom: 1px solid #ddd; }
     .chat-search input { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; }
     #chatRoomList { list-style: none; margin: 0; padding: 0; }
-    .chat-room-item { padding: 16px; border-bottom: 1px solid #eee; cursor: pointer; }
     .chat-room-item:hover { background: #f5f5f5; }
-    .room-info { display: flex; flex-direction: row; align-items: center; gap: 8px;}
-    .room-name { font-weight: bold; }
-    .last-message { color: #666; margin-top: 4px; font-size: 0.92rem; display: block; }
+    .chat-room-item {padding: 12px;border-bottom: 1px solid #eee;cursor: pointer;}
+    .room-info {display: flex;align-items: center;}
+    .profile-img {width: 40px;height: 40px;border-radius: 50%;object-fit: cover;margin-right: 12px;}
+    .room-texts {flex: 1;display: flex;flex-direction: column;}
+    .room-name {font-weight: 700;color: #2f3542;font-size: 16px;}
+    .last-message {
+      font-size: 14px;
+      color: #888;
+      margin-top: 4px;
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .unread-count {
-      background: #ff4d4f; background: #198754; border-radius: 50%;
-      padding: 2px 8px; font-size: 12px; margin-top: 4px; align-self: flex-start;
-    }
-    .total-unread-count {
-      padding: 16px;
-      background: #f1f1f1;
-      border-bottom: 1px solid #ececec;
+      background-color: #198754; /* 초록색 */
+      color: white;
+      font-size: 13px;
       font-weight: bold;
-      font-size: 1.1rem;
-      color: #198754;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      text-align: center;
+      display: inline-block;
+      margin-left: auto;
     }
-
-
+    .last-message { color: #666; margin-top: 4px; font-size: 0.92rem; display: block; }
+    .total-unread-count { padding: 16px; background: #f1f1f1; border-bottom: 1px solid #ececec; font-weight: bold; font-size: 1.1rem; color: #198754; }
     .chat-content { flex: 1; display: flex; flex-direction: column; }
-    .chat-header { padding: 20px; border-bottom: 1px solid #ddd; background: #f9fafb; }
+    .chat-header { padding: 20px; border-bottom: 1px solid #ddd; background: #f9fafb; display: flex; align-items: center; gap: 8px; }
     .chat-history { flex: 1; overflow-y: auto; padding: 20px; background: #f9fafb; }
     .chat-history ul { list-style: none; padding: 0; margin: 0; }
     .chat-history li { display: flex; flex-direction: column; margin-bottom: 12px; }
     .admin-message { align-items: flex-start; }
     .user-message { align-items: flex-end; }
     .sender-name { font-size: 0.85rem; color: #555; margin-bottom: 2px; }
-    .chat-bubble {
-      max-width: 60%; padding: 12px 16px; border-radius: 20px; word-break: break-word; border: 1px solid #ccc;
-    }
+    .chat-bubble { max-width: 60%; padding: 12px 16px; border-radius: 20px; word-break: break-word; border: 1px solid #ccc; }
     .admin-message .chat-bubble { background: #f1f1f1; color: #000; }
     .user-message .chat-bubble { background: #007bff; color: #fff; }
     .chat-time { font-size: 0.75rem; color: #888; margin-top: 4px; }
-
-    .chat-input-area {
-      padding: 12px 16px; border-top: 1px solid #ddd; background: #fff;
-      display: flex; align-items: center;
-    }
+    .chat-input-area { padding: 12px 16px; border-top: 1px solid #ddd; background: #fff; display: flex; align-items: center; }
     .chat-input-area textarea { flex: 1; resize: none; height: 48px; border: 1px solid #ccc; border-radius: 12px; padding: 12px; margin-right: 8px; }
     .upload-btn { margin-right: 8px; }
     .send-btn { min-width: 80px; height: 48px; border-radius: 12px; }
+    .back-button {
+      background-color: #5c6670;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .back-button:hover { background-color: #49525a; transform: translateY(-1px); }
   </style>
 </head>
 <body>
+<!-- Header / Sidebar / Notification Fragments -->
+<div th:replace="~{fragments/admin/header :: adminHeader}"></div>
+<div th:replace="~{fragments/admin/sidebar :: adminSidebar}"></div>
+<div th:replace="~{fragments/admin/notify-sidebar :: adminNotifySidebar}"></div>
 
-<!--  header fragment 유지 -->
-<div th:replace="fragments/user/header :: header"></div>
 
-<div class="admin-chat-wrapper">
-  <!-- Sidebar -->
-  <div class="chat-sidebar">
-    <div class="chat-search">
-      <input type="text" id="chatSearchInput" placeholder="이름으로 검색">
-    </div>
-    <div class="total-unread-count" th:if="${totalUnreadCount > 0}">
-      <span th:text="'전체 안 읽은 메시지: ' + ${totalUnreadCount}">0</span>
-    </div>
-    <ul id="chatRoomList">
-      <li th:each="room : ${chatRooms}" class="chat-room-item" th:data-room-id="${room.roomId}">
-        <div class="room-info">
-          <span class="room-name" th:text="${room.userName}">상대방 이름</span>
-          <span class="last-message" th:text="${room.lastMessage}">마지막 메시지</span>
-          <!-- 안 읽은 메시지 뱃지 -->
-          <span class="unread-count"
-                th:if="${room.adminUnreadCount != null and room.adminUnreadCount > 0}"
-                th:text="${room.adminUnreadCount}">0</span>
+    <div class="admin-chat-wrapper">
+      <!-- Sidebar -->
+      <div class="chat-sidebar">
+        <div class="chat-search">
+          <input type="text" id="chatSearchInput" placeholder="이름으로 검색">
         </div>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Content -->
-  <div class="chat-content">
-    <div class="chat-header">
-      <span id="selectedUserName" th:text="${chatPartnerName}">채팅 상대</span>
-    </div>
-    <div class="chat-history">
-      <ul id="messageList">
-        <li th:each="msg : ${messages}"
-            th:classappend="${msg.senderType.name()} == 'ADMIN' ? 'admin-message' : 'user-message'">
-          <span class="sender-name"
-                th:if="${msg.senderType.name()} == 'ADMIN'">관리자</span>
-          <span class="sender-name"
-                th:if="${msg.senderType.name()} != 'ADMIN'"
-                th:text="${chatPartnerName}">상대방</span>
-          <div class="chat-bubble"
-               th:if="${msg.messageType.name()} == 'TEXT'"
-               th:text="${msg.messageContext}">메시지</div>
-          <div class="chat-bubble"
-               th:if="${msg.messageType.name()} == 'IMAGE'">
-            <img th:src="${msg.messageContext}" style="max-width: 100%;">
-          </div>
-          <div class="chat-time"
-               th:text="${#temporals.format(msg.createdAt, 'HH:mm')}">12:30</div>
-        </li>
-      </ul>
-    </div>
-
-    <div class="chat-input-area">
-      <button type="button" class="btn btn-secondary upload-btn" onclick="document.getElementById('imageInput').click()">＋</button>
-      <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
-      <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="uploadImage(this)">
-      <button type="button" id="sendBtn" class="btn btn-dark send-btn">전송</button>
-      <input type="hidden" id="chatRoomId" th:value="${roomId}">
-      <input type="hidden" id="lastMessageId" th:value="${lastMessageId}">
-    </div>
-  </div>
-</div>
-<div th:fragment="searchResultFragment">
-  <ul id="chatRoomListSearchResult">
-    <li th:each="room : ${chatRooms}" class="chat-room-item" th:data-room-id="${room.roomId}">
-      <div class="room-info">
-        <span class="room-name" th:text="${room.userName}">상대방 이름</span>
-        <span class="last-message" th:text="${room.lastMessage}">마지막 메시지</span>
-        <span class="unread-count"
-              th:if="${room.adminUnreadCount != null and room.adminUnreadCount > 0}"
-              th:text="${room.adminUnreadCount}">0</span>
+        <div class="total-unread-count" th:if="${totalUnreadCount > 0}">
+          <span th:text="'전체 안 읽은 메시지: ' + ${totalUnreadCount}">0</span>
+        </div>
+        <th:block th:fragment="searchResultFragment">
+        <ul id="chatRoomList">
+          <li th:each="room : ${chatRooms}" class="chat-room-item" th:data-room-id="${room.roomId}">
+            <div class="room-info">
+              <img th:src="${room.userProfileUrl != null} ? @{${room.userProfileUrl}} : @{/assets/img/default-profile.png}"
+                   alt="유저 프로필" class="profile-img" />
+              <div class="room-texts">
+              <span class="room-name" th:text="${room.userName}">상대방 이름</span>
+              <span class="last-message" th:text="${room.lastMessage}">마지막 메시지</span>
+              </div>
+              <span class="unread-count" th:if="${room.adminUnreadCount > 0}" th:text="${room.adminUnreadCount}">0</span>
+            </div>
+        </ul>
+        </th:block>
       </div>
-    </li>
-  </ul>
-</div>
 
+      <!-- Chat Content -->
+      <div class="chat-content">
+        <div class="chat-header">
+          <button class="back-button" onclick="history.back()">←</button>
+          <span id="selectedUserName" th:text="${chatPartnerName}">채팅 상대</span>
+        </div>
+        <div class="chat-history">
+          <ul id="messageList">
+            <li th:each="msg : ${messages}"
+                th:classappend="${msg.senderType.name()} == 'ADMIN' ? 'admin-message' : 'user-message'">
+              <span class="sender-name" th:if="${msg.senderType.name()} != 'ADMIN'" th:text="${chatPartnerName}">상대방</span>
+              <div class="chat-bubble" th:if="${msg.messageType.name()} == 'TEXT'" th:text="${msg.messageContext}">메시지</div>
+              <div class="chat-bubble" th:if="${msg.messageType.name()} == 'IMAGE'">
+                <img th:src="${msg.messageContext}" style="max-width: 100%;">
+              </div>
+              <div class="chat-time" th:text="${#temporals.format(msg.createdAt, 'HH:mm')}">12:30</div>
+            </li>
+          </ul>
+        </div>
+        <div class="chat-input-area">
+          <button type="button" class="btn btn-secondary upload-btn" onclick="document.getElementById('imageInput').click()">＋</button>
+          <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
+          <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="uploadImage(this)">
+          <button type="button" id="sendBtn" class="btn btn-dark send-btn">전송</button>
+          <input type="hidden" id="chatRoomId" th:value="${roomId}">
+          <input type="hidden" id="lastMessageId" th:value="${lastMessageId}">
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 
-<!--  footer fragment 유지 -->
-<div th:replace="fragments/user/footer :: footer"></div>
+<!-- Scripts -->
+<div th:replace="~{fragments/admin/footer :: adminFooter}"></div>
+<div th:replace="~{fragments/admin/script :: adminScripts}"></div>
+
+</body>
+</html>
+
 
 <script>
   let chatWebSocket;
@@ -257,8 +265,19 @@
 
   document.getElementById('chatSearchInput').addEventListener('input', function () {
     const keyword = this.value.trim();
+    const currentList = document.getElementById('chatRoomList');
     if (keyword.length === 0) {
-      location.reload(); // 검색어 없을 때 전체 목록 복원
+      fetch(`/admin/chatroom`)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newList = doc.getElementById('chatRoomList');
+          if (newList && currentList) {
+            currentList.replaceWith(newList);
+            attachClickHandlers();
+          }
+        });
       return;
     }
 
@@ -267,8 +286,8 @@
       .then(html => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-        const newList = doc.getElementById('chatRoomListSearchResult');
-        const currentList = document.getElementById('chatRoomListSearchResult');
+        const newList = doc.getElementById('chatRoomList');
+        const currentList = document.getElementById('chatRoomList');
 
         if (newList && currentList) {
           currentList.replaceWith(newList);
@@ -313,7 +332,7 @@
 
   function connectWebSocket(roomId) {
     chatWebSocket = new WebSocket("ws://" + window.location.host + "/ws/chat");
-    chatWebSocket.onopen = () => console.log("✅ WebSocket 연결됨");
+    chatWebSocket.onopen = () => console.log(" WebSocket 연결됨");
     chatWebSocket.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       const li = buildMessageLi(msg);
@@ -338,6 +357,7 @@
       const img = document.createElement('img');
       img.src = msg.messageContext;
       img.style.maxWidth = '100%';
+      img.onload = scrollToBottom;
       bubble.appendChild(img);
     } else {
       bubble.textContent = msg.messageContext;

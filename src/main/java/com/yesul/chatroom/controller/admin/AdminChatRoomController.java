@@ -42,7 +42,6 @@ public class AdminChatRoomController {
         model.addAttribute("chatRooms", response.getChatRooms());
         model.addAttribute("totalUnreadCount", response.getTotalUnreadCount());
         model.addAttribute("nextCursor", response.getNextCursor());
-        System.out.println(response.getTotalUnreadCount());
 
         return "admin/admin-chat";
     }

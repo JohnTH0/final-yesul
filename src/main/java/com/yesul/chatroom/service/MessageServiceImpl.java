@@ -8,6 +8,9 @@ import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.repository.ChatRoomRepository;
 import com.yesul.chatroom.repository.MessageRepository;
 import com.yesul.exception.handler.ChatRoomNotFoundException;
+import com.yesul.exception.handler.UserNotFoundException;
+import com.yesul.user.model.entity.User;
+import com.yesul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,7 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -64,6 +68,8 @@ public class MessageServiceImpl implements MessageService {
 
         messageRepository.save(message);
 
+        chatRoom.setLastMessage(message.getMessageContext());
+
         // 수신자 정보 파악
         Type receiverType;
         Long receiverId;
@@ -78,10 +84,15 @@ public class MessageServiceImpl implements MessageService {
             chatRoom.increaseUserUnreadCount(); // 유저 안 읽은 메시지 증가
         }
 
+        //수신자 조회
+        User sender = userRepository.findById(senderId)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
+
         return MessageResponseDto.builder()
                 .messageId(message.getId())
                 .senderId(senderId)
                 .receiverId(receiverId)
+                .senderName(sender.getName())
                 .receiverType(receiverType)
                 .messageContext(message.getMessageContext())
                 .messageType(message.getMessageType())

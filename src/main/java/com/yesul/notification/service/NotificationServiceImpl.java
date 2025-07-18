@@ -56,6 +56,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .id(saved.getId())
                 .senderId(saved.getSenderId())
                 .senderType(saved.getSenderType())
+                .senderName(dto.getSenderName())
                 .receiverId(saved.getReceiverId())
                 .receiverType(saved.getReceiverType())
                 .targetId(saved.getTargetId())
@@ -64,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .isRead(saved.isRead())
                 .build();
 
-        notificationHandler.sendNotification(saved.getReceiverId(), responseDto);
+        notificationHandler.sendNotification(saved.getReceiverId(),saved.getReceiverType(), responseDto);
     }
 
     public void sendPostOwnerCommentNotification(Long postId, Long commenterId, Long postOwnerId) {
@@ -75,6 +76,7 @@ public class NotificationServiceImpl implements NotificationService {
         CreateNotificationRequestDto dto = CreateNotificationRequestDto.builder()
                 .senderId(commenterId)
                 .senderType(Type.USER)
+                .senderName(user.getName())
                 .receiverId(postOwnerId)
                 .receiverType(Type.USER)
                 .targetId(postId)
@@ -93,6 +95,7 @@ public class NotificationServiceImpl implements NotificationService {
         CreateNotificationRequestDto dto = CreateNotificationRequestDto.builder()
                 .senderId(likeOwnerId)
                 .senderType(Type.USER)
+                .senderName(user.getName())
                 .receiverId(postOwnerId)
                 .receiverType(Type.USER)
                 .targetId(postId)

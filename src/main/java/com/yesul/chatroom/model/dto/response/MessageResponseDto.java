@@ -11,6 +11,7 @@ import lombok.Getter;
 public class MessageResponseDto {
     private final Long messageId;
     private final Long senderId;
+    private final String senderName;
     private final Type receiverType;
     private final Long receiverId;
     private final String messageContext;

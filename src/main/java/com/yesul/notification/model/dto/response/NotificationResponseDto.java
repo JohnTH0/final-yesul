@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class NotificationResponseDto {
     private Long id;
     private Long senderId;
+    private String senderName;
     private Type senderType;
     private Long receiverId;
     private Type receiverType;
@@ -27,7 +28,7 @@ public class NotificationResponseDto {
     private boolean isRead;
     private LocalDateTime createdAt;
 
-    public static NotificationResponseDto fromEntity(Notification n) {
+    public static NotificationResponseDto fromEntity(Notification n, String senderName) {
         String content;
         if (n.getReceiverType() == Type.ADMIN) {
             content = "새로운 문의가 도착했습니다.";
@@ -39,6 +40,7 @@ public class NotificationResponseDto {
                 .id(n.getId())
                 .senderId(n.getSenderId())
                 .senderType(n.getSenderType())
+                .senderName(senderName)
                 .receiverId(n.getReceiverId())
                 .receiverType(n.getReceiverType())
                 .targetId(n.getTargetId())
@@ -48,4 +50,5 @@ public class NotificationResponseDto {
                 .content(content)
                 .build();
     }
+
 }

@@ -5,6 +5,8 @@
     <div id="gi-overlay">
       <div class="loader"></div>
     </div>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <head th:replace="~{fragments/user/head :: head}"></head>
 
     <!-- Header Bottom  Start -->
     <div class="gi-header-bottom d-lg-block">
@@ -79,28 +81,26 @@
                 <!-- Header wishlist End -->
                 <!-- Header Cart Start -->
                 <!-- 종 아이콘 -->
-                <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="알림">
+                <!-- 아이콘 교체 -->
+                <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="알림" id="notificationTrigger">
                   <div class="header-icon" style="position: relative;">
-                    <i class="fi-rr-comments-question"></i>
+                    <i class="ri-notification-3-line" style="font-size: 20px; color: #333;"></i>
+                    <span style="font-size: 12px; color: #555; margin-top: 4px;">알림</span>
                     <span id="header-notify-badge"
                           style="
-        position: absolute;
-        top: -4px;
-        right: -8px;
-        min-width: 16px;
-        height: 16px;
-        background: red;
-        color: #fff;
-        font-size: 12px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 16px;
-      ">
-
-    </span>
-                  </div>
-                  <div class="gi-btn-desc">
-                    <span class="gi-btn-title">알림</span>
+            position: absolute;
+            top: -4px;
+            right: -8px;
+            min-width: 16px;
+            height: 16px;
+            background: red;
+            color: #fff;
+            font-size: 12px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 16px;
+            display: none;
+          "></span>
                   </div>
                 </a>
 
@@ -324,8 +324,10 @@
         <!-- 상단 타이틀 -->
         <div class="gi-cart-top">
           <div class="gi-cart-title">
-            <span class="cart_title">알림센터</span>
-            <span id="notify-count" class="main-label-note-new">0</span>
+            <a href="/users/chatroom?adminId=2" class="cart_title" style="text-decoration: none; color: inherit;">
+              문의하기
+            </a>
+            <span id="notify-count" class="main-label-note-new"></span>
             <a href="javascript:void(0)" class="gi-cart-close">
               <i class="fi-rr-cross-small"></i>
             </a>
@@ -374,7 +376,7 @@
       .gi-message-list,
       #message-list {
         display: flex;
-        flex-direction: column !important;
+        flex-direction: column-reverse
       }
 
       .close-alert-btn {
@@ -407,12 +409,27 @@
       const receiverType = 'USER';
       if (receiverId != null && receiverId !== 0) {
 
+        const badge = document.getElementById('header-notify-badge');
+        if (receiverId == null || receiverId === 0) {
+          badge.style.display = 'none'; // 로그인 안 되어 있으면 숨김
+        } else {
+          badge.style.display = 'inline-block'; // 로그인 되어 있으면 표시
+          // 이후 fetch 및 WebSocket 로직 수행
+        }
+
         // [1:1 문의] 초기 안 읽은 알림 가져오기
         fetch(`/notifications/${receiverType}/${receiverId}`)
           .then(res => res.json())
           .then(data => {
             const count = data.length;
-            document.getElementById('notify-count').textContent = count;
+            badge.textContent = count;
+
+            if (count > 0) {
+              badge.style.display = 'inline-block';  // 보여주기
+              badge.style.background = 'red';
+            } else {
+              badge.style.display = 'none';
+            }
 
             const messageList = document.getElementById('message-list'); // 1:1 문의
             const alertList = document.getElementById('alert-list');     // 댓글 알림
@@ -428,7 +445,7 @@
           </div>
           <div class="detail">
             <div>
-              <a href="/users/chatroom?adminId=${msg.senderId}" class="name">${msg.senderId}</a>
+              <a href="/users/chatroom?adminId=${msg.senderId}" class="name">관리자</a>
               <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
               <p class="message">${msg.content}</p>
             </div>
@@ -445,7 +462,7 @@
           </div>
           <div class="detail">
             <div>
-              <a href="community/recipe/${msg.targetId}" class="name">USER${msg.senderId}님이 댓글을 남겼습니다.</a>
+              <a href="community/recipe/${msg.targetId}" class="name">${msg.senderName}님이 댓글을 남겼습니다.</a>
               <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
               <p class="message">${msg.content}</p>
             </div>
@@ -453,7 +470,7 @@
           </div>
         `;
                 alertList.insertBefore(li, alertList.firstChild);
-              }else if (msg.type === 'LIKE') {
+              } else if (msg.type === 'LIKE') {
                 //  좋아요 알림
                 li.innerHTML = `
       <div class="icon gi-heart">
@@ -461,28 +478,40 @@
       </div>
       <div class="detail">
         <div>
-          <a href="/community/recipe/${msg.targetId}" class="name">USER${msg.senderId}님이 좋아요를 눌렀습니다.</a>
+          <a href="/community/recipe/${msg.targetId}" class="name">${msg.senderName}님이 좋아요를 눌렀습니다.</a>
           <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
         </div>
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
+
+                if (count > 0) {
+                  badge.textContent = count;
+                  badge.style.background = 'red';
+                  badge.style.display = 'inline-block';
+                } else {
+                  badge.textContent = '';
+                  badge.style.background = 'transparent';
+                  badge.style.display = 'none';  // 안 보이게
+                }
                 alertList.insertBefore(li, alertList.firstChild);
               }
             });
 
 
-
-        //  실시간 알림 Push
-        const socket = new WebSocket(`ws://${location.host}/ws/notification`);
-        socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
-        socket.onmessage = (event) => {
-          const msg = JSON.parse(event.data);
-          if (msg.type === 'CHAT') {
-            // 기존 채팅 알림
-            const list = document.getElementById('message-list');
-            const li = document.createElement('li');
-            li.innerHTML = `
+            //  실시간 알림 Push
+            const socket = new WebSocket(`ws://${location.host}/ws/notification`);
+            socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
+            socket.onmessage = (event) => {
+              const msg = JSON.parse(event.data);
+              const prevCount = parseInt(badge.textContent) || 0;
+              const newCount = prevCount + 1;
+              badge.textContent = newCount;
+              if (msg.type === 'CHAT') {
+                // 기존 채팅 알림
+                const list = document.getElementById('message-list');
+                const li = document.createElement('li');
+                li.innerHTML = `
       <div class="icon gi-success">
         <i class="ri-check-double-line"></i>
       </div>
@@ -495,13 +524,13 @@
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
-            list.insertBefore(li, list.firstChild);
+                list.insertBefore(li, list.firstChild);
 
-          } else if (msg.type === 'COMMENT') {
-            //  댓글 알림 처리
-            const list = document.getElementById('alert-list');
-            const li = document.createElement('li');
-            li.innerHTML = `
+              } else if (msg.type === 'COMMENT') {
+                //  댓글 알림 처리
+                const list = document.getElementById('alert-list');
+                const li = document.createElement('li');
+                li.innerHTML = `
       <div class="icon gi-info">
         <i class="ri-chat-3-line"></i>
       </div>
@@ -514,9 +543,9 @@
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
-            list.insertBefore(li, list.firstChild);
-          } else if (msg.type === 'LIKE') {
-            li.innerHTML = `
+                list.insertBefore(li, list.firstChild);
+              } else if (msg.type === 'LIKE') {
+                li.innerHTML = `
       <div class="icon gi-heart">
         <i class="ri-heart-line"></i>
       </div>
@@ -528,30 +557,39 @@
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
-            alertList.insertBefore(li, alertList.firstChild);
-          }
+                alertList.insertBefore(li, alertList.firstChild);
+              }
 
-          const badge = document.getElementById('notify-count');
-          badge.textContent = parseInt(badge.textContent) + 1;
+              badge.style.background = newCount > 0 ? 'red' : 'transparent';
 
-          attachCloseEvent();
-        };
-      });
-      // X 버튼 클릭 이벤트
-      function attachCloseEvent() {
-        document.querySelectorAll('.close-alert-btn').forEach(btn => {
-          btn.onclick = () => {
-            const li = btn.closest('li');
+
+              attachCloseEvent();
+            };
+          });
+        // X 버튼 클릭 이벤트
+        // 닫기 버튼 이벤트 위임
+        document.addEventListener('click', function (e) {
+          if (e.target.classList.contains('close-alert-btn')) {
+            const li = e.target.closest('li');
             li.remove();
 
-            const badge = document.getElementById('notify-count');
-            badge.textContent = Math.max(parseInt(badge.textContent) - 1, 0);
+            const prevCount = parseInt(badge.textContent) || 0;
+            const newCount = Math.max(prevCount - 1, 0);
+            badge.textContent = newCount;
 
-            const id = btn.dataset.id;
+            badge.style.background = newCount > 0 ? 'red' : 'transparent';
+
+            const id = e.target.dataset.id;
             fetch(`/notifications/${id}/read`, {method: 'PATCH'});
-          };
+          }
         });
-      }}
+
+
+      }
+
+
+
+
     </script>
   </div>
 </div>

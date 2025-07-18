@@ -1,20 +1,42 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/user/head :: head}">
   <title>User Chatroom</title>
   <link rel="stylesheet" href="/assets/css/plugins/bootstrap.css">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css" rel="stylesheet">
+</head>
   <style>
-    body { margin: 0; background: #f5f6fa; height: 100vh; }
-    .user-chat-wrapper {
-      max-width: 720px; margin: 32px auto; background: #fff; border-radius: 18px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden; height: 90vh;
-      display: flex; flex-direction: column;
+    body {
+      margin: 0;
+      background: #f5f6fa;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
+    .user-chat-wrapper {
+      width: 850px;              /* 너비 넓힘 */
+      height: 650px;              /* 높이 줄임 */
+      margin: 40px auto;          /* 상단 여백 줌 */
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-history {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: #f9fafb;
+    }
+
+
     .chat-header { padding: 20px; border-bottom: 1px solid #ddd; background: #f9fafb; }
-    .chat-history { flex: 1; overflow-y: auto; padding: 20px; background: #f9fafb; }
     .chat-history ul { list-style: none; padding: 0; margin: 0; }
     .chat-history li { display: flex; flex-direction: column; margin-bottom: 12px; }
 
@@ -42,12 +64,21 @@
     }
     .upload-btn { margin-right: 8px; }
     .send-btn { min-width: 80px; height: 48px; border-radius: 12px; }
+
+    .chat-history {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: #f9fafb;
+    }
   </style>
+
 </head>
 <body>
 
 <!--  header fragment 유지 -->
 <div th:replace="fragments/user/header :: header"></div>
+
 
 <div class="user-chat-wrapper">
   <div class="chat-header">
@@ -91,7 +122,9 @@
 </div>
 
 <!--  footer fragment 유지 -->
-<div th:replace="fragments/user/footer :: footer"></div>
+<difv th:replace="fragments/user/footer :: footer"></difv>
+<div th:replace="~{fragments/user/feature :: feature}"></div>
+<div th:replace="~{fragments/user/js :: js}"></div>
 
 <script>
   let chatSocket;
@@ -106,7 +139,7 @@
     e.preventDefault(); // 혹시 모를 submit or 버블링 방지
     sendMessage();
   });
-  messageInput.addEventListener('keypress', function(e) {
+  messageInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
@@ -124,7 +157,7 @@
       fetch("/chatroom/temp-message", {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
         body: params
       });
     }
@@ -134,9 +167,11 @@
     const roomId = chatRoomIdInput.value;
     if (!roomId) return;
 
-    fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, { credentials: "include" })
+    fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, {credentials: "include"})
       .then(res => res.text())
-      .then(tempMessage => { if (tempMessage) messageInput.value = tempMessage; })
+      .then(tempMessage => {
+        if (tempMessage) messageInput.value = tempMessage;
+      })
       .catch(console.error);
   }
 
@@ -157,7 +192,7 @@
     }));
 
     messageInput.value = '';
-    fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, { method: "DELETE", credentials: "include" });
+    fetch(`/chatroom/temp-message?chatRoomId=${roomId}`, {method: "DELETE", credentials: "include"});
   }
 
 
@@ -184,6 +219,7 @@
         }));
       });
   }
+
   let socketConnected = false;
 
   function connectChatWebSocket(roomId) {
@@ -234,8 +270,8 @@
 
   function formatTime(isoString) {
     const date = new Date(isoString);
-    const hh = String(date.getHours()).padStart(2,'0');
-    const mm = String(date.getMinutes()).padStart(2,'0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const mm = String(date.getMinutes()).padStart(2, '0');
     return `${hh}:${mm}`;
   }
 
@@ -270,6 +306,26 @@
     adjustTimestamps();
     scrollToBottom();
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const notifyBtn = document.getElementById('notificationTrigger');
+    const sidebar = document.getElementById('gi-side-cart');
+    const overlay = document.querySelector('.gi-side-cart-overlay');
+
+    if (notifyBtn && sidebar && overlay) {
+      notifyBtn.addEventListener('click', function () {
+        sidebar.classList.add('gi-cart-open');
+        overlay.classList.add('active');
+      });
+
+      overlay.addEventListener('click', function () {
+        sidebar.classList.remove('gi-cart-open');
+        overlay.classList.remove('active');
+      });
+    }
+  });
 </script>
+
+
 </body>
 </html>

@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class CreateNotificationRequestDto {
 
     private Long senderId;
+    private String senderName;
     private Type senderType;
     private Long receiverId;
     private Type receiverType;

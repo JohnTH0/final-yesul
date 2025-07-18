@@ -10,16 +10,15 @@ import com.yesul.notification.model.dto.request.CreateNotificationRequestDto;
 import com.yesul.notification.model.entity.enums.NotificationType;
 import com.yesul.notification.service.NotificationService;
 import com.yesul.user.service.PrincipalDetails;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.*;
+
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Slf4j
@@ -30,13 +29,17 @@ public class ChatSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private final MessageService messageService;
     private final NotificationService notificationService;
-    // userId -> WebSocketSession
-    private final Map<Long, WebSocketSession> sessions = new HashMap<>();
+
+    // 복합키 (userId_type) → WebSocketSession
+    private final Map<String, WebSocketSession> sessions = new HashMap<>();
+
+    private String makeKey(Long id, Type type) {
+        return id + "_" + type.name();
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         Object rawPrincipal = session.getPrincipal();
-
         PrincipalDetails principalDetails = null;
         LoginAdmin loginAdmin = null;
 
@@ -46,7 +49,6 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             loginAdmin = (LoginAdmin) rawPrincipal;
         } else if (rawPrincipal instanceof Authentication authentication) {
             Object principalObj = authentication.getPrincipal();
-
             if (principalObj instanceof PrincipalDetails) {
                 principalDetails = (PrincipalDetails) principalObj;
             } else if (principalObj instanceof LoginAdmin) {
@@ -55,10 +57,22 @@ public class ChatSocketHandler extends TextWebSocketHandler {
         }
 
         Long userId = principalDetails != null ? principalDetails.getUser().getId() : loginAdmin.getId();
-        sessions.putIfAbsent(userId, session);
-        log.info("WebSocket 연결 성공! userId={}, sessionId={}", userId, session.getId());
-    }
+        Type type = (principalDetails != null) ? Type.USER : Type.ADMIN;
+        String sessionKey = makeKey(userId, type);
 
+        // 기존 세션 제거
+        WebSocketSession existing = sessions.get(sessionKey);
+        if (existing != null && existing.isOpen()) {
+            try {
+                existing.close();
+            } catch (Exception e) {
+                log.warn("기존 세션 종료 실패: {}", e.getMessage());
+            }
+        }
+
+        sessions.put(sessionKey, session);
+        log.info("WebSocket 연결 성공! userId={}, type={}, sessionId={}", userId, type.name(), session.getId());
+    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
@@ -87,53 +101,46 @@ public class ChatSocketHandler extends TextWebSocketHandler {
             }
         }
 
-        Long senderId = principalDetails != null
-                ? principalDetails.getUser().getId()
-                : loginAdmin.getId();
+        Long senderId = principalDetails != null ? principalDetails.getUser().getId() : loginAdmin.getId();
+        Type senderType = (principalDetails != null) ? Type.USER : Type.ADMIN;
+        messageRequestDto.setSenderType(senderType);
 
-        // senderType을 인증 정보로 강제 세팅
-        if (principalDetails != null) {
-            messageRequestDto.setSenderType(Type.USER);
-        } else if (loginAdmin != null) {
-            messageRequestDto.setSenderType(Type.ADMIN);
-        }
-
-        // 서비스에 senderType이 담긴 DTO 전달
         MessageResponseDto messageResponseDto = messageService.saveMessage(messageRequestDto, senderId);
-
         String responseJson = objectMapper.writeValueAsString(messageResponseDto);
 
-        // 수신자에게
-        WebSocketSession receiverSession = sessions.get(messageResponseDto.getReceiverId());
+        // 수신자 세션에 전송
+        String receiverKey = makeKey(messageResponseDto.getReceiverId(), messageResponseDto.getReceiverType());
+        WebSocketSession receiverSession = sessions.get(receiverKey);
         if (receiverSession != null && receiverSession.isOpen()) {
             receiverSession.sendMessage(new TextMessage(responseJson));
         } else {
-            log.info("수신자 세션 없음: {}", messageResponseDto.getReceiverId());
+            log.info("수신자 세션 없음: {}", receiverKey);
         }
 
-        // 송신자에게
-        WebSocketSession senderSession = sessions.get(senderId);
+        // 송신자 세션에 전송
+        String senderKey = makeKey(senderId, senderType);
+        WebSocketSession senderSession = sessions.get(senderKey);
         if (senderSession != null && senderSession.isOpen()) {
-            senderSession.sendMessage(new TextMessage(responseJson)); //프론트에 push함
+            senderSession.sendMessage(new TextMessage(responseJson));
         } else {
-            log.info("송신자 세션 없음: {}", senderId);
+            log.info("송신자 세션 없음: {}", senderKey);
         }
 
         String content = messageResponseDto.getReceiverType() == Type.ADMIN
                 ? "새로운 문의가 도착했습니다."
                 : "관리자의 답변이 도착했습니다.";
+
         notificationService.sendNotification(CreateNotificationRequestDto.builder()
                 .senderId(senderId)
-                .senderType(messageRequestDto.getSenderType())
+                .senderType(senderType)
+                .senderName(messageResponseDto.getSenderName())
                 .receiverId(messageResponseDto.getReceiverId())
                 .receiverType(messageResponseDto.getReceiverType())
                 .targetId(messageRequestDto.getChatRoomId())
                 .type(NotificationType.CHAT)
                 .content(content)
                 .build());
-
     }
-
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {

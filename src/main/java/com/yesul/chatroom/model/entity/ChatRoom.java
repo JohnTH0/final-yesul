@@ -60,5 +60,9 @@ public class ChatRoom extends BaseTimeEntity {
     public void resetUserUnreadCount() {
         this.userUnreadCount = 0;
     }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
 }
 
