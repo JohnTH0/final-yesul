@@ -1,7 +1,7 @@
 package com.yesul.community.model.entity;
 
 import com.yesul.common.BaseTimeEntity;
-import com.yesul.community.model.dto.PostRequestDto;
+import com.yesul.community.model.dto.request.PostRequestDto;
 import com.yesul.like.model.entity.PostLike;
 import com.yesul.user.model.entity.User;
 import jakarta.persistence.*;

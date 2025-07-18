@@ -1,7 +1,7 @@
 package com.yesul.community.service;
 
-import com.yesul.community.model.dto.PostRequestDto;
-import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.model.dto.request.PostRequestDto;
+import com.yesul.community.model.dto.response.PostResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +17,5 @@ public interface PostService {
     void updatePost(Long postId, PostRequestDto postRequestDto, Long userId);
     void deletePost(Long postId, Long userId);
     boolean isLikedByUser(Long postId, Long userId);
+    List<PostResponseDto> getRandomPopularPosts(int count);
 }

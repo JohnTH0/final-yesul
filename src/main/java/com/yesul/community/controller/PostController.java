@@ -1,7 +1,7 @@
 package com.yesul.community.controller;
 
-import com.yesul.community.model.dto.PostRequestDto;
-import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.model.dto.request.PostRequestDto;
+import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.community.model.entity.enums.PointType;
 import com.yesul.community.service.PointService;
 import com.yesul.community.service.PostImageService;

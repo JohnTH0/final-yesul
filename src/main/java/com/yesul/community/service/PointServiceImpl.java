@@ -5,6 +5,8 @@ import com.yesul.community.model.entity.PointHistory;
 import com.yesul.community.model.entity.enums.PointType;
 import com.yesul.community.repository.PointHistoryRepository;
 import com.yesul.community.repository.PointRepository;
+import com.yesul.exception.handler.PointNotFoundException;
+import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.user.model.entity.User;
 import com.yesul.user.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +50,6 @@ public class PointServiceImpl implements PointService {
             default -> 20;
         };
 
-        System.out.println("➡ [Redis Save] key=activity:" + userId + ":" + type + ", TTL=" + ttlSeconds + "초");
-
         activityDuplicateCheckService.saveActivity(userId, type, ttlSeconds);
     }
 
@@ -62,10 +62,10 @@ public class PointServiceImpl implements PointService {
     @Transactional
     public void usePoint(Long userId, PointType type) {
         Point point = pointRepository.findByType(type)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 포인트 활동 유형입니다: " + type));
+                .orElseThrow(() -> new PointNotFoundException("잘못된 포인트 활동 유형입니다: " + type));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다."));
         user.usePoint(point.getPoint());
 
         PointHistory history = PointHistory.builder()

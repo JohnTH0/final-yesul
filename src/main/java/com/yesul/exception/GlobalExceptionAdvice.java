@@ -56,4 +56,10 @@ public class GlobalExceptionAdvice {
         log.error("[500] {} {} - {}", req.getMethod(), req.getRequestURI(), e.getMessage(), e);
         return "500";
     }
+
+    @ExceptionHandler(PointNotFoundException.class)
+    public String handlePointNotFound(PointNotFoundException e, HttpServletRequest req) {
+        log.error("[400] {} {} - {}", req.getMethod(), req.getRequestURI(), e.getMessage(), e);
+        return "400";
+    }
 }

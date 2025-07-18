@@ -4,7 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.like.model.entity.QPostLike;
 import com.yesul.community.model.entity.QPost;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 Integer.class, "count({0})", like.id);
 
         return queryFactory
-                .select(Projections.constructor(PostResponseDto.class, post.id, post.title, likeCount))
+                .select(Projections.constructor(PostResponseDto.class, post.id, post.title, post.boardName, likeCount))
                 .from(post)
                 .join(like).on(like.post.eq(post))
                 .groupBy(post.id)

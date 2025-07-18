@@ -25,7 +25,7 @@
                                     <h1 class="gi-slide-title">예술과 함께, 전통주의 매력을 발견해보세요</h1>
                                     <div class="gi-slide-btn">
                                         <a th:href="@{/alcohols/ai}"  class="gi-btn-1">전통주 찾기 <i
-                                          class="fi-rr-angle-double-small-right" aria-hidden="true"></i></a>
+                                                class="fi-rr-angle-double-small-right" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                     <h1 class="gi-slide-title" style="color: white !important;">향기로운 술 내음 따라, 양조장으로의 여행</h1>
                                     <div class="gi-slide-btn">
                                         <a href="#" class="gi-btn-1">지금 출발 <i
-                                          class="fi-rr-angle-double-small-right" aria-hidden="true"></i></a>
+                                                class="fi-rr-angle-double-small-right" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
         <div class="row">
             <!-- Banner -->
             <div
-              class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-xs-6 gi-all-product-content gi-new-product-content wow fadeInUp">
+                    class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-xs-6 gi-all-product-content gi-new-product-content wow fadeInUp">
                 <div class="gi-banner-inner">
                     <div class="gi-banner-block gi-banner-block-1">
                         <div class="banner-block">
@@ -708,21 +708,25 @@
                     <p>전통주에 대해 이야기 나눠보세요.</p>
                 </div>
                 <span class="title-link">
-                        <a href="blog-left-sidebar.html">커뮤니티 전체보기<i class="fi-rr-angle-double-small-right"></i></a>
+                        <a th:href="@{/community/recipe}">커뮤니티 전체보기<i class="fi-rr-angle-double-small-right"></i></a>
                     </span>
             </div>
             <div class="gi-blog-carousel owl-carousel">
-                <div class="gi-blog-item">
+                <div class="gi-blog-item" th:each="post : ${randomPopularPosts}">
                     <div class="blog-info">
-                        <figure class="blog-img"><a href="#"><img src="assets/img/blog/1.jpg" alt="news imag"></a>
+                        <figure class="blog-img">
+                            <a th:href="@{/community/{board}/{id}(board=${post.boardName}, id=${post.id})}">
+                                <img th:src="${post.thumbnail != null ? post.thumbnail : '/assets/img/community/mainLogo.jpg'}" alt="news image">
+                            </a>
                         </figure>
                         <div class="detail">
-                            <label>June 30,2022 - <a href="#">Organic</a></label>
-                            <h3><a href="#">Marketing Guide: 5 Steps to Success to way.</a></h3>
-                            <div class="more-info">
-                                <a href="blog-detail-left-sidebar.html">Read More<i
-                                  class="fi-rr-angle-double-small-right"></i></a>
-                            </div>
+                            <h3 style="margin-top: 18px;">
+                                <a th:href="@{/community/{board}/{id}(board=${post.boardName}, id=${post.id})}"
+                                   th:text="${post.title != null ? post.title : '제목 없음'}"
+                                   style="display: block; width: 100%; text-align: center;">
+                                    제목
+                                </a>
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -735,7 +739,7 @@
                             <h3><a href="#">Best way to solve business deal issue in market.</a></h3>
                             <div class="more-info">
                                 <a href="blog-detail-left-sidebar.html">Read More<i
-                                  class="fi-rr-angle-double-small-right"></i></a>
+                                        class="fi-rr-angle-double-small-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -749,7 +753,7 @@
                             <h3><a href="#">31 grocery customer service stats know in 2019.</a></h3>
                             <div class="more-info">
                                 <a href="blog-detail-left-sidebar.html">Read More<i
-                                  class="fi-rr-angle-double-small-right"></i></a>
+                                        class="fi-rr-angle-double-small-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -763,7 +767,7 @@
                             <h3><a href="#">Business ideas to grow your business traffic.</a></h3>
                             <div class="more-info">
                                 <a href="blog-detail-left-sidebar.html">Read More<i
-                                  class="fi-rr-angle-double-small-right"></i></a>
+                                        class="fi-rr-angle-double-small-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -777,7 +781,7 @@
                             <h3><a href="#">Marketing Guide: 5 Steps way to Success.</a></h3>
                             <div class="more-info">
                                 <a href="blog-detail-left-sidebar.html">Read More<i
-                                  class="fi-rr-angle-double-small-right"></i></a>
+                                        class="fi-rr-angle-double-small-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -791,7 +795,7 @@
                             <h3><a href="#">15 customer service stats idea know in 2023.</a></h3>
                             <div class="more-info">
                                 <a href="blog-detail-left-sidebar.html">Read More<i
-                                  class="fi-rr-angle-double-small-right"></i></a>
+                                        class="fi-rr-angle-double-small-right"></i></a>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 package com.yesul.community.controller;
 
-import com.yesul.community.model.dto.PointRequestDto;
+import com.yesul.community.model.dto.request.PointRequestDto;
 import com.yesul.community.model.entity.PointHistory;
 import com.yesul.community.model.entity.enums.PointType;
 import com.yesul.community.service.PointService;

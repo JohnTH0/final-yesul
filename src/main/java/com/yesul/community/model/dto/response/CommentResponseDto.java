@@ -1,4 +1,4 @@
-package com.yesul.community.model.dto;
+package com.yesul.community.model.dto.response;
 
 import com.yesul.community.model.entity.Comment;
 import lombok.*;

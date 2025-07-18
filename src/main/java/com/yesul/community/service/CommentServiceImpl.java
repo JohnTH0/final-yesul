@@ -1,6 +1,6 @@
 package com.yesul.community.service;
 
-import com.yesul.community.model.dto.CommentRequestDto;
+import com.yesul.community.model.dto.request.CommentRequestDto;
 import com.yesul.community.model.entity.Comment;
 import com.yesul.community.model.entity.Post;
 import com.yesul.community.repository.CommentRepository;

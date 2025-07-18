@@ -1,4 +1,4 @@
-package com.yesul.community.model.dto;
+package com.yesul.community.model.dto.request;
 
 import lombok.*;
 

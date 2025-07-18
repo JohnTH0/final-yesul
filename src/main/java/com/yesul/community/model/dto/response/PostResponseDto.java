@@ -1,4 +1,4 @@
-package com.yesul.community.model.dto;
+package com.yesul.community.model.dto.response;
 
 import com.yesul.community.model.entity.Post;
 import lombok.*;
@@ -35,9 +35,10 @@ public class PostResponseDto {
     @Builder.Default
     private List<CommentResponseDto> comments = new ArrayList<>();  // 댓글 리스트
 
-    public PostResponseDto(Long id, String title, Integer likeCount) {
+    public PostResponseDto(Long id, String title, String boardName, Integer likeCount) {
         this.id = id;
         this.title = title;
+        this.boardName = boardName;
         this.likeCount = likeCount;
     }
 

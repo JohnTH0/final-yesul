@@ -1,6 +1,6 @@
 package com.yesul.community.repository;
 
-import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.model.dto.response.PostResponseDto;
 
 import java.util.List;
 

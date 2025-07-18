@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/user-default :: head}"></head>
+<head th:replace="~{fragments/user/user-head :: user-head}"></head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <body>
 
 <!-- 헤더 -->
-<div th:replace="~{layout/user-default :: header}"></div>
+<div th:replace="~{fragments/user/header :: header}"></div>
 
 <div class="container mt-4">
 
@@ -31,40 +31,40 @@
     <div class="row card-list-row">
         <div class="col-md-4 mb-4" th:each="post : ${postList}" th:if="${postList != null and !#lists.isEmpty(postList)}">
             <div class="oh-card">
-                <div class="oh-card-img-wrap" style="position:relative;">
-                    <a th:href="@{/community/{board}/{id}(board=${boardName}, id=${post.id})}"
-                       style="text-decoration: none; color: inherit;">
+                <a th:href="@{/community/{board}/{id}(board=${boardName}, id=${post.id})}"
+                   style="text-decoration: none; color: inherit; display: block; height: 100%;">
+                    <div class="oh-card-img-wrap" style="position:relative;">
                         <img class="oh-card-img"
                              th:src="${post.thumbnail != null and !post.thumbnail.isEmpty() ? post.thumbnail : '/assets/img/community/mainLogo.jpg'}"
                              alt="썸네일 이미지">
-                    </a>
-                    <!-- 하트 버튼: a 태그 밖! -->
-                    <span class="oh-like-btn"
-                          th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
-                          th:data-post-id="${post.id}"
-                          style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,0.85); border-radius:50%; padding:7px; box-shadow:0 2px 8px rgba(0,0,0,0.08); z-index:2;">
-                        <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
-                    </span>
-                </div>
-                <div class="oh-card-body">
-                    <div>
-                        <div class="oh-card-title" th:text="${post.title != null ? post.title : '제목없음'}">제목</div>
-                        <div class="oh-card-meta">
-                            <span th:text="${post.nickname != null ? post.nickname : '익명'}">작성자</span> ·
-                            <span th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
-                        </div>
-                    </div>
-                    <div class="oh-card-bottom" style="display:flex; align-items:center; gap:10px; font-size: 1rem; color: #555;">
-                        <span>조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
+                        <!-- 하트 버튼: a 태그 밖! -->
                         <span class="oh-like-btn"
                               th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
                               th:data-post-id="${post.id}"
-                              style="font-size: 1.2rem; cursor: pointer;">
+                              style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,0.85); border-radius:50%; padding:7px; box-shadow:0 2px 8px rgba(0,0,0,0.08); z-index:2;">
                             <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
                         </span>
-                        <span class="oh-like-count" th:data-post-id="${post.id}" th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
                     </div>
-                </div>
+                    <div class="oh-card-body">
+                        <div>
+                            <div class="oh-card-title" th:text="${post.title != null ? post.title : '제목없음'}">제목</div>
+                            <div class="oh-card-meta">
+                                <span th:text="${post.nickname != null ? post.nickname : '익명'}">작성자</span> ·
+                                <span th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy년 MM월 dd일') : ''}">날짜</span>
+                            </div>
+                        </div>
+                        <div class="oh-card-bottom" style="display:flex; align-items:center; gap:10px; font-size: 1rem; color: #555;">
+                            <span>조회수 <span th:text="${post.viewCount != null ? post.viewCount : 0}">0</span></span>
+                            <span class="oh-like-btn"
+                                  th:classappend="${post.likedByMe != null and post.likedByMe} ? 'liked' : ''"
+                                  th:data-post-id="${post.id}"
+                                  style="font-size: 1.2rem; cursor: pointer;">
+                                <i th:class="${post.likedByMe != null and post.likedByMe} ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                            </span>
+                            <span class="oh-like-count" th:data-post-id="${post.id}" th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
         <!-- 게시글이 없을 때 메시지 -->
@@ -95,7 +95,7 @@
                 <li th:if="${!postPage.first}">
                     <a class="prev"
                        th:href="@{/community/{board}(board=${boardName}, page=${postPage.number - 1}, keyword=${param.keyword})}">
-                        Prev
+                        <i class="gicon gi-angle-left"></i> Prev
                     </a>
                 </li>
                 <!-- 페이지 번호 -->
@@ -130,7 +130,7 @@
                 e.stopPropagation();
                 const postId = btn.getAttribute('data-post-id');
                 if (!postId) return;
-                fetch(`/community/like/${postId}`, {
+                fetch(`/likes/${postId}`, {
                     method: 'POST',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
@@ -172,7 +172,7 @@
                 e.stopPropagation();
                 const postId = btn.getAttribute('data-post-id');
                 if (!postId) return;
-                fetch(`/community/like/${postId}`, {
+                fetch(`/likes/${postId}`, {
                     method: 'POST',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
@@ -400,6 +400,49 @@
             width: 100% !important;
             margin-bottom: 10px;
         }
+    }
+
+    /* 페이지네이션 버튼 스타일 개선 */
+    .gi-pro-pagination-inner .prev,
+    .gi-pro-pagination-inner .next {
+        min-width: 80px;
+        padding: 8px 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        font-weight: 500;
+    }
+
+    .gi-pro-pagination-inner .prev {
+        background-color: #eee;
+        color: #777;
+        border: 1px solid #eee;
+    }
+
+    .gi-pro-pagination-inner .next {
+        background-color: #5caf90;
+        color: white;
+        border: 1px solid #5caf90;
+    }
+
+    .gi-pro-pagination-inner .prev:hover {
+        background-color: #5caf90;
+        color: white;
+        border-color: #5caf90;
+    }
+
+    .gi-pro-pagination-inner .next:hover {
+        background-color: #4a9a7a;
+        border-color: #4a9a7a;
+    }
+
+    .gi-pro-pagination-inner a.active {
+        background-color: #4b5966 !important;
+        color: #fff !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
     }
 </style>
 </body>

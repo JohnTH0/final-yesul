@@ -4,7 +4,7 @@ import com.yesul.admin.model.dto.AdminLoginLogDto;
 import com.yesul.admin.model.entity.AdminLoginLog;
 import com.yesul.admin.repository.AdminLoginLogRepository;
 import com.yesul.alcohol.repository.AlcoholRepository;
-import com.yesul.community.model.dto.PostResponseDto;
+import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.community.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

@@ -1,6 +1,6 @@
 package com.yesul.community.controller;
 
-import com.yesul.community.model.dto.CommentRequestDto;
+import com.yesul.community.model.dto.request.CommentRequestDto;
 import com.yesul.community.service.ActivityDuplicateCheckService;
 import com.yesul.community.service.CommentService;
 import com.yesul.user.service.PrincipalDetails;

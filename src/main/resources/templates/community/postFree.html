@@ -25,33 +25,34 @@
     <a th:href="@{/community/create(boardName='free')}" class="oh-create-btn">게시글 등록</a>
   </div>
 
-  <!-- 기존 테이블 -->
+  <!-- 카드형 리스트 삭제, 테이블 형태로 복원 -->
   <div class="table-responsive">
-    <table class="table table-hover align-middle text-center" style="min-width: 100%; background: #fff; border-radius: 8px; overflow: hidden;">
-      <thead class="table-light">
+    <table class="table custom-table align-middle text-center">
+      <thead>
       <tr>
-        <th style="width: 8%;">번호</th>
-        <th style="width: 44%;">제목</th>
-        <th style="width: 14%;">작성자</th>
+        <th style="width: 50%; text-align: center;">제목</th>
+        <th style="width: 16%;">작성자</th>
         <th style="width: 20%;">작성일</th>
-        <th style="width: 14%;">좋아요수</th>
+        <th style="width: 14%;">좋아요</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="post, stat : ${postList}" th:if="${postList != null and !#lists.isEmpty(postList)}">
-        <td th:text="${stat.count}">1</td>
-        <td class="text-start">
+      <tr th:each="post : ${postList}" th:if="${postList != null and !#lists.isEmpty(postList)}">
+        <td class="text-center">
           <a th:href="@{/community/{board}/{id}(board='free', id=${post.id})}"
-             th:text="${post.title != null ? post.title : '제목없음'}" class="fw-bold text-dark text-decoration-none">
+             th:text="${post.title != null ? post.title : '제목없음'}"
+             class="fw-bold text-dark text-decoration-none table-title-link">
             제목
           </a>
         </td>
         <td th:text="${post.nickname != null ? post.nickname : '익명'}">작성자</td>
         <td th:text="${post.createdAt != null ? #temporals.format(post.createdAt, 'yyyy-MM-dd') : ''}">작성일</td>
-        <td th:text="${post.likeCount != null ? post.likeCount : 0}">좋아요수</td>
+        <td style="font-size:1.1rem; color:#4b5966;;">
+          <i class="fa fa-heart"></i> <span th:text="${post.likeCount != null ? post.likeCount : 0}">0</span>
+        </td>
       </tr>
       <tr th:if="${postList == null or #lists.isEmpty(postList)}">
-        <td colspan="5" class="text-center text-muted">등록된 게시글이 없습니다.</td>
+        <td colspan="4" class="text-center text-muted">등록된 게시글이 없습니다.</td>
       </tr>
       </tbody>
     </table>
@@ -78,7 +79,7 @@
         <li th:if="${!postPage.first}">
           <a class="prev"
              th:href="@{/community/{board}(board=${boardName}, page=${postPage.number - 1}, keyword=${param.keyword})}">
-            Prev
+            <i class="gicon gi-angle-left"></i> Prev
           </a>
         </li>
         <!-- 페이지 번호 -->
@@ -221,8 +222,90 @@
       margin-bottom: 10px;
     }
   }
-</style>
 
-<span th:text="'타임리프 동작 테스트'"></span>
+  /* 페이지네이션 버튼 스타일 개선 */
+  .gi-pro-pagination-inner .prev,
+  .gi-pro-pagination-inner .next {
+    min-width: 80px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+
+  .gi-pro-pagination-inner .prev {
+    background-color: #eee;
+    color: #777;
+    border: 1px solid #eee;
+  }
+
+  .gi-pro-pagination-inner .next {
+    background-color: #4b5966;;
+    color: white;
+    border: 1px solid #4b5966;;
+  }
+
+  .gi-pro-pagination-inner .prev:hover {
+    background-color: #4b5966;;
+    color: white;
+    border-color: #4b5966;;
+  }
+
+  .gi-pro-pagination-inner .next:hover {
+    background-color: #4b5966;;
+    border-color: #4b5966;;
+  }
+
+  .gi-pro-pagination-inner a.active {
+    background-color: #4b5966 !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  /* 테이블 스타일 개선 */
+  .custom-table {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .custom-table thead tr {
+    background: #f7f9fa;
+    border-bottom: 2px solid #e9ecef;
+  }
+  .custom-table th, .custom-table td {
+    border: none;
+    padding: 18px 12px;
+    vertical-align: middle;
+    font-size: 1.05rem;
+  }
+  .custom-table tbody tr {
+    transition: background 0.18s;
+  }
+  .custom-table tbody tr:hover {
+    background: #f3f8f6;
+  }
+  .table-title-link {
+    transition: color 0.18s;
+  }
+  .table-title-link:hover {
+    color: #5caf90;
+    text-decoration: underline;
+  }
+  .fa-heart {
+    color: #4b5966;;
+    margin-right: 4px;
+  }
+  .custom-table th {
+    color: #888;
+    font-weight: 700;
+  }
+</style>
 </body>
 </html>
