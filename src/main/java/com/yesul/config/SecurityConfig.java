@@ -120,7 +120,8 @@ public class SecurityConfig {
                                 "/oauth2/**",
                                 "/post-images/upload",
                                 "/alcohols/**",
-                                "/notices/**"
+                                "/notices/**",
+                                "travel-plan/save"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

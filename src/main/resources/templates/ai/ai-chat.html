@@ -13,12 +13,12 @@
   <div class="info-wrapper">
     <div id="info-content" class="info-box">
       <p class="info-placeholder">
-        전통주와 어울리는 여행 일정을 추천해드립니다 🍶✈️<br>아래 입력창에 질문을 해보세요!
+        주류 추천에 어울리는 여행 일정을 추천해드립니다.<br>주락이에게 질문을 해보세요!
       </p>
     </div>
 
     <!-- 저장 버튼 -->
-    <button type="button" class="save-button">저장</button>
+    <button type="button" class="save-button">여행 일정 저장</button>
   </div>
 
 
@@ -29,6 +29,25 @@
     <div class="chat-input-area">
       <input type="text" id="chat-input" placeholder="메시지를 입력하세요..."/>
       <button id="chat-send-btn">보내기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered custom-modal-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">로그인이 필요합니다</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        저장 기능을 사용하려면 먼저 로그인해야 합니다.<br>
+        추천받은 여행 기록은 1회성으로 저장됩니다.
+      </div>
+      <div class="modal-footer">
+        <a href="/login" class="btn btn-primary">로그인하러 가기</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
     </div>
   </div>
 </div>
@@ -44,6 +63,16 @@
   const chatSendBtn = document.getElementById('chat-send-btn');
   const chatMessages = document.getElementById('chat-messages');
   const infoBox = document.getElementById('info-content');
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('savedTravelPlan');
+    if (saved) {
+      typeInfoText(infoBox, saved);
+      localStorage.removeItem('savedTravelPlan');
+    }
+
+    typeAIMessage('전통주 소믈리에 "주락이"입니다. 오늘 하루는 어땠나요? 기분이나 분위기에 어울리는 술을 추천해드릴게요 🍶', 50);
+  });
 
   chatSendBtn.addEventListener('click', sendMessage);
   chatInput.addEventListener('keypress', (e) => {
@@ -83,8 +112,7 @@
         chatMessages.removeChild(loadingMsg);
         const aiText = data.result?.finalAnswer || 'AI 응답을 가져오지 못했어요.';
         typeAIMessage(aiText);
-        // ⚠️ 이 시점엔 아직 입력창 활성화 안 함
-        fetchClovaSchedule(aiText);  // 일정까지 다 처리하고 나서 다시 열어야 함
+        fetchClovaSchedule(aiText); // 일정 요청 후 입력창 다시 활성화
       })
       .catch(err => {
         chatMessages.removeChild(loadingMsg);
@@ -101,14 +129,12 @@
     chatMessages.appendChild(aiMsg);
 
     let index = 0;
-
     (function typeChar() {
       if (index < message.length) {
         aiMsg.textContent += message.charAt(index++);
         scrollToBottom(chatMessages);
         setTimeout(typeChar, delay);
       } else {
-        // 링크 자동 적용 (다 타이핑하고 난 뒤에)
         aiMsg.innerHTML = linkify(aiMsg.textContent);
       }
     })();
@@ -116,11 +142,10 @@
 
   function fetchClovaSchedule(aiText) {
     infoBox.innerHTML = `
-  <p class="info-placeholder">
-    여행 일정을 불러오는 중입니다   <span class="typing-bubble"><span></span><span></span><span></span>
-    </span>
-  </p>
-`;
+      <p class="info-placeholder">
+        여행 일정을 불러오는 중입니다 <span class="typing-bubble"><span></span><span></span><span></span></span>
+      </p>
+    `;
 
     fetch('http://223.130.132.13:8080/alcohols/clova2', {
       method: 'POST',
@@ -131,7 +156,6 @@
       .then(data => {
         const content = data.result?.message?.content || '추천 정보를 불러오지 못했습니다.';
         typeInfoText(infoBox, content);
-        // ✅ 일정 정보 다 불러오고 나서 입력창 다시 활성화
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
         chatInput.focus();
@@ -139,7 +163,6 @@
       .catch(err => {
         console.error('일정 요청 오류:', err);
         infoBox.innerHTML = '<p class="info-placeholder">여행 일정을 불러오는 데 실패했어요 🥲</p>';
-        // 실패했어도 다시 입력 가능하게 해야겠죠
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
         chatInput.focus();
@@ -147,9 +170,7 @@
   }
 
   function typeInfoText(targetElement, text, delay = 15) {
-    targetElement.innerHTML = ''; // 기존 내용 지우기
-
-    // typed-text용 div 생성
+    targetElement.innerHTML = '';
     const typedDiv = document.createElement('div');
     typedDiv.className = 'typed-text';
     targetElement.appendChild(typedDiv);
@@ -157,9 +178,8 @@
     let index = 0;
     (function typeChar() {
       if (index < text.length) {
-        // 특수문자 & 공백 보존을 위해 textContent 사용
         typedDiv.textContent += text.charAt(index++);
-        typedDiv.scrollTop = typedDiv.scrollHeight; // 스크롤 따라가기
+        typedDiv.scrollTop = typedDiv.scrollHeight;
         setTimeout(typeChar, delay);
       }
     })();
@@ -169,24 +189,18 @@
     element.scrollTop = element.scrollHeight;
   }
 
-  // 응답 텍스트에서 URL을 자동 링크로 변환
   function linkify(text) {
-    return text.replace(
-      /(https?:\/\/[^\s]+)/g,
-      function (url) {
-        const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(url);
-        if (isImage) {
-          return `<img src="${url}" alt="추천 이미지" style="max-width:100%; margin-top:10px; border-radius:12px;" />`;
-        } else {
-          return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-        }
+    return text.replace(/(https?:\/\/[^\s]+)/g, function (url) {
+      const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(url);
+      if (isImage) {
+        return `<img src="${url}" alt="추천 이미지" style="max-width:100%; margin-top:10px; border-radius:12px;" />`;
+      } else {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
       }
-    );
+    });
   }
-  window.addEventListener('DOMContentLoaded', () => {
-    typeAIMessage('전통주 소믈리에 "주락이"입니다. 오늘 하루는 어땠나요? 기분이나 분위기에 어울리는 술을 추천해드릴게요 🍶', 50);
-  });
 
+  // 🔥 저장 버튼 이벤트
   document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.querySelector('.save-button');
 
@@ -199,21 +213,23 @@
         return;
       }
 
-      console.log(content)
-
-      fetch('http://localhost:8080/alcohols/saveSchedule', {
+      fetch('http://localhost:8080/travel-plan/save', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({content})
+        body: JSON.stringify({ travelPlan: content }),
+        credentials: 'include'
       })
-        .then(res => {
-          if (!res.ok) throw new Error('저장 실패');
-          return res.json();
-        })
-        .then(data => {
-          alert('여행 일정이 저장되었습니다!');
+        .then(async res => {
+          if (res.status === 401) {
+            // 🔥 저장 실패 시 로컬스토리지에 임시 저장
+            localStorage.setItem('savedTravelPlan', content);
+            const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+            modal.show();
+            return;
+          }
+          alert('여행 일정이 저장되었습니다! 내 정보에서 확인 가능합니다.');
         })
         .catch(err => {
           console.error('저장 오류:', err);
@@ -221,7 +237,6 @@
         });
     });
   });
-
 </script>
 
 <!-- CSS -->
@@ -520,6 +535,66 @@
     to {
       transform: rotate(360deg);
     }
+  }
+
+  #loginModal .modal-content {
+    border-radius: 16px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  #loginModal .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  #loginModal .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+  }
+
+  #loginModal .modal-body {
+    padding: 1.25rem;
+    font-size: 1rem;
+    color: #495057;
+  }
+
+  #loginModal .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+  }
+
+  #loginModal .btn-primary {
+    background-color: #4B7BEC;
+    border-color: #4B7BEC;
+    font-weight: 500;
+  }
+
+  #loginModal .btn-primary:hover {
+    background-color: #3A5FD0;
+    border-color: #3A5FD0;
+  }
+
+  #loginModal .btn-secondary {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #ced4da;
+  }
+
+  #loginModal .btn-secondary:hover {
+    background-color: #dee2e6;
+    border-color: #ced4da;
+  }
+
+  .custom-modal-width {
+    max-width: 600px;
+  }
+
+  .modal-body,
+  .modal-footer {
+    text-align: center;
   }
 </style>
 </body>
