@@ -101,11 +101,7 @@
     function openPostcode() {
         new daum.Postcode({
             oncomplete: function (data) {
-                // data.address: 최종 주소 문자열
-                // data.zonecode: 우편번호
                 document.getElementById('address').value = data.address;
-                // 필요하다면 우편번호 hidden field에 저장
-                // document.getElementById('zonecode').value = data.zonecode;
             }
         }).open();
     }

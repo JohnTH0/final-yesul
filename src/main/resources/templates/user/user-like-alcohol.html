@@ -1,4 +1,3 @@
-<!-- src/main/resources/templates/user/user-like-alcohol.html -->
 <!DOCTYPE html>
 <head th:replace="~{layout/user-default :: head}"></head>
 <body>
@@ -42,7 +41,7 @@
               <tr th:each="dto : ${alcoholLikes}">
                 <td th:text="${dto.alcoholId}"></td>
                 <td>
-                  <img th:src="@{${dto.thumbnailUrl}}"
+                  <img th:src="@{${dto != null and dto.thumbnailUrl != null ? dto.thumbnailUrl : '/assets/img/yesul/default/default_image.jpg'}}"
                        class="prod-img"
                        width="48" height="48"
                        style="object-fit:cover"/>
@@ -68,6 +67,7 @@
 <div th:replace="~{layout/user-default :: feature}"></div>
 <div th:replace="~{layout/user-default :: footer}"></div>
 <div th:replace="~{layout/user-default :: user-js}"></div>
+
 </body>
 </html>
 

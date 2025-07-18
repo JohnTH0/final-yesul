@@ -1,12 +1,9 @@
 package com.yesul.user.controller;
 
-import com.yesul.like.model.dto.AlcoholLikeDto;
-import com.yesul.like.service.AlcoholLikeService;
-import com.yesul.user.model.dto.request.*;
-import com.yesul.user.model.dto.response.UserProfileResponseDto;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.*;
-import io.swagger.v3.oas.annotations.media.*;
 
+import com.yesul.like.model.dto.AlcoholLikeDto;
+import com.yesul.like.service.AlcoholLikeService;
+import com.yesul.user.model.dto.request.*;
+import com.yesul.user.model.dto.response.UserProfileResponseDto;
 import com.yesul.like.model.dto.PostLikeDto;
 import com.yesul.like.service.PostLikeService;
 import com.yesul.exception.handler.EntityNotFoundException;
@@ -28,8 +27,6 @@ import com.yesul.user.service.PrincipalDetails;
 import com.yesul.user.service.UserAsyncService;
 import com.yesul.user.service.UserService;
 import com.yesul.user.model.entity.User;
-
-import java.util.List;
 
 @Tag(name="사용자 관리 API", description="회원가입, 프로필, 비밀번호 변경, 탈퇴 등 사용자 관련 기능")
 @Slf4j
@@ -142,6 +139,10 @@ public class UserController {
                 .nickname(userProfile .getNickname())
                 .birthday(userProfile .getBirthday())
                 .address(userProfile .getAddress())
+                .description(
+                        userProfile.getDescription() != null
+                        ? userProfile.getDescription() : ""
+                )
                 .build();
         model.addAttribute("userUpdateRequestDto", dto);
 

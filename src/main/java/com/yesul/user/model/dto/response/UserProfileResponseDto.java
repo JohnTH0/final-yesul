@@ -1,8 +1,9 @@
 package com.yesul.user.model.dto.response;
 
-import com.yesul.user.model.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import com.yesul.user.model.entity.User;
 
 @Getter
 @Builder
@@ -19,6 +20,7 @@ public class UserProfileResponseDto {
     private String profile;
     private char type;
     private String provider;
+    private String description;
     private Integer point;
 
     // Entity To Dto
@@ -31,6 +33,7 @@ public class UserProfileResponseDto {
         this.profile = user.getProfile();
         this.type = user.getType();
         this.provider = user.getProvider();
+        this.description = user.getDescription();
         this.point = user.getPoint();
     }
 }

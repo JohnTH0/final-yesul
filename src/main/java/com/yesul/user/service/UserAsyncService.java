@@ -72,7 +72,7 @@ public class UserAsyncService {
     // ─────────────────────────────────────────────────────────────
 
     private String buildSignUpContent(User user) {
-        String link = "http://localhost:8080/user/verify-email?"
+        String link = "http://223.130.132.13:8080/user/verify-email?"
                 + "email=" + user.getEmail()
                 + "&token=" + user.getEmailCheckToken();
         return "<p>안녕하세요, " + user.getName() + "님!</p>"
@@ -82,7 +82,7 @@ public class UserAsyncService {
     }
 
     private String buildPasswordResetContent(User user) {
-        String link = "http://localhost:8080/user/reset-new-password?"
+        String link = "http://223.130.132.13:8080/user/reset-new-password?"
                 + "email=" + user.getEmail()
                 + "&token=" + user.getEmailCheckToken();
         return "<p>안녕하세요, " + user.getName() + "님!</p>"

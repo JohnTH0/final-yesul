@@ -26,5 +26,9 @@ public class UserUpdateRequestDto {
     @Size(max = 100, message = "주소는 100자를 초과할 수 없습니다.")
     private String address;
 
+    @Size(max = 500, message = "자기소개는 500자를 초과할 수 없습니다.")
+    @Schema(description = "자기소개")
+    private String description;
+
     private MultipartFile profileImage;
 }

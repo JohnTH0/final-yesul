@@ -69,5 +69,10 @@ jobs:
             -e NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }} \
             -e DEV_REDIS_HOST=${{ secrets.DEV_REDIS_HOST }} \
             -e DEV_REDIS_PASSWORD=${{ secrets.DEV_REDIS_PASSWORD }} \
+            -e KAKAO_REST_KEY=${{ secrets.KAKAO_REST_KEY }} \
+            -e KAKAO_REST_SECRET=${{ secrets.KAKAO_REST_SECRET }} \
+            -e NAVER_REST_KEY=${{ secrets.NAVER_REST_KEY }} \
+            -e NAVER_REST_SECRET=${{ secrets.NAVER_REST_SECRET }} \
+            -e MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} \
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
             

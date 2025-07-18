@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService {
         if (dto.getNickname() != null) user.updateNickname(dto.getNickname());
         if (dto.getBirthday() != null) user.updateBirthday(dto.getBirthday());
         if (dto.getAddress() != null)  user.updateAddress(dto.getAddress());
+        if (dto.getDescription() != null) user.updateDescription(dto.getDescription());
 
         if (dto.getProfileImage() != null && !dto.getProfileImage().isEmpty()) {
             String url = imageUpload.uploadAndGetUrl("profile", dto.getProfileImage());

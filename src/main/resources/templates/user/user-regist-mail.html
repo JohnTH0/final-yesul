@@ -1,31 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>회원가입 이메일 인증</title>
-</head>
+
+<head th:replace="~{layout/user-default :: head}"></head>
 <body style="margin:0; padding:0; background:#fff; font-family: Arial, sans-serif;">
 
-<!-- 로고 -->
-<div style="background:#132437; text-align:center; padding:30px;">
-  <img src="assets/img/logo/logo.png"
+<div style="background:#ffffff; text-align:center; padding:30px;">
+  <img th:src="@{/assets/img/yesul/logo/main-logo-191x52.png}"
        alt="Logo"
        style="max-width:150px; width:100%; height:auto; border:0;"/>
 </div>
 
-<!-- 본문 -->
+
 <div style="max-width:600px; margin:0 auto; padding:40px 20px; background:#ffffff; text-align:center;">
   <h1 style="font-size:28px; color:#4c5966; margin-bottom:20px;">
-    You are one step away from ultimate Grabit Store
+    전통주의 모든 것, Yesul에 오신 것을 환영합니다!
   </h1>
-  <p style="font-size:18px; color:#737487; margin:0 0 30px;">
-    Please confirm your email address to finish setting up your account.
+  <p style="font-size:18px; color:#4c5966; margin:0 0 30px;">
+    회원가입 신청한 메일로 인증링크가 담긴 메일을 발송하였습니다.
   </p>
   <a th:href="${mailDomainUrl}"
      style="
          display:inline-block;
          padding:12px 50px;
-         background:#5caf90;
+         background:#444;
          color:#fff;
          text-decoration:none;
          font-size:16px;
@@ -36,13 +32,9 @@
   </a>
 </div>
 
-<!-- 푸터 -->
-<div style="background:#5caf90; text-align:center; padding:30px 20px; color:#fff; font-size:12px;">
-  © 2024 Grabit | 123 Main St. City, State, Country 12345<br/>
-  <a href="#" style="color:#fff; text-decoration:underline;">
-    Unsubscribe
-  </a>
-</div>
+<div th:replace="~{fragments/user/footer :: footer}"></div>
+<div th:replace="~{fragments/user/user-js :: user-js}"></div>
+
 
 </body>
 </html>

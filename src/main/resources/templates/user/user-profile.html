@@ -29,14 +29,17 @@
           <div class="gi-vendor-card-body">
             <div class="profile-header text-center mb-4">
               <img class="profile-img"
-                   th:src="@{${user != null and user.profile != null ? user.profile : '/assets/img/app/default_profile.jpg'}}"
+                   th:src="@{${user != null and user.profile != null ? user.profile : '/assets/img/yesul/default/default_profile.jpg'}}"
                    alt="프로필 사진">
               <h5 class="mt-2" th:text="${user.name}">이름 없음</h5>
               <p th:text="${user.nickname}">닉네임 없음</p>
             </div>
             <div class="gi-vender-about-block">
               <h5>About Me</h5>
-              <p>Yesul 서비스에 오신 것을 환영합니다! 이 페이지에서 회원님의 정보를 확인하고 관리할 수 있습니다.</p>
+              <p th:text=" ${user.description} != null and ${user.description} != ''
+            ? ${user.description} : '작성된 자기소개 글이 없습니다. 자신을 소개해보세요.'">
+                작성된 자기소개 글이 없습니다. 자신을 소개해보세요.
+              </p>
             </div>
             <div class="gi-vender-about-block">
               <h5>Account Information
@@ -101,11 +104,11 @@
   </div>
 </section>
 
+<a class="gi-back-to-top"></a>
+
 <div th:replace="~{layout/user-default :: feature}"></div>
 <div th:replace="~{layout/user-default :: footer}"></div>
 <div th:replace="~{layout/user-default :: user-js}"></div>
-
-<a class="gi-back-to-top"></a>
 
 </body>
 
