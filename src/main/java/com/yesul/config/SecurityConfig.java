@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/admin/login", "/asserts/**"
                         ).permitAll()
-                        .requestMatchers("/admin/otp","/admin/otp/verify", "admin/login-log").hasAuthority("ADMIN_PENDING_OTP")
+                        .requestMatchers("/admin/otp", "/admin/otp/verify", "admin/login-log").hasAuthority("ADMIN_PENDING_OTP")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -170,7 +170,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://223.130.132.13:8080", "http://localhost:8080"));
+        config.setAllowedOrigins(List.of("https://yesul.shop",
+                "https://www.yesul.shop", "http://223.130.132.13:8080", "http://localhost:8080"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // 쿠키 허용
