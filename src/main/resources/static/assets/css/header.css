@@ -19,3 +19,34 @@
     flex-direction: column;
     align-items: center;
 }
+
+#gi-side-cart .gi-cart-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 사이드바 전체 높이 꽉 채우기 */
+}
+
+/* 2) 상단 타이틀 영역은 고정 */
+#gi-side-cart .gi-cart-top {
+    flex: 0 0 auto; /* 높이 고정, 늘어나지 않음 */
+}
+
+/* 3) 탭 컨텐츠 영역을 flex:1 로 만들어 스크롤 영역 확보 */
+#gi-side-cart .tab-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 내부 스크롤은 ul 에서 */
+}
+
+/* 4) 실제 알림 리스트(ul)를 바닥 정렬 + 스크롤 */
+#alert-list,
+#message-list {
+    flex: 1 1 auto;             /* tab-content 높이 전부 차지 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;   /* 바닥부터 채움 */
+    overflow-y: auto;            /* overflow 는 여기서만 */
+    margin: 0; padding: 0;       /* ul 기본 여백 제거 */
+    list-style: none;
+}

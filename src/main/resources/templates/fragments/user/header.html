@@ -403,9 +403,6 @@
       }
     </style>
 
-
-
-
     <!-- Cart sidebar End -->
     <script th:inline="javascript">
       const receiverId = [[${receiverId}]];
@@ -455,7 +452,8 @@
             <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
           </div>
         `;
-                messageList.insertBefore(li, messageList.firstChild);
+                // messageList.insertBefore(li, messageList.firstChild);
+                messageList.appendChild(li, messageList.firstChild);
 
               } else if (msg.type === 'COMMENT') {
                 //  댓글 알림
@@ -472,7 +470,8 @@
             <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
           </div>
         `;
-                alertList.insertBefore(li, alertList.firstChild);
+                // alertList.insertBefore(li, alertList.firstChild);
+                alertList.appendChild(li, alertList.firstChild);
               } else if (msg.type === 'LIKE') {
                 //  좋아요 알림
                 li.innerHTML = `
@@ -497,7 +496,8 @@
                   badge.style.background = 'transparent';
                   badge.style.display = 'none';  // 안 보이게
                 }
-                alertList.insertBefore(li, alertList.firstChild);
+                // alertList.insertBefore(li, alertList.firstChild);
+                alertList.appendChild(li, alertList.firstChild);
               }
             });
 
@@ -527,7 +527,8 @@
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
-                list.insertBefore(li, list.firstChild);
+                // list.insertBefore(li, list.firstChild);
+                list.appendChild(li, list.firstChild);
 
               } else if (msg.type === 'COMMENT') {
                 //  댓글 알림 처리
@@ -546,7 +547,8 @@
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
-                list.insertBefore(li, list.firstChild);
+                // list.insertBefore(li, list.firstChild);
+                list.appendChild(li, list.firstChild);
               } else if (msg.type === 'LIKE') {
                 li.innerHTML = `
       <div class="icon gi-heart">
@@ -560,7 +562,8 @@
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
-                alertList.insertBefore(li, alertList.firstChild);
+                // alertList.insertBefore(li, alertList.firstChild);
+                alertList.appendChild(li, alertList.firstChild);
               }
 
               badge.style.background = newCount > 0 ? 'red' : 'transparent';

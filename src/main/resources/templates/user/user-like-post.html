@@ -42,8 +42,9 @@
               </tr>
               </thead>
               <tbody>
-              <tr th:each="dto : ${Postlikes}" th:data-post-url="@{/community/postDetail(id=${dto.postId})}">
-                <td th:text="${dto.postId}"></td>
+              <tr th:each="dto, iterStat : ${Postlikes}" th:data-post-url="@{/community/postDetail(id=${dto.postId})}">
+                <!--                <td th:text="${dto.id}">1</td>-->
+                <td th:text="${iterStat.count}"></td>
                 <td>
                   <img th:src="@{${dto.thumbnail}}" class="prod-img" alt="thumbnail" width="48" height="48" style="object-fit: cover;"/>
                 </td>
@@ -104,5 +105,3 @@
     });
   });
 </script>
-
-

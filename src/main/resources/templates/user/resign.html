@@ -34,7 +34,7 @@
             <div class="gi-login-container">
               <form th:action="@{/user/resign}" th:object="${userResignDto}" method="post">
                 <!-- CSRF 토큰 -->
-                <!--              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
 
                 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 

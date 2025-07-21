@@ -40,10 +40,11 @@
               </tr>
               </thead>
               <tbody>
-              <tr th:each="dto : ${alcoholLikes}"
+              <tr th:each="dto, iterStat : ${alcoholLikes}"
                   th:onclick="|window.location.href='@{/alcohols/detail/{id}(id=${dto.alcoholId})}'|"
                   style="cursor: pointer;">
-                <td th:text="${dto.alcoholId}"></td>
+<!--                <td th:text="${dto.alcoholId}"></td>-->
+                <td th:text="${iterStat.count}"></td>
                 <td>
                   <img th:src="@{${dto != null and dto.thumbnailUrl != null ? dto.thumbnailUrl : '/assets/img/yesul/default/default_image.jpg'}}"
                        class="prod-img"
