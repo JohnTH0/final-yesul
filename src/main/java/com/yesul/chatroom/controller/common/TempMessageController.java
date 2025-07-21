@@ -3,14 +3,17 @@ package com.yesul.chatroom.controller.common;
 import static com.yesul.common.constants.RedisConstants.TEMP_MESSAGE_DB_INDEX;
 
 import com.yesul.chatroom.service.TempMessageService;
+import com.yesul.exception.handler.AuthenticationNotFoundException;
 import com.yesul.user.service.PrincipalDetails;
 import com.yesul.admin.model.dto.auth.LoginAdmin;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+@Tag(name = "TempMessage", description = "임시 메시지 관련 API")
 @RestController
 @RequestMapping("/chatroom/temp-message")
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class TempMessageController {
     private final TempMessageService tempMessageService;
 
     @PostMapping
+    @Operation(summary = "임시 메시지 저장", description = "채팅방에 작성한 임시 메시지를 1시간동안 Redis에 저장합니다.")
     public void saveTempMessage(
             @AuthenticationPrincipal Object principal,
             @RequestParam Long chatRoomId,
@@ -29,6 +33,7 @@ public class TempMessageController {
     }
 
     @GetMapping
+    @Operation(summary = "임시 메시지 조회", description = "채팅방에 작성했던 임시 메시지를 Redis에서 조회해옵니다.")
     public String getTempMessage(
             @AuthenticationPrincipal Object principal,
             @RequestParam Long chatRoomId
@@ -39,6 +44,7 @@ public class TempMessageController {
     }
 
     @DeleteMapping
+    @Operation(summary = "임시 메시지 삭제", description = "채팅방에 작성한 임시 메시지를 Redis에서 삭제합니다.")
     public void deleteTempMessage(
             @AuthenticationPrincipal Object principal,
             @RequestParam Long chatRoomId
@@ -56,7 +62,7 @@ public class TempMessageController {
         } else if (principal instanceof LoginAdmin admin) {
             return admin.getId();
         } else {
-            throw new RuntimeException("인증 정보가 존재하지 않습니다.");
+            throw new AuthenticationNotFoundException("인증 정보가 존재하지 않습니다.");
         }
     }
 }

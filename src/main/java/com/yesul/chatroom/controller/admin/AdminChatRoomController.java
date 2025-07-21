@@ -6,6 +6,8 @@ import com.yesul.chatroom.model.entity.Message;
 import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.service.ChatRoomService;
 import com.yesul.chatroom.service.MessageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Slf4j
+@Tag(name = "AdminChatRoom", description = "관리자 채팅방 관련 API")
 @Controller
 @RequestMapping("/admin/chatroom")
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class AdminChatRoomController {
     private final MessageService messageService;
 
     @GetMapping
+    @Operation(summary = "관리자 기준 채팅방 목록 조회", description = "관리자가 참여하고 있는 채팅방 목록을 조회합니다.")
     public String getAdminChatRooms(
             @RequestParam(required = false) Long cursor,
             @RequestParam(defaultValue = "8") int size,
@@ -48,6 +51,7 @@ public class AdminChatRoomController {
 
 
     @GetMapping("/{roomId}")
+    @Operation(summary = "관리자 기준 채팅방 상세 조회", description = "관리자가 roomId에 해당하는 채팅방을 상세 조회합니다.")
     public String getAdminChatRoom(
             @PathVariable Long roomId,
             Model model
@@ -76,6 +80,7 @@ public class AdminChatRoomController {
 
     // 2) 무한스크롤용 메시지 JSON API
     @GetMapping("/{roomId}/messages")
+    @Operation(summary = "관리자 기준 메시지 조회(무한 스크롤)", description = "관리자가 해당 채팅방의 메시지를 무한 스크롤로 조회합니다.")
     public ResponseEntity<Map<String, Object>> getMoreMessages(
             @PathVariable Long roomId,
             @RequestParam Long cursor
@@ -108,6 +113,7 @@ public class AdminChatRoomController {
     }
 
     @GetMapping("/search")
+    @Operation(summary = "관리자 기준 채팅방 이름으로 검색", description = "관리자가 유저의 이름을 입력하여 해당하는 채팅방을 조회합니다.")
     public String searchChatRoom(
             @RequestParam String keyword,
             Model model

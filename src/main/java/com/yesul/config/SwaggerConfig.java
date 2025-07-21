@@ -19,8 +19,21 @@ public class SwaggerConfig {
                 .description("Yesul API 명세서")
                 .version("1.0.0");
 
+        String jwtSchemeName = "JWT";
+
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
+
+        Components components = new Components()
+                .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
+                        .name(jwtSchemeName)
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT"));
+
         return new OpenAPI()
                 .addServersItem(new Server().url("/"))
-                .info(info);
+                .info(info)
+                .addSecurityItem(securityRequirement)
+                .components(components);
     }
 }

@@ -10,9 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByReceiverIdAndReceiverTypeAndIsReadFalseOrderByIdDesc(Long receiverId, Type receiverType);
-    boolean existsBySenderIdAndReceiverIdAndTargetIdAndIsReadFalse(
-            Long senderId,
-            Long receiverId,
-            Long targetId
-    );
+    boolean existsBySenderIdAndReceiverIdAndTargetIdAndIsReadFalse(Long senderId, Long receiverId, Long targetId);
 }

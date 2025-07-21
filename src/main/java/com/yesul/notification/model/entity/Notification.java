@@ -2,7 +2,9 @@ package com.yesul.notification.model.entity;
 
 import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.common.BaseTimeEntity;
+import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.notification.model.entity.enums.NotificationType;
+import com.yesul.user.repository.UserRepository;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -55,5 +57,16 @@ public class Notification extends BaseTimeEntity {
     public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
+
+    // Notification.java
+    public String resolveSenderName(UserRepository userRepository) {
+        if (senderType == Type.USER) {
+            return userRepository.findById(senderId)
+                    .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."))
+                    .getName();
+        } else
+            return "관리자";
+    }
+
 }
 

@@ -2,20 +2,27 @@ package com.yesul.chatroom.model.dto.response;
 
 import com.yesul.chatroom.model.entity.enums.MessageType;
 import com.yesul.chatroom.model.entity.enums.Type;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "메시지 응답 DTO")
 public class MessageResponseDto {
-    private final Long messageId;
-    private final Long senderId;
-    private final String senderName;
-    private final Type receiverType;
-    private final Long receiverId;
-    private final String messageContext;
-    private final MessageType messageType;
-    private final Long chatRoomId;
-    private final LocalDateTime createdAt;
+    private Long messageId;
+    private Long senderId;
+    private String senderName;
+    private Type receiverType;
+    private Long receiverId;
+    private String messageContext;
+    private MessageType messageType;
+    private Long chatRoomId;
+    private LocalDateTime createdAt;
 }

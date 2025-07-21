@@ -6,6 +6,8 @@ import com.yesul.chatroom.model.entity.enums.Type;
 import com.yesul.chatroom.service.ChatRoomService;
 import com.yesul.chatroom.service.MessageService;
 import com.yesul.user.service.PrincipalDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Slf4j
+@Tag(name = "UserChatRoom", description = "유저 채팅방 관련 API")
 @Controller
 @RequestMapping("/users/chatroom")
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class ChatController {
 
     // 채팅방 생성 or 재사용
     @GetMapping
+    @Operation(summary = "유저 채팅방 조회 or 생성", description = "유저가 참여하고 있는 채팅방이 있는지 조회하고 없을 경우 생성합니다.")
     public String createOrFindChatRoom(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @RequestParam Long adminId
@@ -42,8 +45,8 @@ public class ChatController {
 
     // 채팅방 조회(메시지 조회, 무한 스크롤 구현)
     @GetMapping("/{roomId}")
+    @Operation(summary = "채팅방 조회(메시지 조회)", description = "참여하고 있는 채팅방의 메시지 내역을 조회합니다.(무한 스크롤)")
     public String getChatRoom(
-            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable Long roomId,
             @RequestParam(name = "new", required = false) Boolean isNew,
             Model model

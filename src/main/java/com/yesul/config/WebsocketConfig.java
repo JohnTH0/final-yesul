@@ -1,6 +1,7 @@
 package com.yesul.config;
 
 import com.yesul.chatroom.config.ChatSocketHandler;
+import com.yesul.chatroom.model.entity.enums.Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -23,4 +24,5 @@ public class WebsocketConfig implements WebSocketConfigurer {
         //다른 url에서도 접속할 수있게(CORS설정)
         registry.addHandler(notificationHandler, "/ws/notification").setAllowedOrigins("*");
     }
+
 }
