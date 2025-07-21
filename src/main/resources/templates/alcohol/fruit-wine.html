@@ -70,30 +70,36 @@
     z-index: 1;
   }
 
-  /* 무지개 테두리용 가상 요소 */
   .gi-cat-icon.selected::before {
     content: "";
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
     z-index: -1;
-    background: linear-gradient(270deg, #f6e6ff, #ffe8e8, #fffce0, #e6fff2, #e0f0ff, #f6e6ff);
-    background-size: 600% 600%;
     border-radius: 14px;
-    animation: rainbowBorder 6s ease infinite;
+    background: linear-gradient(90deg,
+    rgba(210, 180, 140, 0.35) 0%,    /* 라이트 샌드 브라운 */
+    rgba(222, 184, 135, 0.35) 25%,   /* 버터스카치 */
+    rgba(244, 164, 96, 0.35) 50%,    /* 라이트 우드 */
+    rgba(222, 184, 135, 0.35) 75%,   /* 버터스카치 */
+    rgba(210, 180, 140, 0.35) 100%   /* 라이트 샌드 브라운 */
+    );
+    background-size: 400% 400%;
+    animation: woodGrainMove 8s linear infinite;
+    box-shadow: 0 0 6px rgba(210, 180, 140, 0.3);
   }
 
-  @keyframes rainbowBorder {
+  @keyframes woodGrainMove {
     0% {
-      background-position: 0% 50%;
+      background-position: 0% 0%;
     }
     50% {
-      background-position: 100% 50%;
+      background-position: 100% 100%;
     }
     100% {
-      background-position: 0% 50%;
+      background-position: 0% 0%;
     }
   }
 

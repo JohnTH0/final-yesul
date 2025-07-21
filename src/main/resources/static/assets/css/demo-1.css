@@ -4174,22 +4174,40 @@ body.gi-menu-open:before {
   border-radius: 0 5px 0 5px;
 }
 .gi-category .gi-category-block .gi-cat-box-1, .gi-category .gi-category-block-2 .gi-cat-box-1 {
-  background-color: #fff6ec;
+  background: linear-gradient(135deg, #8b5e3c 0%, #a97449 25%, #7a4e25 50%, #b08959 75%, #9c6a32 100%);
+  box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.3),
+  inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff9f0;
 }
 .gi-category .gi-category-block .gi-cat-box-2, .gi-category .gi-category-block-2 .gi-cat-box-2 {
-  background-color: #e2fde2;
+    background: linear-gradient(135deg, #8b5e3c 0%, #a97449 25%, #7a4e25 50%, #b08959 75%, #9c6a32 100%);
+  box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.3),
+  inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff9f0;
 }
 .gi-category .gi-category-block .gi-cat-box-3, .gi-category .gi-category-block-2 .gi-cat-box-3 {
-  background-color: #ffeae9;
+    background: linear-gradient(135deg, #8b5e3c 0%, #a97449 25%, #7a4e25 50%, #b08959 75%, #9c6a32 100%);
+  box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.3),
+  inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff9f0;
 }
 .gi-category .gi-category-block .gi-cat-box-4, .gi-category .gi-category-block-2 .gi-cat-box-4 {
-  background-color: #fde1f5;
+    background: linear-gradient(135deg, #8b5e3c 0%, #a97449 25%, #7a4e25 50%, #b08959 75%, #9c6a32 100%);
+  box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.3),
+  inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff9f0;
 }
 .gi-category .gi-category-block .gi-cat-box-5, .gi-category .gi-category-block-2 .gi-cat-box-5 {
-  background-color: #ecf0ff;
+    background: linear-gradient(135deg, #8b5e3c 0%, #a97449 25%, #7a4e25 50%, #b08959 75%, #9c6a32 100%);
+  box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.3),
+  inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff9f0;
 }
 .gi-category .gi-category-block .gi-cat-box-6, .gi-category .gi-category-block-2 .gi-cat-box-6 {
-  background-color: #f9f9d9;
+    background: linear-gradient(135deg, #8b5e3c 0%, #a97449 25%, #7a4e25 50%, #b08959 75%, #9c6a32 100%);
+  box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.3),
+  inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff9f0;
 }
 
 /*===== New Product css =====*/
