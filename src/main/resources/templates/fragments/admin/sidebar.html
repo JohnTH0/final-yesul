@@ -1,7 +1,7 @@
 <div th:fragment="adminSidebar" class="gi-sidebar-overlay">
   <div class="gi-sidebar" data-mode="light">
   <div class="gi-sb-logo">
-    <a th:href="@{dashboard}" class="sb-full">
+    <a th:href="@{/admin/dashboard}" class="sb-full">
       <img th:src="@{/asserts/img/logo/full-logo.png}" alt="logo">
     </a>
   </div>
@@ -10,7 +10,7 @@
       <ul class="gi-sb-list">
 
         <li class="gi-sb-item">
-          <a th:href="@{dashboard}" class="gi-page-link">
+          <a th:href="@{/admin/dashboard}" class="gi-page-link">
             <i class="ri-bar-chart-grouped-line"></i>  <!-- ri-file-chart-line /  ri-numbers-line -->
             <span class="condense"><span class="hover-title">Dashboard</span></span>
           </a>

@@ -44,7 +44,7 @@ public class NoticeController {
         if (!model.containsAttribute("noticeDto")) {
             model.addAttribute("noticeDto", new NoticeDto());
         }
-        return "admin/notice/regist";
+        return "alcohol-form";
     }
 
     @PostMapping("/upload")
@@ -69,7 +69,7 @@ public class NoticeController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "공지사항 등록 중 오류가 발생했습니다.");
             model.addAttribute("noticeDto", noticeDto);
-            return "/admin/notice/regist";
+            return "alcohol-form";
         }
     }
 

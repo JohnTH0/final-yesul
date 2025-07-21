@@ -27,7 +27,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 Integer.class, "count({0})", like.id);
 
         return queryFactory
-                .select(Projections.constructor(PostResponseDto.class, post.id, post.title, post.boardName, likeCount))
+                .select(Projections.constructor(PostResponseDto.class,
+                        post.id,
+                        post.title,
+                        post.boardName,
+                        likeCount))
                 .from(post)
                 .join(like).on(like.post.eq(post))
                 .groupBy(post.id)

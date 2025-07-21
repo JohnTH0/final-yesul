@@ -276,13 +276,13 @@
                                         <tbody>
                                         <tr th:each="post, stat : ${popularPosts}">
                                             <td>
-                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${stat.count}">1</a>
+                                                <a th:href="@{|/community/${post.boardName}/${post.id}|}" class="full-cell-link" th:text="${stat.count}">1</a>
                                             </td>
                                             <td>
-                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.title}">제목</a>
+                                                <a th:href="@{|/community/${post.boardName}/${post.id}|}" class="full-cell-link" th:text="${post.title}">제목</a>
                                             </td>
                                             <td>
-                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.likeCount}">1,026</a>
+                                                <a th:href="@{|/community/${post.boardName}/${post.id}|}" class="full-cell-link" th:text="${post.likeCount}">1,026</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -313,22 +313,24 @@
                                         <tr style="padding: 8px 12px 12px 24px;">
                                             <th>순위</th>
                                             <th>주류명</th>
-                                            <th>제조사</th>
-                                            <th>가격</th>
+                                            <th>지역</th>
+                                            <th>좋아요</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="post, stat : ${popularPosts}">
+                                        <tr th:each="alcohol, stat : ${popularAlcohol}">
                                             <td>
-                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${stat.count}">1</a>
+                                                <a th:href="@{/alcohols/detail/{id}(id=${alcohol.id})}" class="full-cell-link" th:text="${stat.count}">1</a>
                                             </td>
                                             <td>
-                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.title}">제목</a>
+                                                <a th:href="@{/alcohols/detail/{id}(id=${alcohol.id})}" class="full-cell-link" th:text="${alcohol.name}">주류명</a>
                                             </td>
                                             <td>
-                                                <a th:href="@{/posts/{id}(id=${post.id})}" class="full-cell-link" th:text="${post.likeCount}">1,026</a>
+                                                <a th:href="@{/alcohols/detail/{id}(id=${alcohol.id})}" class="full-cell-link" th:text="${alcohol.province + ' ' + alcohol.city}">지역</a>
                                             </td>
-                                            <td>40,000원</td>
+                                            <td>
+                                                <a th:href="@{/alcohols/detail/{id}(id=${alcohol.id})}" class="full-cell-link" th:text="${alcohol.likeCount}">좋아요</a>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

@@ -3,7 +3,9 @@ package com.yesul.admin.controller;
 import com.yesul.admin.model.dto.AdminLoginLogDto;
 import com.yesul.admin.model.dto.auth.LoginAdmin;
 import com.yesul.admin.service.AdminService;
+import com.yesul.alcohol.model.dto.AlcoholDto;
 import com.yesul.community.model.dto.response.PostResponseDto;
+import com.yesul.community.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ public class AdminController {
         int totalAlcohol = adminService.getAlcoholCount();
 
         List<PostResponseDto> popularPosts = adminService.getPopularPosts();
+        List<AlcoholDto> popularAlcohol = adminService.popularAlcohol();
 
         // 시스템 모니터링
         model.addAttribute("todayVisitor", todayVisitor);
@@ -34,7 +37,7 @@ public class AdminController {
 
         // 인기순위
         model.addAttribute("popularPosts", popularPosts);
-        model.addAttribute("popularAlcohol", popularPosts); // 인기주류 리스트로 가정하고 구현
+        model.addAttribute("popularAlcohol", popularAlcohol);
 
         // 전체 주류 수, 전체 회원 수
         model.addAttribute("totalUser", totalUser);

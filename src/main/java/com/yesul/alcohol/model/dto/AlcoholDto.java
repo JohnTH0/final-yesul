@@ -20,6 +20,7 @@ public class AlcoholDto {
     private String ingredients;
     private String description;
     private String tasteDescription;
+    private Integer likeCount;
 
     private Integer price;
     private String pairingFoods;
@@ -36,6 +37,14 @@ public class AlcoholDto {
         this.volumeMl = volumeMl;
         this.abv = abv;
         this.image = image;
+    }
+
+    public AlcoholDto(Long id, String name, String province, String city, Integer likeCount) {
+        this.id = id;
+        this.name = name;
+        this.province = province;
+        this.city = city;
+        this.likeCount = likeCount;
     }
 
 

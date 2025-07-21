@@ -6,6 +6,7 @@ import com.yesul.alcohol.model.dto.AlcoholSearchDto;
 import com.yesul.alcohol.model.entity.Alcohol;
 import com.yesul.alcohol.repository.AlcoholRepository;
 import com.yesul.alcohol.repository.AlcoholSpecification;
+import com.yesul.exception.handler.RegistrationFailedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +48,24 @@ public class AlcoholService {
         return null;
     }
 
-    public Map<String, Object> registAlcohol(AlcoholDto alcohol) {
-        return Map.of();
+    public Page<AlcoholDto> getAlcoholList(Pageable pageable) {
+        return alcoholRepository.findAlcoholList(pageable);
     }
 
-    public Page<AlcoholDto> getAlcoholList(Pageable pageable) {
-        Page<AlcoholDto> alcoholListPageable = alcoholRepository.findAlcoholList(pageable);
-        return alcoholListPageable;
+    public void registAlcohol(AlcoholDetailDto alcohol) {
+        try{
+            alcoholRepository.save(modelMapper.map(alcohol, Alcohol.class));
+        } catch (Exception e) {
+            throw new RegistrationFailedException("주류 등록에 실패했습니다.", e);
+        }
     }
+
+    public void updateAlcohol(AlcoholDetailDto dto) {
+        alcoholRepository.save(modelMapper.map(dto, Alcohol.class));
+    }
+
+    public void deleteAlcoholById(Long id) {
+        alcoholRepository.deleteById(id);
+    }
+
 }

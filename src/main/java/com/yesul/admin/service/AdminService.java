@@ -3,6 +3,7 @@ package com.yesul.admin.service;
 import com.yesul.admin.model.dto.AdminLoginLogDto;
 import com.yesul.admin.model.entity.AdminLoginLog;
 import com.yesul.admin.repository.AdminLoginLogRepository;
+import com.yesul.alcohol.model.dto.AlcoholDto;
 import com.yesul.alcohol.repository.AlcoholRepository;
 import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.community.repository.PostRepository;
@@ -74,9 +75,9 @@ public class AdminService {
         return postRepository.findPopularPostsByLikes();
     }
 
-    //public List<PostResponseDto> getPopularAlcohol() {
-    //    return AlcoholRepository.findPopularAlcoholByLikes();
-    //}
+    public List<AlcoholDto> popularAlcohol() {
+        return alcoholRepository.findPopularAlcoholByLikes();
+    }
 
     public int getUserCount() {
         return (int) userRepository.count();
