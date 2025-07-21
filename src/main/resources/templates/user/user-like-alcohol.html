@@ -15,6 +15,8 @@
               <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
               <li><a th:href="@{/user/like-post}">좋아요한 게시글 보기</a></li>
               <li><a th:href="@{/user/like-alcohol}">찜한 술 목록 </a></li>
+              <li><a th:href="@{/travel-plan}">내 여행계획 </a></li>
+              <li><a th:href="@{/point/point-history}">포인트 내역</a></li>
               <li><a th:href="@{/user/resign}">회원탈퇴</a></li>
             </ul>
           </div>
@@ -24,7 +26,7 @@
       <div class="col-lg-9 col-md-12 mb-24">
         <div class="gi-vendor-dashboard-card">
           <div class="gi-vendor-card-header">
-            <h5>내가 좋아요한 술</h5>
+            <h5>내가 찜한 술 보기</h5>
           </div>
           <div class="gi-vendor-card-body">
             <table class="table gi-vender-table">
@@ -33,12 +35,14 @@
                 <th>ID</th>
                 <th>썸네일</th>
                 <th>이름</th>
-                <th>좋아요 날짜</th>
-                <th>액션</th>
+                <th>찜한 날짜</th>
+                <th>찜여부</th>
               </tr>
               </thead>
               <tbody>
-              <tr th:each="dto : ${alcoholLikes}">
+              <tr th:each="dto : ${alcoholLikes}"
+                  th:onclick="|window.location.href='@{/alcohols/detail/{id}(id=${dto.alcoholId})}'|"
+                  style="cursor: pointer;">
                 <td th:text="${dto.alcoholId}"></td>
                 <td>
                   <img th:src="@{${dto != null and dto.thumbnailUrl != null ? dto.thumbnailUrl : '/assets/img/yesul/default/default_image.jpg'}}"
@@ -52,7 +56,8 @@
                   <a href="javascript:void(0)"
                      th:attr="data-alcohol-id=${dto.alcoholId}"
                      class="btn-unlike-alcohol"
-                     title="좋아요 취소">×</a>
+                     title="좋아요 취소"
+                     onclick="event.stopPropagation()">×</a>
                 </td>
               </tr>
               </tbody>

@@ -30,8 +30,8 @@ public class PointHistoryResponseDto {
     /**
      * Entity → DTO 변환 메서드
      */
-    public static com.yesul.community.model.dto.response.PointHistoryResponseDto from(PointHistory history) {
-        return com.yesul.community.model.dto.response.PointHistoryResponseDto.builder()
+    public static PointHistoryResponseDto from(PointHistory history) {
+        return PointHistoryResponseDto.builder()
                 .type(history.getPoint().getType())
                 .point(history.getPoint().getPoint())
                 .isEarned(history.getIsEarned())

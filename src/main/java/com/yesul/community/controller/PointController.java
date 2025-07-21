@@ -1,14 +1,17 @@
 package com.yesul.community.controller;
 
 import com.yesul.community.model.dto.request.PointRequestDto;
-import com.yesul.community.model.entity.PointHistory;
+import com.yesul.community.model.dto.response.PointHistoryResponseDto;
 import com.yesul.community.model.entity.enums.PointType;
 import com.yesul.community.service.PointService;
+import com.yesul.user.service.PrincipalDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,10 +32,23 @@ public class PointController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "포인트 내역 조회")
-    @GetMapping("/history")
-    public List<PointHistory> getPointHistory(@RequestParam Long userId) {
-        return pointService.getPointHistories(userId);
+    @Operation(summary = "포인트 내역 페이지", description = "로그인한 사용자의 포인트 내역을 화면에 보여줍니다.")
+    @GetMapping("/point-history")
+    public String viewPointHistory(
+            @AuthenticationPrincipal PrincipalDetails principal,
+            Model model) {
+
+        Long userId = principal.getUser().getId();
+
+        List<PointHistoryResponseDto> histories = pointService
+                .getPointHistories(userId)
+                .stream()
+                .map(PointHistoryResponseDto::from)
+                .toList();
+
+        model.addAttribute("pointHistories", histories);
+
+        return "user/user-point-history";
     }
 
     @PostMapping("/use")

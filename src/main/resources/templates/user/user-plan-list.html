@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/user-default :: head}"></head>
+<body>
+
+<!-- 공통 헤더 -->
+<div th:replace="~{layout/user-default :: header}"></div>
+
+<section class="padding-tb-40">
+  <div class="container">
+    <div class="row mb-minus-24px">
+      <div class="col-lg-3 col-md-12 mb-24">
+        <div class="gi-sidebar-wrap gi-border-box gi-sticky-sidebar">
+          <div class="gi-vendor-block-items">
+              <ul>
+                  <li><a th:href="@{/user/profile}">내정보</a></li>
+                  <li><a th:href="@{/user/profile/edit}">내정보 변경</a></li>
+                  <li><a th:href="@{/user/change-password}">비밀번호 변경</a></li>
+                  <li><a th:href="@{/user/like-post}">좋아요한 게시글 보기</a></li>
+                  <li><a th:href="@{/user/like-alcohol}">찜한 술 목록 </a></li>
+                  <li><a th:href="@{/travel-plan}">내 여행계획 </a></li>
+                  <li><a th:href="@{/point/point-history}">포인트 내역</a></li>
+                  <li><a th:href="@{/user/resign}">회원탈퇴</a></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-12 mb-24">
+        <div class="gi-vendor-dashboard-card">
+          <div class="gi-vendor-card-header">
+            <h5>나의 여행계획 목록</h5>
+          </div>
+          <div class="gi-vendor-card-body">
+            <table class="table gi-vender-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>계획 요약</th>
+                <th>생성일</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="dto, iterStat : ${travelPlans}"
+                  th:onclick="|window.location.href='@{/travel-plan/{id}(id=${dto.id})}'|"
+                  style="cursor: pointer;">
+<!--                <td th:text="${dto.id}">1</td>-->
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${dto.travelPlan != null
+                 ? (dto.travelPlan.length() > 30
+                     ? dto.travelPlan.substring(0,30) + '…'
+                     : dto.travelPlan)
+                 : ''}">여행계획 요약</td>
+                <td th:text="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm')}">2025-07-18 12:34</td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(travelPlans)}">
+                <td colspan="3" class="text-center">저장된 여행계획이 없습니다.</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{layout/user-default :: feature}"></div>
+<div th:replace="~{layout/user-default :: footer}"></div>
+<div th:replace="~{layout/user-default :: user-js}"></div>
+</body>
+</html>

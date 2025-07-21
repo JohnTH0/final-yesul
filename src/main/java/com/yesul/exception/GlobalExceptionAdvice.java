@@ -39,6 +39,12 @@ public class GlobalExceptionAdvice {
         return "404.html";
     }
 
+    @ExceptionHandler(TravelPlanNotFoundException.class)
+    public String handleTravelNotFound(TravelPlanNotFoundException e, HttpServletRequest request) {
+        log.warn("[TravelPlanNotFoundException] {} {} - {}", request.getMethod(), request.getRequestURI(), e.getMessage());
+        return "404.html";
+    }
+
     @ExceptionHandler(DuplicateException.class)
     public String handleConflict(DuplicateException e, HttpServletRequest req) {
         log.warn("[409 DuplicateException] {} {} - {}", req.getMethod(), req.getRequestURI(), e.getMessage());

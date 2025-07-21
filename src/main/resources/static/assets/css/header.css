@@ -1,0 +1,21 @@
+.gi-header-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;       /* 버튼 사이 간격 */
+}
+
+/* 익명/인증 wrapper 를 inline-flex 박스로 바꿔서 가로 배치에 참여시키기 */
+.gi-header-buttons .gi-acc-drop {
+    display: inline-flex !important;
+    align-items: center;
+    /* 필요하다면 margin 조절 */
+    margin: 0;
+}
+
+/* 기존 버튼(a)들은 그대로 컬럼 형태(아이콘 위, 텍스트 아래) 유지 */
+.gi-header-buttons .gi-header-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

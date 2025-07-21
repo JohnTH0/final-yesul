@@ -1,11 +1,12 @@
 <!-- Header start  -->
-<div th:fragment="header">
+<div th:fragment="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <header class="gi-header">
     <!-- Loader -->
     <div id="gi-overlay">
       <div class="loader"></div>
     </div>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/css/header.css}">
     <head th:replace="~{fragments/user/head :: head}"></head>
 
     <!-- Header Bottom  Start -->
@@ -49,45 +50,48 @@
             <div class="gi-header-action align-self-center">
               <div class="gi-header-buttons">
                 <!-- Header User Start -->
-                <div class="gi-acc-drop">
-                  <a href="javascript:void(0)"
-                     class="gi-header-btn gi-header-user dropdown-toggle gi-user-toggle"
-                     title="Account">
+                <div sec:authorize="isAnonymous()" class="gi-acc-drop">
+                  <a th:href="@{/login}" class="gi-header-btn gi-header-user" title="Login">
                     <div class="header-icon">
                       <i class="fi-rr-user"></i>
                     </div>
                     <div class="gi-btn-desc">
-                      <span class="gi-btn-title">계정</span>
+                      <span class="gi-btn-title"></span>
                       <span class="gi-btn-stitle">Login</span>
                     </div>
                   </a>
-                  <ul class="gi-dropdown-menu">
-                    <li><a class="dropdown-item" th:href="@{/user/regist}">회원가입</a></li>
-                    <li><a class="dropdown-item" th:href="@{/checkout.html}">로그아웃</a></li>
-                    <li><a class="dropdown-item" th:href="@{/login}">로그인</a></li>
-                  </ul>
                 </div>
-                <!-- Header User End -->
-                <!-- Header wishlist Start -->
-                <a th:href="@{/wishlist.html}" class="gi-header-btn gi-wish-toggle" title="Wishlist">
-                  <div class="header-icon">
-                    <i class="fi-rr-heart"></i>
-                  </div>
-                  <div class="gi-btn-desc">
-                    <span class="gi-btn-title">관심목록</span>
-                    <span class="gi-btn-stitle"><b class="gi-wishlist-count">0</b>-items</span>
-                  </div>
-                </a>
-                <!-- Header wishlist End -->
-                <!-- Header Cart Start -->
-                <!-- 종 아이콘 -->
-                <!-- 아이콘 교체 -->
-                <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="알림" id="notificationTrigger">
-                  <div class="header-icon" style="position: relative;">
-                    <i class="ri-notification-3-line" style="font-size: 20px; color: #333;"></i>
-                    <span style="font-size: 12px; color: #555; margin-top: 4px;">알림</span>
-                    <span id="header-notify-badge"
-                          style="
+
+                <div sec:authorize="isAuthenticated()" class="gi-acc-drop">
+                  <!-- 2.2) 닉네임 + “님” / 로그아웃 -->
+                  <a th:href="@{/logout}" class="gi-header-btn gi-header-user" title="Logout">
+                    <div class="header-icon">
+                      <i class="fi-rr-user"></i>
+                    </div>
+                    <div class="gi-btn-desc">
+                      <!-- principal.user.nickname 에서 닉네임 가져오기 -->
+                      <span class="gi-btn-title" sec:authentication="principal.user.nickname"></span>
+                      <span class="gi-btn-stitle">Logout</span>
+                    </div>
+                  </a>
+
+                  <!-- 2.3) 관심목록 → 마이페이지 -->
+                  <a th:href="@{/user/profile}" class="gi-header-btn gi-wish-toggle" title="My Page">
+                    <div class="header-icon">
+                      <i class="fi-rr-heart"></i>
+                    </div>
+                    <div class="gi-btn-desc">
+                      <span class="gi-btn-title">마이페이지</span>
+                    </div>
+                  </a>
+
+                  <!-- 2.4) 알림 (로그인 사용자만) -->
+                  <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="알림" id="notificationTrigger">
+                    <div class="header-icon" style="position: relative;">
+                      <i class="ri-notification-3-line" style="font-size: 20px; color: #333;"></i>
+                      <span style="font-size: 12px; color: #555; margin-top: 4px;">알림</span>
+                      <span id="header-notify-badge"
+                            style="
             position: absolute;
             top: -4px;
             right: -8px;
@@ -101,10 +105,9 @@
             line-height: 16px;
             display: none;
           "></span>
-                  </div>
-                </a>
-
-                <!-- Header Cart End -->
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
