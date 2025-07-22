@@ -43,7 +43,8 @@ public class PostLikeServiceImpl implements PostLikeService {
                     .user(user)
                     .build();
             likeRepository.save(like);
-            notificationService.sendPostOwnerLikeNotification(postId, userId, post.getUser().getId());
+            System.out.println(post.getBoardName());
+            notificationService.sendPostOwnerLikeNotification(postId, userId, post.getUser().getId(),post.getBoardName());
             return true;
         }
     }

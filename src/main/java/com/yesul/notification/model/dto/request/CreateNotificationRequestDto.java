@@ -23,6 +23,7 @@ public class CreateNotificationRequestDto {
     private Type receiverType;
     private Long targetId;
     private NotificationType type;
+    private String boardName;
     private String content;
 
 }

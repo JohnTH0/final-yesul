@@ -1,9 +1,11 @@
 package com.yesul.notification.controller;
 
 import com.yesul.chatroom.model.entity.enums.Type;
+import com.yesul.community.repository.PostRepository;
 import com.yesul.exception.handler.NotificationNotFoundException;
 import com.yesul.notification.model.dto.response.NotificationResponseDto;
 import com.yesul.notification.model.entity.Notification;
+import com.yesul.notification.model.entity.enums.NotificationType;
 import com.yesul.notification.repository.NotificationRepository;
 import com.yesul.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +26,7 @@ public class NotificationController {
 
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @GetMapping("/{receiverType}/{receiverId}")
     @Operation(summary = "읽지 않은 알림 조회", description = "유저가 읽지 않은 알림 리스트를 조회합니다.")
@@ -35,7 +38,17 @@ public class NotificationController {
                 .findByReceiverIdAndReceiverTypeAndIsReadFalseOrderByIdDesc(receiverId, receiverType);
 
         return notifications.stream()
-                .map(n -> NotificationResponseDto.fromEntity(n, n.resolveSenderName(userRepository)))
+                .map(n -> {
+                    String senderName = n.resolveSenderName(userRepository);
+                    String boardName = null;
+
+                    // 댓글 or 좋아요 타입이면 게시글 ID로 게시판 이름 조회
+                    if (n.getType() == NotificationType.COMMENT || n.getType() == NotificationType.LIKE) {
+                        boardName = postRepository.findBoardNameByPostId(n.getTargetId());
+                    }
+
+                    return NotificationResponseDto.fromEntity(n, senderName, boardName);
+                })
                 .toList();
     }
 

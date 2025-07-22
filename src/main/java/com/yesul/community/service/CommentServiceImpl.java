@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(comment);
 
-        notificationService.sendPostOwnerCommentNotification(dto.getPostId(), userId, post.getUser().getId());
+        notificationService.sendPostOwnerCommentNotification(dto.getPostId(), userId, post.getUser().getId(), post.getBoardName());
 
         return comment.getId();
     }

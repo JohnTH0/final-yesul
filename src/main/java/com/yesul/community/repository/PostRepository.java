@@ -24,4 +24,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostRepositor
                                            @Param("keyword") String keyword,
                                            Pageable pageable);
 
+    @Query("SELECT p.boardName FROM Post p WHERE p.id = :postId")
+    String findBoardNameByPostId(@Param("postId") Long postId);
+
+
 }

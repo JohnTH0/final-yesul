@@ -24,11 +24,12 @@ public class NotificationResponseDto {
     private Type receiverType;
     private Long targetId;
     private NotificationType type;
+    private String boardName;
     private String content;
     private boolean isRead;
     private LocalDateTime createdAt;
 
-    public static NotificationResponseDto fromEntity(Notification n, String senderName) {
+    public static NotificationResponseDto fromEntity(Notification n, String senderName, String boardName) {
         String content;
         if (n.getReceiverType() == Type.ADMIN) {
             content = "새로운 문의가 도착했습니다.";
@@ -46,6 +47,7 @@ public class NotificationResponseDto {
                 .targetId(n.getTargetId())
                 .type(n.getType())
                 .isRead(n.isRead())
+                .boardName(boardName)
                 .createdAt(n.getCreatedAt())
                 .content(content)
                 .build();
