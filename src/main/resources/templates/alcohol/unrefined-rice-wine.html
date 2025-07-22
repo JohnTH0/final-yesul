@@ -5,18 +5,26 @@
 <head th:replace="~{fragments/user/head :: head}"></head>
 <style>
   .badge {
+    display: inline-block; /* ✅ 이것이 빠지면 레이아웃 이상해질 수 있음 */
     font-size: 0.75rem;
-    background-color: #f5eee0;
-    color: #5a3a1b;
+    background-color: #7e2c00;
+    color: #4a2f13;
     margin-right: 4px;
     padding: 4px 6px;
     border-radius: 6px;
+    font-weight: bold;
   }
+
+  .badge:hover {
+    background-color: #fdd835;
+    cursor: default;
+  }
+
   .alcohol-card {
     background-color: #fffaf3;
     border: 1px solid #e6dcc4;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transition: transform 0.2s ease-in-out;
     display: flex;
@@ -66,7 +74,7 @@
     position: relative;
     border-radius: 12px;
     padding: 10px;
-    background-color: #fff8e6; /* 배경은 고정 */
+    background-color: #fff8e6;
     z-index: 1;
   }
 
@@ -106,6 +114,23 @@
   .gi-cat-icon.selected .gi-cat-title {
     color: #7a4a00;
     font-weight: bold;
+  }
+
+  .like-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: white;
+    border-radius: 6px;
+    padding: 6px 8px;
+    z-index: 10;
+    border: 1px solid #ccc; /* 원하면 테두리 */
+    cursor: pointer;
+  }
+
+  .like-icon i {
+    font-size: 18px;
+    color: red;
   }
 </style>
 <body>
@@ -196,7 +221,20 @@
             <div class="alcohol-card"
                  th:onclick="|window.location.href='/alcohols/detail/${alcohol.id}'|"
                  style="cursor: pointer;">
-              <img th:src="@{${alcohol.image}}" alt="술 이미지">
+
+              <!-- 이미지 + 좋아요 버튼 묶음 -->
+              <div class="image-container" style="position: relative;">
+                <img th:src="@{${alcohol.image}}" alt="술 이미지" style="width: 100%; height: 250px; object-fit: cover;">
+
+                <!-- 항상 보이는 좋아요 버튼 -->
+                <button type="button"
+                        class="like-icon like-btn"
+                        th:classappend="${alcohol.liked} ? 'active' : ''"
+                        th:data-id="${alcohol.id}">
+                  <i class="fa" th:classappend="${alcohol.liked} ? ' fa-heart' : ' fa-heart-o'"></i>
+                </button>
+              </div>
+
               <div class="alcohol-info">
                 <h5 class="card-title text-center" th:text="${alcohol.name}">술 이름</h5>
                 <p><strong>브랜드:</strong> <span th:text="${alcohol.brand}">브랜드</span></p>
@@ -209,13 +247,13 @@
                   <strong>용량:</strong> <span th:text="${alcohol.volumeMl}">500</span>ml
                 </p>
                 <div>
-                  <span class="badge badge-light border" th:if="${alcohol.sweetnessLevel >= 3}">#달콤</span>
-                  <span class="badge badge-light border" th:if="${alcohol.acidityLevel >= 3}">#산미</span>
-                  <span class="badge badge-light border" th:if="${alcohol.sparklingLevel >= 2}">#탄산</span>
-                  <span class="badge badge-light border" th:if="${alcohol.bodyLevel >= 3}">#바디감</span>
-                  <span class="badge badge-light border" th:if="${alcohol.aromaLevel >= 3}">#향긋</span>
-                  <span class="badge badge-light border" th:if="${alcohol.tanninLevel >= 3}">#떫은맛</span>
-                  <span class="badge badge-light border" th:if="${alcohol.finishLevel >= 3}">#여운</span>
+                  <span class="badge" th:if="${alcohol.sweetnessLevel >= 3}">#달콤</span>
+                  <span class="badge" th:if="${alcohol.acidityLevel >= 3}">#산미</span>
+                  <span class="badge" th:if="${alcohol.sparklingLevel >= 2}">#탄산</span>
+                  <span class="badge" th:if="${alcohol.bodyLevel >= 3}">#바디감</span>
+                  <span class="badge" th:if="${alcohol.aromaLevel >= 3}">#향긋</span>
+                  <span class="badge" th:if="${alcohol.tanninLevel >= 3}">#떫은맛</span>
+                  <span class="badge" th:if="${alcohol.finishLevel >= 3}">#여운</span>
                 </div>
                 <p class="alcohol-price mt-2">
                   ₩ <span th:text="${#numbers.formatInteger(alcohol.price, 3, 'COMMA')}">15,000</span>
@@ -247,6 +285,24 @@
       </div>
     </div>
   </div>
+
+  <div id="alert-message" style="
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    max-width: 80%;
+    text-align: center;
+"></div>
+
 </section>
 <!-- Alcohol List Section End -->
 
@@ -258,7 +314,66 @@
 
 <!-- 공통 js -->
 <div th:replace="~{fragments/user/js :: js}"></div>
+<script th:inline="javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.like-btn').forEach(btn => {
+      btn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        const button = event.currentTarget;
+        const alcoholId = button.getAttribute('data-id');
 
+        fetch(`/alcohol-likes/${alcoholId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: "include"
+        })
+          .then(res => {
+            if (res.status === 401) {
+              alert('좋아요를 하시려면 로그인이 필요합니다.');
+              window.location.href = '/login';
+              return;
+            }
+            if (!res.ok) {
+              alert('문제가 발생했습니다. 다시 시도해주세요.');
+              return;
+            }
+            return res.json();
+          })
+          .then(data => {
+            if (!data) return;
+            console.log(data)
+            const { liked, message } = data;
+            if (liked) {
+              button.classList.add('active');
+              button.querySelector('i').classList.add('fa-heart');
+              button.querySelector('i').classList.remove('fa-heart-o');
+            } else {
+              button.classList.remove('active');
+              button.querySelector('i').classList.remove('fa-heart');
+              button.querySelector('i').classList.add('fa-heart-o');
+            }
+            showAlertMessage(message);
+          })
+          .catch(err => {
+            console.error(err);
+            alert('요청 중 오류가 발생했습니다.');
+          });
+      });
+    });
+  });
+
+  function showAlertMessage(message, duration = 3000) {
+    const alertBox = document.getElementById('alert-message');
+    alertBox.textContent = message;
+    alertBox.style.display = 'block';
+
+    setTimeout(() => {
+      alertBox.style.display = 'none';
+    }, duration);
+  }
+</script>
 </body>
 
 </html>

@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.media.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,14 +38,25 @@ public class AlcoholLikeController {
     )
     @PostMapping("/{alcoholId}")
     @ResponseBody
-    public Map<String,Object> toggleLike(@PathVariable Long alcoholId,
-                                         @AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity<?> toggleLike(
+            @PathVariable Long alcoholId,
+            @AuthenticationPrincipal PrincipalDetails principal) {
+
+        if (principal == null || principal.getUser() == null || principal.getUser().getId() == null) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Unauthorized or missing user");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        }
+
         Long userId = principal.getUser().getId();
         boolean liked = alcoholLikeService.toggleLike(alcoholId, userId);
-        int count   = alcoholLikeService.getLikeCount(alcoholId);
-        Map<String,Object> result = new HashMap<>();
-        result.put("liked", liked);
-        result.put("likeCount", count);
-        return result;
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("liked", liked);
+        response.put("message", liked ? "좋아요가 등록되었습니다." : "좋아요가 취소되었습니다.");
+
+        return ResponseEntity.ok(response);
     }
 }
+
+

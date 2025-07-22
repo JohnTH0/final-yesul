@@ -27,12 +27,16 @@ public class AlcoholLikeServiceImpl implements AlcoholLikeService {
     @Override
     @Transactional
     public boolean toggleLike(Long alcoholId, Long userId) {
+        // 좋아요가 이미 있는지 조회
         Optional<AlcoholLike> existing = likeRepo.findByAlcoholAndUser(alcoholId, userId);
+
         if (existing.isPresent()) {
+            // 좋아요가 이미 있으면 삭제 후 false 반환 (좋아요 취소)
             likeRepo.deleteByAlcoholAndUser(alcoholId, userId);
             return false;
         }
 
+        // 좋아요가 없으면 술과 사용자 객체를 찾아서 좋아요 생성 후 true 반환 (좋아요 등록)
         Alcohol alcohol = alcoholRepo.findById(alcoholId)
                 .orElseThrow(() -> new AlcoholNotFoundException("술을 찾을 수 없습니다. ID=" + alcoholId));
         User user = userRepo.findById(userId)
@@ -43,6 +47,7 @@ public class AlcoholLikeServiceImpl implements AlcoholLikeService {
                 .user(user)
                 .build()
         );
+
         return true;
     }
 

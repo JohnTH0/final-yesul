@@ -102,7 +102,7 @@
     chatMessages.appendChild(loadingMsg);
     scrollToBottom(chatMessages);
 
-    fetch('http://223.130.132.13:8080/alcohols/clova', {
+    fetch('/alcohols/clova', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ask: text})
@@ -147,7 +147,7 @@
       </p>
     `;
 
-    fetch('http://223.130.132.13:8080/alcohols/clova2', {
+    fetch('/alcohols/clova2', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ask: aiText})
@@ -328,8 +328,13 @@
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 0 0 16px 16px;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6);
-    overflow-y: auto;
     color: #7a613f;
+    max-height: none !important;
+    height: auto !important;
+    overflow-y: auto;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   /* 타이핑되는 텍스트용 스타일 (글자 영역) */

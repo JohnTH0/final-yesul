@@ -97,6 +97,41 @@
       flex-direction: column;
     }
   }
+
+  .like-icon {
+    top: 10px;
+    right: 10px;
+    background-color: white;
+    border-radius: 6px;
+    padding: 6px 8px;
+    z-index: 10;
+    border: 1px solid #ccc; /* 원하면 테두리 */
+    cursor: pointer;
+  }
+
+  .like-icon i {
+    font-size: 18px;
+    color: red;
+  }
+
+  .title-like-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+
+  .like-icon {
+    background-color: white;
+    border-radius: 6px;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+  }
 </style>
 <body>
 
@@ -112,7 +147,17 @@
     </div>
 
     <div class="info-section">
-      <div class="info-title" th:text="${alcohol.name}">술 이름</div>
+
+      <!-- 제목과 좋아요 버튼 묶기 -->
+      <div class="title-like-wrapper">
+        <div class="info-title" th:text="${alcohol.name}">술 이름</div>
+        <button type="button"
+                class="like-icon like-btn"
+                th:classappend="${alcohol.liked} ? 'active' : ''"
+                th:data-id="${alcohol.id}">
+          <i class="fa" th:classappend="${alcohol.liked} ? ' fa-heart' : ' fa-heart-o'"></i>
+        </button>
+      </div>
       <div class="info-item"><strong>브랜드</strong><span th:text="${alcohol.brand}">브랜드</span></div>
       <div class="info-item"><strong>도수</strong><span th:text="${alcohol.abv} + '%'">0.0%</span></div>
       <div class="info-item"><strong>용량</strong><span th:text="${alcohol.volumeMl} + 'ml'">500ml</span></div>
@@ -122,6 +167,23 @@
       <div class="info-item"><strong>가격</strong>₩<span th:text="${#numbers.formatInteger(alcohol.price, 3, 'COMMA')}">15,000</span></div>
     </div>
   </div>
+
+  <div id="alert-message" style="
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    max-width: 80%;
+    text-align: center;
+"></div>
 
   <!-- 풍미 그래프 -->
   <div class="section">
@@ -214,6 +276,65 @@
       img.classList.toggle('zoomed');
     });
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.like-btn').forEach(btn => {
+      btn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        const button = event.currentTarget;
+        const alcoholId = button.getAttribute('data-id');
+
+        fetch(`/alcohol-likes/${alcoholId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: "include"
+        })
+          .then(res => {
+            if (res.status === 401) {
+              alert('좋아요를 하시려면 로그인이 필요합니다.');
+              window.location.href = '/login';
+              return;
+            }
+            if (!res.ok) {
+              alert('문제가 발생했습니다. 다시 시도해주세요.');
+              return;
+            }
+            return res.json();
+          })
+          .then(data => {
+            if (!data) return;
+            console.log(data)
+            const { liked, message } = data;
+            if (liked) {
+              button.classList.add('active');
+              button.querySelector('i').classList.add('fa-heart');
+              button.querySelector('i').classList.remove('fa-heart-o');
+            } else {
+              button.classList.remove('active');
+              button.querySelector('i').classList.remove('fa-heart');
+              button.querySelector('i').classList.add('fa-heart-o');
+            }
+            showAlertMessage(message);
+          })
+          .catch(err => {
+            console.error(err);
+            alert('요청 중 오류가 발생했습니다.');
+          });
+      });
+    });
+  });
+
+  function showAlertMessage(message, duration = 3000) {
+    const alertBox = document.getElementById('alert-message');
+    alertBox.textContent = message;
+    alertBox.style.display = 'block';
+
+    setTimeout(() => {
+      alertBox.style.display = 'none';
+    }, duration);
+  }
 </script>
 </body>
 

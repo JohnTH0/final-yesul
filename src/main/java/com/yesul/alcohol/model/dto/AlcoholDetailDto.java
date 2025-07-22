@@ -35,4 +35,6 @@ public class AlcoholDetailDto {
     private Integer price;
     private String pairingFoods;
     private String image;
+
+    private Long liked;
 }

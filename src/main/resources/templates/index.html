@@ -422,13 +422,13 @@
         <div class="gi-all-product-inner">
           <div class="gi-pro-image-outer">
             <div class="gi-pro-image">
-              <a href="/alcohols/${alcohol.id}" class="image">
+              <a href="/alcohols/detail/${alcohol.id}" class="image">
                 <img class="main-image" src="${alcohol.image}" alt="${alcohol.name}">
               </a>
             </div>
           </div>
           <div class="gi-pro-content">
-            <h5 class="gi-pro-title"><a href="/alcohols/${alcohol.id}">${alcohol.name}</a></h5>
+            <h5 class="gi-pro-title"><a href="/alcohols/detail/${alcohol.id}">${alcohol.name}</a></h5>
             <h6 class="gi-pro-stitle">${alcohol.type || alcohol.brand || ''}</h6>
             <div class="gi-pro-rat-price">
               <div class="gi-pro-rat-pri-inner">
@@ -438,9 +438,6 @@
                 </span>
               </div>
             </div>
-            <a href="javascript:void(0)" class="add-to-cart" title="Add To Cart">
-              <i class="fi-rr-shopping-basket"></i>
-            </a>
           </div>
         </div>
       </div>
