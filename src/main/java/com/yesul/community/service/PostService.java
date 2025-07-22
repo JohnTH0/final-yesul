@@ -18,4 +18,5 @@ public interface PostService {
     void deletePost(Long postId, Long userId);
     boolean isLikedByUser(Long postId, Long userId);
     List<PostResponseDto> getRandomPopularPosts(int count);
+    void incrementViewCount(Long postId);
 }

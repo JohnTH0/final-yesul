@@ -80,6 +80,7 @@ public class PostController {
                              Model model) {
         Long userId = (principalDetails != null) ? principalDetails.getUser().getId() : null;
         PostResponseDto post = postService.findById(id, userId);
+        postService.incrementViewCount(id);
 
         model.addAttribute("post", post);
         model.addAttribute("board_name", boardName);

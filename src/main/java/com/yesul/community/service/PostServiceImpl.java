@@ -5,6 +5,7 @@ import com.yesul.community.model.dto.request.PostRequestDto;
 import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.community.model.entity.Post;
 import com.yesul.community.model.entity.PostImage;
+import com.yesul.exception.handler.EntityNotFoundException;
 import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.like.repository.PostLikeRepository;
 import com.yesul.community.repository.PostImageRepository;
@@ -266,5 +267,13 @@ public class PostServiceImpl implements PostService {
         List<PostResponseDto> popular = postRepository.findPopularPostsByLikes();
         java.util.Collections.shuffle(popular);
         return popular.stream().limit(count).toList();
+    }
+
+    @Override
+    @Transactional
+    public void incrementViewCount(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다. ID=" + postId));
+        post.incrementViewCount();
     }
 }
