@@ -29,6 +29,12 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Async("asyncExecutor")// 공통 로직
     public void sendNotification(CreateNotificationRequestDto dto) {
+
+        // 0. 자기 자신에게 보내는 알림은 생성하지 않음
+        if (dto.getSenderId().equals(dto.getReceiverId())) {
+            return;
+        }
+
         // 1. 같은 조건의 안 읽은 알림이 이미 있으면 새로 만들지 않는다.
         boolean exists = notificationRepository.existsBySenderIdAndReceiverIdAndTargetIdAndIsReadFalse(
                 dto.getSenderId(),
