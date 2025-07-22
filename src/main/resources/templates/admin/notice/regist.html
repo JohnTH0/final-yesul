@@ -26,6 +26,46 @@
             </div>
             <div>
                 <form th:action="@{/admin/notice/regist}" id="postForm" method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-3 d-flex align-items-center justify-content-between">
+                        <label>
+                            <input type="checkbox"
+                                   id="eventCheckBox"
+                                   th:checked="${noticeDto.type != null}"
+                                   th:disabled="${noticeDto.type != null}" />
+                            이벤트 공지사항입니다.
+                        </label>
+                        <input type="hidden" id="type" name="type" th:value="${noticeDto.type != null ? noticeDto.type : 'GENERAL'}" />
+
+                        <div id="formButtonContainer" class="mb-3" style="display: none; text-align: right;">
+                            <a id="goToFormButton"
+                               class="btn btn-outline-primary"
+                               href="/admin/event/oauth2/authorize">
+                                폼 등록하러 가기
+                            </a>
+                        </div>
+                        <div th:if="${noticeDto.formId != null}">
+                            <label for="point">이벤트 차감 포인트</label>
+                            <input type="number"
+                                   id="point"
+                                   name="point"
+                                   th:value="${noticeDto.point != null ? noticeDto.point : 0}"
+                                   min="0"
+                                   class="form-control"
+                                   placeholder="포인트를 입력하세요" />
+                        </div>
+
+                        <div th:if="${noticeDto.formId != null}"
+                             class="mb-3"
+                             style="text-align: right;">
+                            <a th:href="'https://docs.google.com/forms/d/' + ${noticeDto.formId} + '/viewform'"
+                               class="btn btn-outline-primary"
+                               target="_blank"
+                                rel="noopener noreferrer">
+                                등록된 폼 보러가기
+                            </a>
+                        </div>
+                    </div>
+                    <input type="hidden" name="formId" th:value="${noticeDto.formId}" />
                     <div class="form-group mb-3">
                         <label for="title">제목</label>
                         <input type="text" id="title" name="title" th:value="${noticeDto.title}" class="form-control" required/>
@@ -46,8 +86,8 @@
                     </div>
                     <input type="hidden" name="imageUrl" id="imageUrl"/>
 
-                    <div class="text-end mt-4 mb-4">
-                        <button type="submit" class="btn btn-success px-4">등록하기</button>
+                    <div class="text-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-success px-4">게시글 등록하기</button>
                     </div>
                 </form>
             </div>
@@ -67,6 +107,31 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 <script>
+    const eventCheckBox = document.getElementById('eventCheckBox');
+    const typeInput = document.getElementById('type');
+    const formButtonContainer = document.getElementById('formButtonContainer');
+
+    eventCheckBox.addEventListener('change', () => {
+        if (eventCheckBox.checked) {
+            typeInput.value = 'EVENT';
+            formButtonContainer.style.display = 'block';
+        } else {
+            typeInput.value = 'GENERAL';
+            formButtonContainer.style.display = 'none';
+        }
+    });
+
+    const formId = /*[[${noticeDto.formId}]]*/ '';
+    if (formId !== '') {
+        eventCheckBox.checked = true;
+        typeInput.value = 'EVENT';
+        formButtonContainer.style.display = 'block';
+
+        const formButton = document.getElementById('goToFormButton');
+        formButton.href = `https://docs.google.com/forms/d/${formId}/viewform`;
+        formButton.innerText = '등록된 폼 확인하기';
+    }
+
     window.addEventListener("DOMContentLoaded", function () {
         console.log("DOM fully loaded");
 

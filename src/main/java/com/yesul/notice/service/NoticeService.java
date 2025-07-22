@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 public interface NoticeService {
     Page<NoticeDto> findNoticeList(Pageable pageable);
 
+    Page<NoticeDto> findNoticeEventList(Pageable pageable);
+
     NoticeDto findById(Long id);
 
     void saveNotice(NoticeDto noticeDto);

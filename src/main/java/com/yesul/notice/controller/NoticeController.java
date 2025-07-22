@@ -40,11 +40,11 @@ public class NoticeController {
     }
 
     @GetMapping("/regist")
-    public String NoticeRegistForm(Model model) {
-        if (!model.containsAttribute("noticeDto")) {
+    public String NoticeRegistForm(@ModelAttribute("noticeDto") NoticeDto noticeDto, Model model) {
+        if (noticeDto == null) {
             model.addAttribute("noticeDto", new NoticeDto());
         }
-        return "alcohol-form";
+        return "/admin/notice/regist";
     }
 
     @PostMapping("/upload")
@@ -69,7 +69,7 @@ public class NoticeController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "공지사항 등록 중 오류가 발생했습니다.");
             model.addAttribute("noticeDto", noticeDto);
-            return "alcohol-form";
+            return "redirect:/admin/notice/regist";
         }
     }
 

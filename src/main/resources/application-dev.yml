@@ -23,3 +23,7 @@ spring:
           naver:
             # redirect-uri: http://223.130.132.13:8080/login/oauth2/code/naver
             redirect-uri: https://yesul.shop/login/oauth2/code/naver
+
+          google:
+            # redirect-uri: http://223.130.132.13:8080/login/oauth2/code/naver
+            redirect-uri: https://yesul.shop/admin/event/oauth2/callback

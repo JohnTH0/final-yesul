@@ -129,6 +129,56 @@
     white-space: nowrap;
   }
 
+  .notice-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .notice-item {
+    margin-bottom: 12px;
+  }
+
+  .notice-item a {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* 아이템 간 간격 */
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .notice-type {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    min-width: 50px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .notice-type.event {
+    background-color: #d6f5d6; /* 초록 배경 */
+    color: #2e7d32;            /* 진한 초록 글씨 */
+  }
+
+  .notice-type.general {
+    background-color: #f0f0f0; /* 흰 배경 */
+    color: #555;               /* 회색 글씨 */
+  }
+
+  .notice-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 4px;
+    flex: 1;
+  }
+
+  .notice-date {
+    font-size: 13px;
+    color: #888;
+    white-space: nowrap;
+  }
   /* ✅ 20자 제한 처리 (서버에서 제한 안 한다면 JS나 attr-based 처리 필요) */
   .notice-title {
     max-width: 100%;
@@ -186,6 +236,11 @@
   <ul class="notice-items">
     <li class="notice-item" th:each="notice : ${noticeListPageable.content}">
       <a th:href="@{/notices/{id}(id=${notice.id})}">
+        <span class="notice-type"
+              th:classappend="${notice.type.name() == 'EVENT'} ? ' event' : ' general'"
+              th:text="${notice.type.name() == 'EVENT' ? '이벤트' : '일반'}">
+  타입
+</span>
         <span class="notice-title" th:text="${notice.title}">제목</span>
         <span class="notice-date" th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">날짜</span>
       </a>

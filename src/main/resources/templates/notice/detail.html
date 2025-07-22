@@ -77,6 +77,62 @@
     background-color: #f3e8dc;
     color: #4e342e;
   }
+
+  .notice-type {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    vertical-align: middle;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .notice-type.event {
+    background-color: #d6f5d6; /* 초록 배경 */
+    color: #2e7d32;            /* 진한 초록 글씨 */
+  }
+
+  .notice-type.general {
+    background-color: #f0f0f0; /* 흰 배경 */
+    color: #555;               /* 회색 글씨 */
+  }
+
+  .notice-detail-back {
+    margin-top: 40px;
+    text-align: right;
+  }
+
+  .notice-detail-back a {
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  .notice-detail-back a:last-child {
+    margin-left: 0;
+  }
+
+  .notice-detail-back a:hover {
+    opacity: 0.85;
+  }
+
+  .event-button {
+    background-color: #d6f5d6;
+    color: #2e7d32;
+    border: 1px solid #b2dfdb;
+    font-weight: bold;
+  }
+
+  .event-button:hover {
+    background-color: #c2eec2;
+  }
 </style>
 
 <!-- 공통 헤더 -->
@@ -84,7 +140,14 @@
 
 
 <div class="notice-detail-container">
-  <h1 class="notice-detail-title" th:text="${notice.title}">공지사항 제목</h1>
+  <h1 class="notice-detail-title">
+    <span class="notice-type"
+          th:classappend="${notice.type.name() == 'EVENT'} ? ' event' : ' general'"
+          th:text="${notice.type.name() == 'EVENT' ? '이벤트' : '일반'}">
+    타입
+  </span>
+    <span th:text="${notice.title}">공지사항 제목</span>
+  </h1>
   <p class="notice-detail-date" th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">2025.07.16</p>
 
   <!-- 이미지 있을 때만 보여주기 -->
@@ -95,6 +158,12 @@
   </div>
 
   <div class="notice-detail-back">
+    <a th:if="${notice.type.name() == 'EVENT' and notice.formUrl != null}"
+       th:href="${notice.formUrl}"
+       target="_blank"
+       class="event-button">
+      이벤트 참여하기
+    </a>
     <a th:href="@{/notices}">← 목록으로 돌아가기</a>
   </div>
 </div>

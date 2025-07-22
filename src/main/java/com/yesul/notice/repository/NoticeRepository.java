@@ -1,8 +1,11 @@
 package com.yesul.notice.repository;
 
 import com.yesul.notice.model.entity.Notice;
+import com.yesul.notice.model.enums.NoticeType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-    // findAll(), findById(), save(), delete() 등 자동제공 메서드 사용중. (지우지말것)
+    Page<Notice> findByType(Pageable pageable, NoticeType type);
 }

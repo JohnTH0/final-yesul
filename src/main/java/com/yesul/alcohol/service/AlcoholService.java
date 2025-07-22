@@ -8,6 +8,7 @@ import com.yesul.alcohol.repository.AlcoholRepository;
 import com.yesul.alcohol.repository.AlcoholSpecification;
 import com.yesul.exception.handler.RegistrationFailedException;
 import com.yesul.like.repository.AlcoholLikeRepository;
+import com.yesul.exception.handler.RegistrationFailedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

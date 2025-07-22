@@ -73,6 +73,9 @@ jobs:
             -e KAKAO_REST_SECRET=${{ secrets.KAKAO_REST_SECRET }} \
             -e NAVER_REST_KEY=${{ secrets.NAVER_REST_KEY }} \
             -e NAVER_REST_SECRET=${{ secrets.NAVER_REST_SECRET }} \
+            -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+            -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
+            -e GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }} \
             -e "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" \
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
             
