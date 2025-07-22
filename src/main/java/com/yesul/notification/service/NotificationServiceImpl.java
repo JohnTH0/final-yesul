@@ -35,14 +35,14 @@ public class NotificationServiceImpl implements NotificationService {
             return;
         }
 
-        // 1. 같은 조건의 안 읽은 알림이 이미 있으면 새로 만들지 않는다.
-        boolean exists = notificationRepository.existsBySenderIdAndReceiverIdAndTargetIdAndIsReadFalse(
+        boolean exists = notificationRepository.existsBySenderIdAndReceiverIdAndTargetIdAndTypeAndIsReadFalse(
                 dto.getSenderId(),
                 dto.getReceiverId(),
-                dto.getTargetId()  // ex) chatRoomId
+                dto.getTargetId(),
+                dto.getType()
         );
 
-        if (exists) {
+        if(exists){
             return;
         }
 

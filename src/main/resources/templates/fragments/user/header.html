@@ -433,9 +433,23 @@
           <div class="detail">
             <div>
               <a href="/users/chatroom?adminId=${msg.senderId}" class="name" data-id="${msg.id}">관리자</a>
-              <p class="time">${
-                  new Date(msg.createdAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
-                }</p>
+                            <p class="time">
+  ${new Date(msg.createdAt)
+                  .toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })
+                  .replace(/\.\s?/g, '-')
+                  .replace('.', '')
+                  .replace(',','')
+                  .replace(' ', ' ')
+                }
+</p>
               <p class="message">${msg.content}</p>
             </div>
             <span class="close-alert-btn">&times;</span>
@@ -453,7 +467,25 @@
           <div class="detail">
             <div>
               <a href="community/${msg.boardName}/${msg.targetId}" class="name" data-id="${msg.id}">${msg.senderName}님이 댓글을 남겼습니다.</a>
-              <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+              <p class="time">
+  ${new Date(msg.createdAt)
+                  .toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })
+                  .replace(/\.\s?/g, '-')
+                  .replace('.', '')
+                  .replace(',','')
+                  .replace(' ', ' ')
+                }
+</p>
+
+</p>
               <p class="message">${msg.content}</p>
             </div>
             <span class="close-alert-btn">&times;</span>
@@ -470,9 +502,23 @@
       <div class="detail">
         <div>
           <a href="/community/${msg.boardName}/${msg.targetId}" class="name" data-id="${msg.id}">${msg.senderName}님이 좋아요를 눌렀습니다.</a>
-          <p class="time">${
-                  new Date(msg.createdAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
-                }</p>
+                         <p class="time">
+  ${new Date(msg.createdAt)
+                  .toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })
+                  .replace(/\.\s?/g, '-')
+                  .replace('.', '')
+                  .replace(',','')
+                  .replace(' ', ' ')
+                }
+</p>
         </div>
         <span class="close-alert-btn"></span>
       </div>
@@ -512,7 +558,23 @@
       <div class="detail">
         <div>
           <a href="/admin/chatroom/${msg.targetId}" class="name" data-id="${msg.id}">${msg.senderId}</a>
-          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+                         <p class="time">
+  ${new Date(msg.createdAt)
+                  .toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })
+                  .replace(/\.\s?/g, '-')
+                  .replace('.', '')
+                  .replace(',','')
+                  .replace(' ', ' ')
+                }
+</p>
           <p class="message">${msg.content}</p>
         </div>
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
@@ -532,7 +594,23 @@
       <div class="detail">
         <div>
           <a href="community/${msg.boardName}/${msg.targetId}" class="name" data-id="${msg.id}">${msg.senderName}님이 댓글을 남겼습니다.</a>
-          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+                         <p class="time">
+  ${new Date(msg.createdAt)
+                  .toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })
+                  .replace(/\.\s?/g, '-')
+                  .replace('.', '')
+                  .replace(',','')
+                  .replace(' ', ' ')
+                }
+</p>
           <p class="message">${msg.content}</p>
         </div>
         <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
@@ -548,7 +626,23 @@
       <div class="detail">
         <div>
           <a href="/community/${msg.boardName}/${msg.targetId}" class="name" data-id="${msg.id}">${msg.senderName}님이 좋아요를 눌렀습니다.</a>
-          <p class="time">${new Date(msg.createdAt).toLocaleString()}</p>
+                         <p class="time">
+  ${new Date(msg.createdAt)
+                  .toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })
+                  .replace(/\.\s?/g, '-')
+                  .replace('.', '')
+                  .replace(',','')
+                  .replace(' ', ' ')
+                }
+</p>
         </div>
         <span class="close-alert-btn" data-id="${msg.id}"></span>
       </div>
