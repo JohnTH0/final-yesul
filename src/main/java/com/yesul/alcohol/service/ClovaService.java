@@ -19,12 +19,12 @@ public class ClovaService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String callClovaAPI(ClovaAskRequestDto askDto) {
-        String url = "https://clovastudio.stream.ntruss.com/testapp/v1/skillsets/fv46jc9v/versions/58/final-answer";
+        String url = "https://clovastudio.stream.ntruss.com/v1/skillsets/fv46jc9v/versions/71/final-answer";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer nv-ae4562f3d5a54905a8ae4563a0ad9ce7eYf5");
-        headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "7ecdb527711449cb8dc6827b6212b3d5");
+        headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "0385450c91a744a0bc48278c9b7fb1b8");
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         ClovaRequestDto dto = ClovaRequestDto.builder()
@@ -51,8 +51,8 @@ public class ClovaService {
         // 메시지 구성
         List<Clova2RequestDto.Message> messages = List.of(
                 new Clova2RequestDto.Message("system",
-                        "- 응답에 대해서 술에 대한 정보는, 이름과 지역만 발췌하여 해당 주류와 어울리는 여행일정만 제공합니다.\n" +
-                                "- 지역에 대한 정보가 없으면 최대한 응답과 관련된 여행지를 추천해줍니다.\n" +
+                        "- 응답에 대해서 술에 대한 정보이며, 술이름과 지역만 발췌하여 해당 주류와 어울리는 여행일정만 제공합니다.\n" +
+                                "- 지역에 대한 정보가 없으면 추천을 하기 어렵다고 응답합니다.\n" +
                                 "- 추천 여행지에 대한 정보를 가보고 싶게 소개합니다. \n" +
                                 "- 여행일정은 1박2일 또는 2박3일로 제공합니다.\n" +
                                 "- 여행 일정을 가독성 좋게 제공합니다.\n" +
