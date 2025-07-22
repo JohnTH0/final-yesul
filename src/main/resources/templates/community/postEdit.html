@@ -70,12 +70,6 @@
                         <input type="hidden" id="hiddenContent" name="content" th:field="*{content}" />
                     </div>
 
-                    <!-- 썸네일 URL -->
-                    <div class="form-group mb-3">
-                        <label for="thumbnail">썸네일 URL</label>
-                        <input type="text" id="thumbnail" name="thumbnail" class="form-control" th:field="*{thumbnail}" />
-                    </div>
-
                     <!-- 현재 이미지 목록 -->
                     <div th:if="${postRequestDto.imageUrls != null and !postRequestDto.imageUrls.isEmpty()}">
                         <label>현재 이미지들:</label>

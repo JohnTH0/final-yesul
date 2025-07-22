@@ -5,6 +5,7 @@ import com.yesul.community.model.dto.request.PostRequestDto;
 import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.community.model.entity.Post;
 import com.yesul.community.model.entity.PostImage;
+import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.like.repository.PostLikeRepository;
 import com.yesul.community.repository.PostImageRepository;
 import com.yesul.community.repository.PostRepository;
@@ -34,7 +35,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseDto createPost(PostRequestDto requestDto, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저가 없습니다: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(("존재하지 않는 유저입니다.")));
 
         Post post = Post.builder()
                 .user(user)
@@ -64,9 +65,13 @@ public class PostServiceImpl implements PostService {
 
     // 게시글 리스트 조회 (페이징)
     @Override
-    public Page<PostResponseDto> findByBoardNamePaged(String boardName, Pageable pageable) {
-        return postRepository.findByBoardName(boardName, pageable)
-                .map(this::convertToDto); // Post → DTO로 변환
+    public Page<PostResponseDto> findByBoardNamePaged(String boardName, Pageable pageable,Long userId) {
+        Page<Post> postPage = postRepository.findByBoardName(boardName, pageable);
+
+        return postPage.map(post -> {
+            boolean likedByMe = (userId != null) && likeRepository.existsByPostIdAndUserId(post.getId(), userId);
+            return PostResponseDto.from(post, likedByMe);
+        });
     }
 
     // 키워드 검색 (게시판 + 제목에 포함되는 키워드)
@@ -81,7 +86,7 @@ public class PostServiceImpl implements PostService {
         // images까지 fetch join으로 가져옴
         Post post = postRepository.findByIdWithImages(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-
+        System.out.print(post + "잘 찍힘");
         PostResponseDto dto = PostResponseDto.from(post);
         dto.setLikeCount(post.getLikes() != null ? post.getLikes().size() : 0);
 
@@ -92,7 +97,7 @@ public class PostServiceImpl implements PostService {
         if (userId != null) {
             try {
                 User user = userRepository.findById(userId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저가 없습니다."));
+                        .orElseThrow(() -> new UserNotFoundException("해당하는 유저가 없습니다."));
                 boolean likedByMe = likeRepository.findByPostAndUser(post, user).isPresent();
                 dto.setLikedByMe(likedByMe);
 
@@ -220,7 +225,7 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저 없음"));
+                .orElseThrow(() -> new UserNotFoundException("유저 없음"));
 
         return post.getLikes().stream()
                 .anyMatch(like -> like.getUser().getId().equals(userId));

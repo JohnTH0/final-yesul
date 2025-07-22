@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostService {
     PostResponseDto createPost(PostRequestDto requestDto, Long userId);
-    Page<PostResponseDto> findByBoardNamePaged(String boardName, Pageable pageable);
+    Page<PostResponseDto> findByBoardNamePaged(String boardName, Pageable pageable,Long userId);
     List<PostResponseDto> findAllByBoardName(String boardName);
     Page<PostResponseDto> searchByBoardNameAndKeyword(String boardName, String keyword, Pageable pageable);
     PostResponseDto findById(Long id, Long userId);

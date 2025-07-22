@@ -2,11 +2,17 @@ package com.yesul.community.model.dto.request;
 
 import com.yesul.community.model.entity.enums.PointType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "포인트 요청 DTO")
 public class PointRequestDto {
 
     @Schema(description = "유저 ID")

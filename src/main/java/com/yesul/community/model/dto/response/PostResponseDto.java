@@ -1,18 +1,20 @@
 package com.yesul.community.model.dto.response;
 
 import com.yesul.community.model.entity.Post;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "포인트 응답 DTO")
 public class PostResponseDto {
 
     private Long id;
@@ -52,6 +54,23 @@ public class PostResponseDto {
                 .content(post.getContent())
                 .thumbnail(post.getThumbnail())
                 .nickname(post.getUser().getNickname())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
+                .viewCount(post.getViewCount())
+                .build();
+    }
+
+    public static PostResponseDto from(Post post, boolean likedByMe) {
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .userId(post.getUser().getId())
+                .boardName(post.getBoardName())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .thumbnail(post.getThumbnail())
+                .nickname(post.getUser().getNickname())
+                .likeCount(post.getLikes().size())
+                .likedByMe(likedByMe)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .viewCount(post.getViewCount())

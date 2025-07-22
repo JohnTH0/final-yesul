@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "UserChatRoom", description = "유저 채팅방 관련 API")
+@Tag(name = "유저 채팅방", description = "유저 채팅방 관련 API")
 @Controller
 @RequestMapping("/users/chatroom")
 @RequiredArgsConstructor

@@ -5,6 +5,7 @@ import com.yesul.community.model.entity.Comment;
 import com.yesul.community.model.entity.Post;
 import com.yesul.community.repository.CommentRepository;
 import com.yesul.community.repository.PostRepository;
+import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.notification.service.NotificationService;
 import com.yesul.user.model.entity.User;
 import com.yesul.user.repository.UserRepository;
@@ -26,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new RuntimeException("해당 게시글을 찾을 수 없습니다."));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
         Comment comment = Comment.builder()
                 .post(post)

@@ -4,6 +4,8 @@ import com.yesul.community.model.dto.request.CommentRequestDto;
 import com.yesul.community.service.ActivityDuplicateCheckService;
 import com.yesul.community.service.CommentService;
 import com.yesul.user.service.PrincipalDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import com.yesul.community.service.PointService;
 import com.yesul.community.model.entity.enums.PointType;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Tag(name = "댓글", description = "댓글 관련 API")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/comments")
@@ -21,11 +24,11 @@ public class CommentController {
     private final PointService pointService;
     private final ActivityDuplicateCheckService activityDuplicateCheckService;
 
-    // 댓글 저장
+
     @PostMapping
+    @Operation(summary = "댓글 저장", description = "댓글을 저장합니다.")
     public String save(@ModelAttribute CommentRequestDto dto,
                        @AuthenticationPrincipal PrincipalDetails principalDetails,
-                       org.springframework.ui.Model model,
                        RedirectAttributes redirectAttributes) {
 
         Long userId = principalDetails.getUser().getId();
@@ -37,10 +40,10 @@ public class CommentController {
         }
 
         // 2. 댓글 저장
-        Long commentId = commentService.save(dto, userId);
+        commentService.save(dto, userId);
 
         // 3. 포인트 적립
-        pointService.earnPoint(userId, PointType.COMMENT_CREATE); // content 제거됨
+        pointService.earnPoint(userId, PointType.COMMENT_CREATE);
 
         // 4. Redis 저장 (TTL: 20초)
         activityDuplicateCheckService.saveActivity(userId, PointType.COMMENT_CREATE, 20);
@@ -54,8 +57,9 @@ public class CommentController {
         return "댓글 리스트 예정";
     }
 
-    // 댓글 삭제
+
     @PostMapping("/delete")
+    @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
     public String delete(@RequestParam Long commentId,
                          @RequestParam String boardName,
                          @RequestParam Long postId,

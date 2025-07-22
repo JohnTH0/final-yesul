@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Notification", description = "알림 관련 API")
+@Tag(name = "알림", description = "알림 관련 API")
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor

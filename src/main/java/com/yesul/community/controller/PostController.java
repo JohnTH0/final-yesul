@@ -7,6 +7,8 @@ import com.yesul.community.service.PointService;
 import com.yesul.community.service.PostImageService;
 import com.yesul.community.service.PostService;
 import com.yesul.user.service.PrincipalDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Tag(name = "게시글", description = "게시글 관련 API")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/community")
@@ -32,22 +35,23 @@ public class PostController {
         return "redirect:/community/recipe";
     }
 
-    /**
-     * 게시판별 게시글 목록 조회 및 검색
-     */
     @GetMapping("/{boardName}")
+    @Operation(summary = "게시판별 게시글 목록 조회 및 검색", description = "게시판별 게시글 목록을 조회하고 검색합니다.")
     public String boardList(@PathVariable String boardName,
                             @RequestParam(defaultValue = "0") int page,
                             @RequestParam(required = false) String keyword,
+                            @AuthenticationPrincipal PrincipalDetails principalDetails,
                             Model model) {
 
         Pageable pageable = PageRequest.of(page, 6, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<PostResponseDto> postPage;
 
+        Long userId = (principalDetails != null) ? principalDetails.getUser().getId() : null;
+
         if (keyword != null && !keyword.trim().isEmpty()) {
             postPage = postService.searchByBoardNameAndKeyword(boardName, keyword, pageable);
         } else {
-            postPage = postService.findByBoardNamePaged(boardName, pageable);
+            postPage = postService.findByBoardNamePaged(boardName, pageable, userId);
         }
 
         model.addAttribute("postPage", postPage);
@@ -69,6 +73,7 @@ public class PostController {
      * 게시글 상세 조회
      */
     @GetMapping("/{boardName}/{id}")
+    @Operation(summary = "게시글 상세 조회", description = "게시글을 상세 조회합니다.")
     public String postDetail(@PathVariable String boardName,
                              @PathVariable Long id,
                              @AuthenticationPrincipal PrincipalDetails principalDetails,
@@ -115,6 +120,7 @@ public class PostController {
      * 게시글 등록 처리
      */
     @PostMapping("/create")
+    @Operation(summary = "게시글 등록", description = "게시글을 등록합니다.")
     public String createPost(@ModelAttribute PostRequestDto postRequestDto,
                              @AuthenticationPrincipal PrincipalDetails principalDetails,
                              Model model,
@@ -142,7 +148,6 @@ public class PostController {
         // 글 등록
         PostResponseDto createdPost = postService.createPost(postRequestDto, userId);
 
-        System.out.println("✅ earnPoint 호출 직전");
 
         // 포인트 적립
         pointService.earnPoint(userId, PointType.POST_CREATE);
@@ -180,6 +185,7 @@ public class PostController {
      * 게시글 수정 처리
      */
     @PostMapping("/{boardName}/{id}/edit")
+    @Operation(summary = "게시글 수정", description = "게시글을 수정합니다.")
     public String updatePost(@ModelAttribute PostRequestDto postRequestDto,
                              @PathVariable String boardName,
                              @PathVariable Long id,
@@ -210,10 +216,8 @@ public class PostController {
         }
     }
 
-    /**
-     * 게시글 삭제 처리
-     */
     @PostMapping("/{boardName}/{id}/delete")
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
     public String deletePost(@PathVariable String boardName,
                              @PathVariable Long id,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {

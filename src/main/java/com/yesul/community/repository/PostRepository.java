@@ -12,9 +12,11 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
     Page<Post> findByBoardName(String boardName, Pageable pageable);
-    List<Post> findByBoardName(String boardName); // 비페이징 용도
+    List<Post> findByBoardName(String boardName);
+
     @Query("SELECT p FROM Post p LEFT JOIN FETCH p.images WHERE p.id = :id")
     Optional<Post> findByIdWithImages(@Param("id") Long id);
+
     @Query("SELECT p FROM Post p WHERE p.boardName = :boardName AND " +
             "(LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%')))")

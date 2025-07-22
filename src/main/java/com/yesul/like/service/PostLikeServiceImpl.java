@@ -1,5 +1,6 @@
 package com.yesul.like.service;
 
+import com.yesul.exception.handler.UserNotFoundException;
 import com.yesul.notification.service.NotificationService;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class PostLikeServiceImpl implements PostLikeService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("유저 없음"));
+                .orElseThrow(() -> new UserNotFoundException("해당하는 유저가 없습니다."));
 
         Optional<PostLike> existing = likeRepository.findByPostAndUser(post, user);
 

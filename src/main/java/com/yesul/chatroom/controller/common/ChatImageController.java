@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "ChatImage", description = "채팅 이미지 관련 API")
+@Tag(name = "채팅 이미지", description = "채팅 이미지 관련 API")
 @RestController
 @RequestMapping("/chat-images")
 @RequiredArgsConstructor

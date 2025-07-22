@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Point", description = "포인트")
+@Tag(name = "포인트", description = "포인트 관련 API")
 @Controller
 @RequestMapping("/point")
 @RequiredArgsConstructor
@@ -32,8 +32,8 @@ public class PointController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "포인트 내역 페이지", description = "로그인한 사용자의 포인트 내역을 화면에 보여줍니다.")
     @GetMapping("/point-history")
+    @Operation(summary = "포인트 내역 페이지", description = "로그인한 사용자의 포인트 내역을 화면에 보여줍니다.")
     public String viewPointHistory(
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model) {
@@ -52,14 +52,15 @@ public class PointController {
     }
 
     @PostMapping("/use")
+    @Operation(summary = "포인트 사용", description = "로그인한 사용자의 포인트를 사용합니다.")
     public String usePoint(@RequestBody PointRequestDto request) {
         pointService.usePoint(request.getUserId(), request.getType());
         return "포인트 차감 완료!";
     }
 
     @PostMapping("/attendance")
+    @Operation(summary = "포인트 적립", description = "로그인한 사용자의 포인트를 적립합니다.")
     public ResponseEntity<?> earnAttendancePoint(@RequestParam Long userId) {
-        System.out.println("== 출석 포인트 API 진입! userId=" + userId);
         pointService.earnPoint(userId, PointType.ATTENDANCE);
         return ResponseEntity.ok().build();
     }

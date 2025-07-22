@@ -6,9 +6,9 @@ import lombok.*;
 @Entity
 @Table(name = "post_image")
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class PostImage {
 
     @Id

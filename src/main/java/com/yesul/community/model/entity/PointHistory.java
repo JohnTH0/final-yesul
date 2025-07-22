@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "point_history")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 public class PointHistory extends BaseTimeEntity {
 
     @Id

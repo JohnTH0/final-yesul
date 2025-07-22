@@ -35,7 +35,7 @@ public class PointServiceImpl implements PointService {
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 포인트 활동 유형입니다: " + type));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다."));
         user.earnPoint(point.getPoint());
 
         PointHistory history = PointHistory.builder()

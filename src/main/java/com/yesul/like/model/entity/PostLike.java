@@ -13,7 +13,6 @@ import com.yesul.user.model.entity.User;
 @Getter
 @ToString
 @Builder
-
 @Entity
 @Table(name = "post_like")
 public class PostLike extends BaseTimeEntity {

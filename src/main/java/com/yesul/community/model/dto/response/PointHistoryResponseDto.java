@@ -3,16 +3,19 @@ package com.yesul.community.model.dto.response;
 import com.yesul.community.model.entity.PointHistory;
 import com.yesul.community.model.entity.enums.PointType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
-/**
- * 포인트 적립/차감 내역 응답 DTO
- */
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "포인트 history 응답 DTO")
 public class PointHistoryResponseDto {
 
     @Schema(description = "활동 유형")

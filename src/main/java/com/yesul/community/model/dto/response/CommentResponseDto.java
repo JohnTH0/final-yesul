@@ -1,15 +1,17 @@
 package com.yesul.community.model.dto.response;
 
 import com.yesul.community.model.entity.Comment;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Schema(description = "댓글 응답 DTO")
 public class CommentResponseDto {
 
     private Long id;
