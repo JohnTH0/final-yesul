@@ -4,7 +4,6 @@ import com.yesul.notice.model.dto.NoticeDto;
 import com.yesul.notice.service.NoticeService;
 import com.yesul.util.ImageUpload;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/admin/notice")
 @Controller
@@ -36,7 +34,7 @@ public class NoticeController {
     public String noticeDetail(@PathVariable Long id, Model model) {
         NoticeDto notice = noticeService.findById(id);
         model.addAttribute("notice", notice);
-        return "/admin/notice/detail";
+        return "admin/notice/detail";
     }
 
     @GetMapping("/regist")
@@ -44,7 +42,7 @@ public class NoticeController {
         if (noticeDto == null) {
             model.addAttribute("noticeDto", new NoticeDto());
         }
-        return "/admin/notice/regist";
+        return "admin/notice/regist";
     }
 
     @PostMapping("/upload")

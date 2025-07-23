@@ -6,7 +6,6 @@ import com.yesul.notice.model.entity.Notice;
 import com.yesul.notice.model.enums.NoticeType;
 import com.yesul.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -14,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class NoticeServiceImpl implements NoticeService {
@@ -72,7 +68,4 @@ public class NoticeServiceImpl implements NoticeService {
 
         noticeRepository.delete(notice);
     }
-
-
-
 }

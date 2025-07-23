@@ -10,26 +10,32 @@
     <div class="gi-main-content container-fluid mt-4">
         <div class="container-fluid">
             <div class="gi-page-title gi-page-title-2">
-            <div class="gi-breadcrumb">
-                <h5>Notice</h5>
-                <ul>
-                    <li>공지사항</li>
-                    <li>작성글</li>
-                </ul>
+                <div class="gi-breadcrumb">
+                    <h5>Notice</h5>
+                    <ul>
+                        <li>공지사항</li>
+                        <li>작성글</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-
-        <div class="mb-4">
-            <h2 th:text="${notice.title}">공지 제목</h2>
-            <p class="text-muted" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
-        </div>
-        <div th:if="${notice.imageUrl != null}">
-            <img th:src="${notice.imageUrl}" class="img-fluid mb-4" alt="공지 이미지"/>
-        </div>
-        <div th:utext="${notice.content}" class="border p-4 rounded bg-light">
-
-        </div>
-            <div class="mt-4 text-end">
+            <div class="mb-4">
+                <h2 th:text="${notice.title}">공지 제목</h2>
+                <p class="text-muted" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
+            </div>
+            <div th:if="${notice.imageUrl != null and !#strings.isEmpty(notice.imageUrl)}">
+                <img th:src="${notice.imageUrl}" class="img-fluid mb-4" alt="공지 이미지"/>
+            </div>
+            <div th:utext="${notice.content}" class="border p-4 rounded bg-light"></div>
+            <div th:if="${notice.formUrl != null}" class="mt-4">
+                <span><strong>신청폼 링크 :</strong> </span>
+                <a th:href="${notice.formUrl}"
+                   th:text="${notice.formUrl}"
+                   class="text-primary text-decoration-underline"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                </a>
+            </div>
+            <div class="mt-4 pb-4 text-end">
                 <a th:href="@{/admin/notice}" class="btn btn-primary me-2">목록으로</a>
                 <a th:href="@{'/admin/notice/edit/' + ${notice.id}}" class="btn btn-danger">수정하기</a>
             </div>

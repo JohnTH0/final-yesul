@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     Page<Notice> findByType(Pageable pageable, NoticeType type);
+    Notice findByFormId(String formId);
 }

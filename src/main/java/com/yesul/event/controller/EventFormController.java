@@ -4,11 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yesul.event.model.dto.EventFormRequestDto;
-import com.yesul.event.model.dto.FormRequestDto;
+import com.yesul.event.model.dto.EventListDto;
 import com.yesul.event.model.dto.QuestionRequestDto;
+import com.yesul.event.model.enums.EventStatus;
 import com.yesul.event.service.EventService;
+import com.yesul.exception.handler.UnauthorizedAccessException;
 import com.yesul.notice.model.dto.NoticeDto;
-import com.yesul.notice.model.enums.NoticeType;
 import com.yesul.notice.service.NoticeService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -26,13 +27,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -94,46 +92,71 @@ public class EventFormController {
         session.setAttribute("googleAccessToken", accessToken);
 
 
-        return "redirect:/admin/event/create";
+        return "redirect:/admin/event/create/form";
     }
 
     @GetMapping("/create")
     public String createPage() {
-        return "/admin/event/create-form";
+        return "admin/event/create-form";
     }
 
-    @PostMapping("/create/form")
-    public String createForm(@ModelAttribute FormRequestDto request, HttpSession session, RedirectAttributes redirectAttributes) throws JsonProcessingException {
+    @GetMapping("/create/form")
+    public String createForm(HttpSession session, Model model) throws IOException {
         String accessToken = (String) session.getAttribute("googleAccessToken");
 
         if (accessToken == null) {
-            redirectAttributes.addFlashAttribute("error", "Google 인증이 필요합니다.");
-            return "redirect:/admin/event/oauth2/authorize";
+            throw new UnauthorizedAccessException("Google 인증이 필요합니다.");
         }
 
-        NoticeDto notice = eventService.createAndUpdateForm(request, accessToken);
-        redirectAttributes.addFlashAttribute("noticeDto", notice);
+        String formId = eventService.createAndGetFormId(accessToken);
+        eventService.addQuestions(formId, accessToken);
 
-        return "redirect:/admin/notice/regist";
+        NoticeDto noticeDto = new NoticeDto();
+        noticeDto.setFormId(formId);
+
+        model.addAttribute("noticeDto", noticeDto);
+        return "admin/notice/regist";
     }
 
     @GetMapping
     public String eventPage(Pageable pageable, Model model) {
         Page<NoticeDto> noticeEventListPageable = noticeService.findNoticeEventList(pageable);
         model.addAttribute("noticeListPageable", noticeEventListPageable);
-        return "/admin/event/list";
+        return "admin/event/list";
     }
 
     @PostMapping("/list")
     public ResponseEntity<String> receiveFormResponses(@RequestBody EventFormRequestDto request) {
-        System.out.println("폼 ID: " + request.getForm_id());
-        System.out.println("폼 제목: " + request.getForm_title());
+        String formId = request.getForm_id();
+
+        NoticeDto event = eventService.getEventIdByFormId(formId);
+
+        String userName = null;
+        String userEmail = null;
+        String phone = null;
 
         for (QuestionRequestDto question : request.getResults()) {
-            System.out.println(question.getType());
-            System.out.println("질문: " + question.getTitle());
-            System.out.println("응답: " + question.getResponse());
+            String title = question.getTitle();
+            String response = question.getResponse().toString();
+            if (title.contains("성함")) {
+                userName = response;
+            } else if (title.contains("아이디")) {
+                userEmail = response;
+            } else if (title.contains("연락처")) {
+                phone = response;
+            }
         }
+
+        EventListDto eventApply = EventListDto.builder()
+                .formId(formId)
+                .userName(userName)
+                .userEmail(userEmail)
+                .phone(phone)
+                .status(EventStatus.NEW)
+                .eventId(event.getId())
+                .build();
+
+        eventService.saveEventList(eventApply);
 
         return ResponseEntity.ok("데이터 수신 성공");
     }

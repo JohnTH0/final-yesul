@@ -61,15 +61,11 @@ public class SecurityConfig {
                 .userDetailsService(adminUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/admin/login", "/asserts/**"
+                                "/admin/login", "/asserts/**", "/admin/event/list", "/admin/event"
                         ).permitAll()
-                        .requestMatchers("/admin/otp","/admin/otp/verify", "admin/login-log").hasAuthority("ADMIN_PENDING_OTP")
+                        .requestMatchers("/admin/otp","/admin/otp/verify", "/admin/login-log").hasAuthority("ADMIN_PENDING_OTP")
                         .requestMatchers("/admin/**", "/oauth2/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/admin/event/list") // 로그인 페이지 (구글 로그인 버튼 있는 곳)
-                        .defaultSuccessUrl("/admin/event/success", true) // 로그인 성공 후 이동할 경로
                 )
                 .addFilterBefore(systemMonitoringFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form

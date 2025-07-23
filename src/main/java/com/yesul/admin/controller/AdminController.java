@@ -21,7 +21,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @GetMapping("/dashboard")
+    @GetMapping( "/dashboard")
     public String dashboardPage(Model model,@AuthenticationPrincipal LoginAdmin loginAdmin) {
         int todayVisitor = adminService.getTodayVisitorCount();
         int realTimeUser = adminService.getRealTimeUserCount();

@@ -50,7 +50,7 @@ public class AdminAlcoholController {
 
         model.addAttribute("alcohol", alcohol);
         model.addAttribute("tasteLevels", tasteLevels);
-        return "/admin/alcohol/detail";
+        return "admin/alcohol/detail";
     }
 
     @GetMapping("/regist")
