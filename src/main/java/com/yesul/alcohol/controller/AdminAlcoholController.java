@@ -32,7 +32,7 @@ public class AdminAlcoholController {
     public String alcoholMgmtPage(@PageableDefault(size = 12) Pageable pageable, Model model) {
         Page<AlcoholDto> alcoholListPageable = alcoholService.getAlcoholList(pageable);
         model.addAttribute("alcoholList", alcoholListPageable);
-        return "/admin/alcohol/list";
+        return "admin/alcohol/list";
     }
 
     @GetMapping("/{id}")
@@ -56,7 +56,7 @@ public class AdminAlcoholController {
     @GetMapping("/regist")
     public String registPage(Model model) {
         model.addAttribute("alcohol", new AlcoholDetailDto());
-        return "/admin/alcohol/alcohol-form";
+        return "admin/alcohol/alcohol-form";
     }
 
     @PostMapping("/regist")
@@ -73,7 +73,7 @@ public class AdminAlcoholController {
     public String editAlcohol(@PathVariable Long id, Model model) {
         AlcoholDetailDto alcohol = alcoholService.getAlcoholDetailById(id);
         model.addAttribute("alcohol", alcohol);
-        return "/admin/alcohol/alcohol-form";
+        return "admin/alcohol/alcohol-form";
     }
 
     @PostMapping("/edit")
