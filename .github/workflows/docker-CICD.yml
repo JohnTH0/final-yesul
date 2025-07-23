@@ -64,6 +64,7 @@ jobs:
             -e DEV_DATABASE_URL=${{ secrets.DEV_DATABASE_URL }} \
             -e DEV_DB_USERNAME=${{ secrets.DEV_DB_USERNAME }} \
             -e DEV_DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }} \
+            -e NCP_API_KEY=${{ secrets.NCP_API_KEY }} \
             -e NCP_BUCKET=${{ secrets.NCP_BUCKET }} \
             -e NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY }} \
             -e NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }} \
