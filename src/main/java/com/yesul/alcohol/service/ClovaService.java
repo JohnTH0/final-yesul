@@ -19,12 +19,14 @@ public class ClovaService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String callClovaAPI(ClovaAskRequestDto askDto) {
-        String url = "https://clovastudio.stream.ntruss.com/v1/skillsets/fv46jc9v/versions/71/final-answer";
+        String url = "https://clovastudio.stream.ntruss.com/v1/skillsets/fv46jc9v/versions/74/final-answer";
+
+        String ncpApiKey = System.getenv("NCP_API_KEY");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer nv-ae4562f3d5a54905a8ae4563a0ad9ce7eYf5");
-        headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "0385450c91a744a0bc48278c9b7fb1b8");
+        headers.set("Authorization", "Bearer " + ncpApiKey);
+        headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "bc424761292d46de9070dd677b83d793");
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         ClovaRequestDto dto = ClovaRequestDto.builder()

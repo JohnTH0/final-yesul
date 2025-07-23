@@ -47,7 +47,7 @@ public class AlcoholController {
     public String unrefinedRiceWine(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model
     ) {
@@ -68,7 +68,7 @@ public class AlcoholController {
     public String herbalRiceWine(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model
     ) {
@@ -89,7 +89,7 @@ public class AlcoholController {
     public String clearRiceWine(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model
     ) {
@@ -110,7 +110,7 @@ public class AlcoholController {
     public String fruitWine(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model
     ) {
@@ -131,7 +131,7 @@ public class AlcoholController {
     public String distilledLiquor(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model
     ) {
@@ -152,7 +152,7 @@ public class AlcoholController {
     public String liqueur(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             @AuthenticationPrincipal PrincipalDetails principal,
             Model model
     ) {
@@ -199,7 +199,7 @@ public class AlcoholController {
     public String search(
             AlcoholSearchDto condition,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "8") int size,
             Model model
     ) {
         Pageable pageable = PageRequest.of(page, size);
