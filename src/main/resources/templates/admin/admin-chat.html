@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <main class="wrapper sb-default ecom">
   <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
   <meta charset="UTF-8" />
   <title>Admin Chatroom</title>
@@ -11,14 +12,15 @@
     .gi-main-content { padding-left: 280px; padding-top: 80px; }
     .admin-chat-wrapper {
       display: flex;
-      max-width: 900px;
-      margin: 40px auto;
+      width: 1100px;
+      margin: 40px auto 40px 360px;
       height: calc(100vh - 160px);
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.07);
       overflow: hidden;
     }
+
     .chat-sidebar { width: 320px; border-right: 1px solid #ececec; display: flex; flex-direction: column; overflow-y: auto; }
     .chat-search { padding: 16px; border-bottom: 1px solid #ddd; }
     .chat-search input { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; }
@@ -91,61 +93,61 @@
 <div th:replace="~{fragments/admin/notify-sidebar :: adminNotifySidebar}"></div>
 
 
-    <div class="admin-chat-wrapper">
-      <!-- Sidebar -->
-      <div class="chat-sidebar">
-        <div class="chat-search">
-          <input type="text" id="chatSearchInput" placeholder="이름으로 검색">
-        </div>
-        <div class="total-unread-count" th:if="${totalUnreadCount > 0}">
-          <span th:text="'전체 안 읽은 메시지: ' + ${totalUnreadCount}">0</span>
-        </div>
-        <th:block th:fragment="searchResultFragment">
-        <ul id="chatRoomList">
-          <li th:each="room : ${chatRooms}" class="chat-room-item" th:data-room-id="${room.roomId}">
-            <div class="room-info">
-              <img th:src="${room.userProfileUrl != null} ? @{${room.userProfileUrl}} : @{/assets/img/default-profile.png}"
-                   alt="유저 프로필" class="profile-img" />
-              <div class="room-texts">
+<div class="admin-chat-wrapper">
+  <!-- Sidebar -->
+  <div class="chat-sidebar">
+    <div class="chat-search">
+      <input type="text" id="chatSearchInput" placeholder="이름으로 검색">
+    </div>
+    <div class="total-unread-count" th:if="${totalUnreadCount > 0}">
+      <span th:text="'전체 안 읽은 메시지: ' + ${totalUnreadCount}">0</span>
+    </div>
+    <th:block th:fragment="searchResultFragment">
+      <ul id="chatRoomList">
+        <li th:each="room : ${chatRooms}" class="chat-room-item" th:data-room-id="${room.roomId}">
+          <div class="room-info">
+            <img th:src="${room.userProfileUrl != null} ? @{${room.userProfileUrl}} : @{/assets/img/default-profile.png}"
+                 alt="유저 프로필" class="profile-img" />
+            <div class="room-texts">
               <span class="room-name" th:text="${room.userName}">상대방 이름</span>
               <span class="last-message" th:text="${room.lastMessage}">마지막 메시지</span>
-              </div>
-              <span class="unread-count" th:if="${room.adminUnreadCount > 0}" th:text="${room.adminUnreadCount}">0</span>
             </div>
-        </ul>
-        </th:block>
-      </div>
+            <span class="unread-count" th:if="${room.adminUnreadCount > 0}" th:text="${room.adminUnreadCount}">0</span>
+          </div>
+      </ul>
+    </th:block>
+  </div>
 
-      <!-- Chat Content -->
-      <div class="chat-content">
-        <div class="chat-header">
-          <button class="back-button" onclick="history.back()">←</button>
-          <span id="selectedUserName" th:text="${chatPartnerName}">채팅 상대</span>
-        </div>
-        <div class="chat-history">
-          <ul id="messageList">
-            <li th:each="msg : ${messages}"
-                th:classappend="${msg.senderType.name()} == 'ADMIN' ? 'admin-message' : 'user-message'">
-              <span class="sender-name" th:if="${msg.senderType.name()} != 'ADMIN'" th:text="${chatPartnerName}">상대방</span>
-              <div class="chat-bubble" th:if="${msg.messageType.name()} == 'TEXT'" th:text="${msg.messageContext}">메시지</div>
-              <div class="chat-bubble" th:if="${msg.messageType.name()} == 'IMAGE'">
-                <img th:src="${msg.messageContext}" style="max-width: 100%;">
-              </div>
-              <div class="chat-time" th:text="${#temporals.format(msg.createdAt, 'HH:mm')}">12:30</div>
-            </li>
-          </ul>
-        </div>
-        <div class="chat-input-area">
-          <button type="button" class="btn btn-secondary upload-btn" onclick="document.getElementById('imageInput').click()">＋</button>
-          <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
-          <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="uploadImage(this)">
-          <button type="button" id="sendBtn" class="btn btn-dark send-btn">전송</button>
-          <input type="hidden" id="chatRoomId" th:value="${roomId}">
-          <input type="hidden" id="lastMessageId" th:value="${lastMessageId}">
-        </div>
-      </div>
+  <!-- Chat Content -->
+  <div class="chat-content">
+    <div class="chat-header">
+      <button class="back-button" onclick="history.back()">←</button>
+      <span id="selectedUserName" th:text="${chatPartnerName}">채팅 상대</span>
+    </div>
+    <div class="chat-history">
+      <ul id="messageList">
+        <li th:each="msg : ${messages}"
+            th:classappend="${msg.senderType.name()} == 'ADMIN' ? 'admin-message' : 'user-message'">
+          <span class="sender-name" th:if="${msg.senderType.name()} != 'ADMIN'" th:text="${chatPartnerName}">상대방</span>
+          <div class="chat-bubble" th:if="${msg.messageType.name()} == 'TEXT'" th:text="${msg.messageContext}">메시지</div>
+          <div class="chat-bubble" th:if="${msg.messageType.name()} == 'IMAGE'">
+            <img th:src="${msg.messageContext}" style="max-width: 100%;">
+          </div>
+          <div class="chat-time" th:text="${#temporals.format(msg.createdAt, 'HH:mm')}">12:30</div>
+        </li>
+      </ul>
+    </div>
+    <div class="chat-input-area">
+      <button type="button" class="btn btn-secondary upload-btn" onclick="document.getElementById('imageInput').click()">＋</button>
+      <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
+      <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="uploadImage(this)">
+      <button type="button" id="sendBtn" class="btn btn-dark send-btn">전송</button>
+      <input type="hidden" id="chatRoomId" th:value="${roomId}">
+      <input type="hidden" id="lastMessageId" th:value="${lastMessageId}">
     </div>
   </div>
+</div>
+</div>
 </main>
 
 <!-- Scripts -->
@@ -398,7 +400,6 @@
 
   function formatTime(isoString) {
     const date = new Date(isoString);
-    date.setHours(date.getHours() + 9);
     const options = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Seoul' };
     return date.toLocaleTimeString('ko-KR', options);
   }
@@ -413,5 +414,6 @@
     scrollToBottom();
   });
 </script>
+</main>
 </body>
 </html>
