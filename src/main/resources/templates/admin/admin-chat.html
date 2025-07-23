@@ -331,7 +331,7 @@
   }
 
   function connectWebSocket(roomId) {
-    chatWebSocket = new WebSocket("ws://" + window.location.host + "/ws/chat");
+    chatWebSocket = new WebSocket("wss://" + window.location.host + "/wss/chat");
     chatWebSocket.onopen = () => console.log(" WebSocket 연결됨");
     chatWebSocket.onmessage = (event) => {
       const msg = JSON.parse(event.data);

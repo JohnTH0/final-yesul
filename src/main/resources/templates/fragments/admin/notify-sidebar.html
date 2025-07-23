@@ -96,7 +96,7 @@
               attachCloseEvent();
           });
 
-        const socket = new WebSocket(`ws://${location.host}/ws/notification`);
+        const socket = new WebSocket(`wss://${location.host}/wss/notification`);
         socket.onopen = () => console.log(" 알림 WebSocket 연결됨");
         socket.onmessage = (event) => {
             const msg = JSON.parse(event.data);
