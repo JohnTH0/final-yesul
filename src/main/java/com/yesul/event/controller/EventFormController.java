@@ -41,10 +41,10 @@ public class EventFormController {
     private final NoticeService noticeService;
     private final RestTemplate restTemplate;
 
-    @Value("${google.client-id}")
+    @Value("${GOOGLE_CLIENT_ID}")
     private String clientId;
 
-    @Value("${google.client-secret}")
+    @Value("${GOOGLE_CLIENT_SECRET}")
     private String clientSecret;
 
     @Value("${google.redirect-uri}")
