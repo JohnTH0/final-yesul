@@ -1,5 +1,6 @@
 package com.yesul.chatroom.model.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yesul.chatroom.model.entity.enums.MessageType;
 import com.yesul.chatroom.model.entity.enums.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,5 +25,6 @@ public class MessageResponseDto {
     private String messageContext;
     private MessageType messageType;
     private Long chatRoomId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 }

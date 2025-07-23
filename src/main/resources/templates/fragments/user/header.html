@@ -314,7 +314,7 @@
         <!-- 상단 타이틀 -->
         <div class="gi-cart-top">
           <div class="gi-cart-title">
-            <a href="/users/chatroom?adminId=2" class="cart_title" style="text-decoration: none; color: inherit;">
+            <a href="/users/chatroom?adminId=2" class="inquiry-button" style="text-decoration: none; color: inherit;">
               문의하기
             </a>
             <span id="notify-count" class="main-label-note-new"></span>
@@ -387,6 +387,26 @@
       }
       .detail div {
         flex: 1;
+      }
+
+      .inquiry-button {
+        display: inline-block;
+        background-color: #d8d3c3; /* 연한 베이지색 */
+        color: #2e2e2e; /* 다크그레이 텍스트 */
+        padding: 10px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 10px;
+        text-decoration: none;
+        border: 1px solid #c2beb0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        transition: all 0.2s ease-in-out;
+      }
+
+      .inquiry-button:hover {
+        background-color: #cfc9b7; /* hover 시 살짝 어두운 베이지 */
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
       }
     </style>
 
