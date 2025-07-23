@@ -397,9 +397,8 @@
 
   function formatTime(isoString) {
     const date = new Date(isoString);
-    const hh = String(date.getHours()).padStart(2,'0');
-    const mm = String(date.getMinutes()).padStart(2,'0');
-    return `${hh}:${mm}`;
+    const options = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Seoul' };
+    return date.toLocaleTimeString('ko-KR', options);
   }
 
   window.addEventListener("DOMContentLoaded", () => {
