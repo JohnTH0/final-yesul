@@ -53,7 +53,7 @@
       <sub>1:1 문의 채팅<br/>알림 기능<br/>프로젝트 세팅 및 설계</sub>
     </td>
    <td align="center" width="20%">
- <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/b834c120-79f4-43c6-91cf-d4bc132fdfad" /><br/>
+ <img width="300" height="400" alt="Image"  src="https://github.com/user-attachments/assets/32d49a76-a616-4c3d-92ad-0c8951c4c757"/><br/>
   <strong>대태호</strong><br/>
   Full Stack Developer<br/>
   <a href="https://github.com/JohnTH0">📧 GitHub</a><br/>
