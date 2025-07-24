@@ -18,6 +18,7 @@
 ![QueryDSL](https://img.shields.io/badge/QueryDSL-00B4B3?style=flat&logo=apache&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=swagger&logoColor=black)
 
 
 ### ☁️ Infra  
