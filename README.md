@@ -60,7 +60,7 @@
   <sub>회원가입 및 로그인<br/>소셜로그인 및 메일 발송<br/>erd 설계</sub>
 </td>
     <td align="center" width="20%">
-      <img src="<img width="389" height="507" alt="Image" src="https://github.com/user-attachments/assets/0030deef-fca0-4aed-92d7-a58075cf2b3f" />
+      <img src="<img width="389" height="507" alt="Image" src="https://github.com/user-attachments/assets/b834c120-79f4-43c6-91cf-d4bc132fdfad" />
 " width="80"><br/>
       <strong>이가영</strong><br/>
       Full Stack Developer<br/>
@@ -68,7 +68,7 @@
       <sub>어드민 페이지 개발<br/>실시간 모니터링 기능<br/>OTP 보안 인증</sub>
     </td>
     <td align="center" width="20%">
-      <img src="./images/inyoung" width="80"><br/>
+     <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/e6456f1a-ec99-4080-a568-7518ee568daa" /><br/>
       <strong>정인용</strong><br/>
       Full Stack Developer<br/>
       <a href="https://github.com/iysh321">📧 GitHub</a><br/>
