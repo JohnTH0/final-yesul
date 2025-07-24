@@ -48,7 +48,7 @@
     <td align="center" width="20%">
        <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/245fc11a-a37b-4962-9b91-613b2d93d6cd"/><br/>
       <strong>이승주</strong><br/>
-      Team Lead<br/>
+      Team Lead, Full Stack Developer<br/>
       <a href="https://github.com/Leeseung-joo">📧 GitHub</a><br/>
       <sub>1:1 문의 채팅<br/>알림 기능<br/>프로젝트 세팅 및 설계</sub>
     </td>
@@ -76,7 +76,7 @@
     <td align="center" width="20%">
       <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/ce046ad0-9ec1-4bc6-9d1f-88b0c0642714"  /><br/>
       <strong>황정연</strong><br/>
-      Planner & QA<br/>
+       Full Stack Developer & QA<br/>
       <a href="https://github.com/ibe6">📧 GitHub</a><br/>
       <sub>커뮤니티 기능<br/>댓글 및 좋아요<br/>포인트 기능</sub>
     </td>
