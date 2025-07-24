@@ -140,16 +140,17 @@
   - 진행상황과 에러를 빠르게 공유하고 인지함
 <table>
   <tr>
-    <td align="center" width="50%">
-      <strong>🕘 오전 데일리 스크럼 및 오후 리뷰</strong><br/>
+    <td align="center" width="50%" style="vertical-align:top">
+      <h4>🗓️ 오전 데일리 스크럼 및 오후 리뷰</h4>
       <img src="https://github.com/user-attachments/assets/b3dad9e4-0335-48d3-9d04-ceb305dda623" width="90%">
     </td>
-    <td align="center" width="50%">
-      <strong>💬 데일리 스크럼 예시</strong><br/>
+    <td align="center" width="50%" style="vertical-align:top">
+      <h4>💬 데일리 스크럼 예시</h4>
       <img src="https://github.com/user-attachments/assets/6e23b692-b759-4c1c-9e31-73bdb881ccef" width="90%">
     </td>
   </tr>
 </table>
+
 
 
 ## 🔀 브랜치 전략 및 코드 컨벤션
