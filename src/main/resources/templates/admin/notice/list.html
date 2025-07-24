@@ -20,31 +20,26 @@
                 </div>
             </div>
 
-            <div style="text-align: right;" class="mb-3">
-                <a th:href="@{/admin/notice/regist}" class="btn btn-success pe-2">등록</a>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-hover text-center" style="table-layout: fixed; width: 100%; background: #fff; border-top-left-radius: 15px; border-top-right-radius: 15px; overflow: hidden;">
+            <div class="table-responsive mx-auto" style="width: 90%;">
+                <div style="text-align: right; padding-bottom: 16px;">
+                    <a th:href="@{/admin/notice/regist}" class="btn btn-success">등록</a>
+                </div>
+                <table class="table table-hover text-center mx-auto" style="width: 100%; background: #fff; border-top-left-radius: 15px; border-top-right-radius: 15px; overflow: hidden;">
                     <thead class="table-secondary">
                     <tr>
                         <th style="width: 10%;">번호</th>
-                        <th style="width: 20%;">제목</th>
-                        <th style="width: 40%;">내용</th>
-                        <th style="width: 15%;">작성일</th>
-                        <th style="width: 15%;">첨부파일</th>
+                        <th style="width: 50%;">제목</th>
+                        <th style="width: 20%;">작성일</th>
+                        <th style="width: 10%;">첨부파일</th>
+                        <th style="width: 10%;">삭제</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="notice, iterStat : ${noticeListPageable.getContent()}"
                         th:onclick="|location.href='@{/admin/notice/{id}(id=${notice.id})}'|"
                         style="cursor: pointer;">
-
                         <td th:text="${iterStat.count + 10 * (noticeListPageable.number)}"></td>
                         <td class="text-center text-dark text-decoration-none" th:text="${notice.title}"></td>
-                        <td style="max-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                            th:utext="${#strings.abbreviate(notice.content, 100)}"></td>
-
                         <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
                         <td>
                             <a th:if="${notice.imageUrl != null && !notice.imageUrl.isEmpty()}"
@@ -65,6 +60,7 @@
                     </tbody>
                 </table>
             </div>
+
 
             <div class="row justify-content-between align-items-center bottom-information mt-auto px-4 py-2 border-top">
                 <div class="row justify-content-between bottom-information">

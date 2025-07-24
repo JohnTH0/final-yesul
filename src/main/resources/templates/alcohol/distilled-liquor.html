@@ -206,15 +206,15 @@
           <span th:text="'총 ' + ${alcohols.totalElements} + '건 중 ' + (${alcohols.number} + 1) + '페이지'">총 0건</span>
           <ul class="gi-pro-pagination-inner">
             <li th:if="${alcohols.hasPrevious()}">
-              <a th:href="@{/alcohols/unrefined-rice-wine(page=${alcohols.number - 1})}"> < </a>
+              <a th:href="@{/alcohols/distilled-liquor(page=${alcohols.number - 1})}"> < </a>
             </li>
             <li th:each="i : ${#numbers.sequence(0, alcohols.totalPages - 1)}">
-              <a th:href="@{/alcohols/unrefined-rice-wine(page=${i})}"
+              <a th:href="@{/alcohols/distilled-liquor(page=${i})}"
                  th:classappend="${i == alcohols.number} ? 'active' : ''"
                  th:text="${i + 1}">1</a>
             </li>
             <li th:if="${alcohols.hasNext()}">
-              <a th:href="@{/alcohols/unrefined-rice-wine(page=${alcohols.number + 1})}"> > </a>
+              <a th:href="@{/alcohols/distilled-liquor(page=${alcohols.number + 1})}"> > </a>
             </li>
           </ul>
         </div>
@@ -242,9 +242,6 @@
 "></div>
 </section>
 <!-- Alcohol List Section End -->
-
-<!-- 공통 feature -->
-<div th:replace="~{fragments/user/feature :: feature}"></div>
 
 <!-- 공통 푸터 -->
 <div th:replace="~{fragments/user/footer :: footer}"></div>

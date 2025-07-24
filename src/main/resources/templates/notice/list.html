@@ -242,7 +242,7 @@
   타입
 </span>
         <span class="notice-title" th:text="${notice.title}">제목</span>
-        <span class="notice-date" th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">날짜</span>
+        <span class="notice-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">날짜</span>
       </a>
     </li>
   </ul>

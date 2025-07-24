@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="fragments/admin/head :: adminHead"></head>
+<style>
+    .notice-content {
+        font-size: clamp(16px, 1.1vw, 20px); /* 반응형 글자 크기 */
+        line-height: 1.6; /* 줄 간격 조정 */
+        color: #000;
+        padding: 1rem;
+    }
+
+    .notice-content p {
+        margin: 0.5rem 0; /* 문단 간 여백 줄이기 */
+    }
+
+    .notice-content * {
+        font-size: inherit !important;
+        color: inherit !important;
+    }
+</style>
+
 <body>
 <main class="wrapper sb-default ecom">
     <div th:replace="fragments/admin/header :: adminHeader"></div>
@@ -10,7 +28,7 @@
     <div class="gi-main-content container-fluid mt-4">
         <div class="container-fluid">
             <div class="gi-page-title gi-page-title-2">
-                <div class="gi-breadcrumb">
+                <div class="gi-breadcrumb mb-4">
                     <h5>Notice</h5>
                     <ul>
                         <li>공지사항</li>
@@ -18,30 +36,36 @@
                     </ul>
                 </div>
             </div>
-            <div class="mb-4">
-                <h2 th:text="${notice.title}">공지 제목</h2>
-                <p class="text-muted" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
-            </div>
-            <div th:if="${notice.imageUrl != null and !#strings.isEmpty(notice.imageUrl)}">
-                <img th:src="${notice.imageUrl}" class="img-fluid mb-4" alt="공지 이미지"/>
-            </div>
-            <div th:utext="${notice.content}" class="border p-4 rounded bg-light"></div>
-            <div th:if="${notice.formUrl != null}" class="mt-4">
-                <span><strong>신청폼 링크 :</strong> </span>
-                <a th:href="${notice.formUrl}"
-                   th:text="${notice.formUrl}"
-                   class="text-primary text-decoration-underline"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                </a>
-            </div>
-            <div class="mt-4 pb-4 text-end">
-                <a th:href="@{/admin/notice}" class="btn btn-primary me-2">목록으로</a>
-                <a th:href="@{'/admin/notice/delete/' + ${notice.id}}" class="btn btn-danger">삭제하기</a>
+            <div class="border p-4 rounded bg-white mx-auto" style="width: 90%;">
+                <div class="mb-4">
+                    <h2 th:text="${notice.title}">공지 제목</h2>
+                    <p class="text-muted" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
+                </div>
+                <div style="overflow: visible;">
+                    <div th:if="${notice.imageUrl != null and !#strings.isEmpty(notice.imageUrl)}">
+                        <img th:src="${notice.imageUrl}" class="img-fluid mb-5 mx-auto d-block"
+                             style="width: 60%; height: auto; display: block;"  alt="공지 이미지"/>
+                    </div>
+                    <div style="padding: 10px">
+                        <div th:utext="${notice.content}" class="fs-5 notice-content"></div>
+                        <div th:if="${notice.formUrl != null}" class="mt-4">
+                            <span><strong>신청폼 링크 :</strong> </span>
+                            <a th:href="${notice.formUrl}"
+                               th:text="${notice.formUrl}"
+                               class="text-primary text-decoration-underline"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
+    <div class="mt-4 pb-4 text-end">
+        <a th:href="@{/admin/notice}" class="btn btn-primary me-2">목록으로</a>
+        <a th:href="@{'/admin/notice/delete/' + ${notice.id}}" class="btn btn-danger">삭제하기</a>
+    </div>
     <div th:replace="fragments/admin/footer :: adminFooter"></div>
     <div th:replace="fragments/admin/script :: adminScripts"></div>
 

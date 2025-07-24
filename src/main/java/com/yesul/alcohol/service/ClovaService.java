@@ -49,6 +49,7 @@ public class ClovaService {
 
     public String callClovaAPI2(ClovaAskRequestDto askDto) {
         String url = "https://clovastudio.stream.ntruss.com/testapp/v3/chat-completions/HCX-005";
+        String ncpApiKey = System.getenv("NCP_API_KEY");
 
         // 메시지 구성
         List<Clova2RequestDto.Message> messages = List.of(
@@ -77,7 +78,7 @@ public class ClovaService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer nv-ae4562f3d5a54905a8ae4563a0ad9ce7eYf5");
+        headers.set("Authorization", "Bearer " + ncpApiKey);
         headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "6a453e2468bf4f3db6095e617409809d");
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 

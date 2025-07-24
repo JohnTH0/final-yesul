@@ -3,6 +3,9 @@
 <head>
     <th:block th:insert="fragments/admin/head :: adminHead"></th:block>
     <style>
+        * {
+            outline: none;
+        }
         .gi-chatapp, .gi-card.chatapp-card {
             height: 100%;
             min-height: 420px;
@@ -159,13 +162,6 @@
                     <div class="gi-card revenue-overview" style="height: 100%;">
                         <div class="gi-card-header header-575">
                             <h4 class="gi-card-title">커뮤니티 이용현황</h4>
-                            <div class="header-tools">
-                                <a href="javascript:void(0)" class="m-r-10 gi-full-card" title="Full Screen"><i
-                                        class="ri-fullscreen-line"></i></a>
-                                <div class="gi-date-range date">
-                                    <span></span>
-                                </div>
-                            </div>
                         </div>
                         <div class="gi-card-content">
                             <div class="gi-chart-content">
@@ -303,59 +299,65 @@
 </main>
 </body>
 </html>
-<script>
-    var options = {
-        chart: {
-            height: 450,
-            type: 'line',
-            stacked: false
-        },
-        stroke: {
-            width: [2, 2, 3, 0],
-            curve: 'smooth',
-            dashArray: [0, 0, 5, 0]
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: '10%'
-            }
-        },
-        series: [
-            {
-                name: '자유게시판',
-                type: 'line',
-                data: [23, 11, 22, 27, 13, 35, 25]
-            },
-            {
-                name: '레시피게시판',
-                type: 'line',
-                data: [30, 20, 25, 45, 38, 18, 28]
-            },
-            {
-                name: '정보게시판',
-                type: 'line',
-                data: [13, 15, 20, 30, 40, 15, 25]
-            },
-            {
-                name: '방문자 수',
-                type: 'column',
-                data: [23, 11, 22, 27, 13, 35, 25]
-            }
-        ],
-        colors: ['#6366f1', '#10b981', '#ec4899','#f59e0b'],
-        xaxis: {
-            categories: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-        },
-        yaxis: {
-            title: {
-                text: 'Count'
-            }
-        },
-        legend: {
-            position: 'bottom'
-        }
-    };
 
-    var chart = new ApexCharts(document.querySelector("#allmixChart"), options);
-    chart.render();
+<script th:inline="javascript">
+    let chartData = /*[[${chartData}]]*/ {};
+    console.log("chartData: ", chartData);
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var options = {
+            chart: {
+                height: 450,
+                type: 'line',
+                stacked: false
+            },
+            stroke: {
+                width: [2, 2, 3],
+                curve: 'smooth',
+                dashArray: [0, 0, 5]
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '10%'
+                }
+            },
+            series: [
+                {
+                    name: '자유게시판',
+                    type: 'line',
+                    data: chartData.freeBoard
+                },
+                {
+                    name: '레시피게시판',
+                    type: 'line',
+                    data: chartData.recipeBoard
+                },
+                {
+                    name: '정보게시판',
+                    type: 'line',
+                    data: chartData.infoBoard
+                }
+            ],
+            colors: ['#6366f1', '#10b981', '#ec4899'],
+            xaxis: {
+                categories: chartData.categories
+            },
+            yaxis: {
+                title: {
+                    text: 'Count'
+                }
+            },
+            legend: {
+                position: 'bottom'
+            }
+        };
+
+        const chartTarget = document.querySelector("#allmixChart");
+        if (chartTarget) {
+            var chart = new ApexCharts(chartTarget, options);
+            chart.render();
+        } else {
+            console.error("#allmixChart 요소를 찾을 수 없습니다.");
+        }
+    });
 </script>

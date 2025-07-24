@@ -118,12 +118,10 @@
 </div>
 
 <!-- 푸터 -->
-<div th:replace="~{layout/user-default :: feature}"></div>
 <div th:replace="~{layout/user-default :: footer}"></div>
 <div th:replace="~{layout/user-default :: user-js}"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 이미지 위 하트(좋아요) 버튼
         document.querySelectorAll('.oh-card-img-wrap > .oh-like-btn').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();

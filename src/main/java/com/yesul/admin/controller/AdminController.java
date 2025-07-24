@@ -1,5 +1,7 @@
 package com.yesul.admin.controller;
 
+import com.yesul.admin.chart.model.dto.DashboardChartDto;
+import com.yesul.admin.chart.service.ChartService;
 import com.yesul.admin.model.dto.AdminLoginLogDto;
 import com.yesul.admin.model.dto.auth.LoginAdmin;
 import com.yesul.admin.service.AdminService;
@@ -20,6 +22,7 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+    private final ChartService chartService;
 
     @GetMapping( "/dashboard")
     public String dashboardPage(Model model,@AuthenticationPrincipal LoginAdmin loginAdmin) {
@@ -28,6 +31,8 @@ public class AdminController {
         int totalUser = adminService.getUserCount();
         int totalAlcohol = adminService.getAlcoholCount();
 
+        DashboardChartDto chartData = chartService.getChartData();
+
         List<PostResponseDto> popularPosts = adminService.getPopularPosts();
         List<AlcoholDto> popularAlcohol = adminService.popularAlcohol();
 
@@ -35,14 +40,18 @@ public class AdminController {
         model.addAttribute("todayVisitor", todayVisitor);
         model.addAttribute("realTimeUser", realTimeUser);
 
-        // 인기순위
-        model.addAttribute("popularPosts", popularPosts);
-        model.addAttribute("popularAlcohol", popularAlcohol);
-
         // 전체 주류 수, 전체 회원 수
         model.addAttribute("totalUser", totalUser);
         model.addAttribute("totalAlcohol", totalAlcohol);
 
+        // 차트
+        model.addAttribute("chartData", chartData);
+
+        // 인기순위
+        model.addAttribute("popularPosts", popularPosts);
+        model.addAttribute("popularAlcohol", popularAlcohol);
+
+        // 관리자 로그인이력
         model.addAttribute("receiverId", loginAdmin.getId());
 
         return "admin/dashboard";
