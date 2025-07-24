@@ -1,6 +1,8 @@
 # 🍶 Yesul - 우리의 전통주를 소개하고 추천하는 플랫폼
 
-> AI 기반 맞춤형 추천을 통해 전통주를 접할 수 있는 플랫폼
+<span style="background-color: #fdf2e9; color: #d35400; font-weight: bold; padding: 4px 8px; border-radius: 6px;">
+  AI 기반 맞춤형 추천을 통해 전통주를 접할 수 있는 플랫폼
+</span>
 
 ## 📋 서비스 소개
 
