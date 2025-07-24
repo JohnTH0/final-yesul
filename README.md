@@ -138,10 +138,19 @@
 - **Agile development**
   - 매일 **Daily Scrum**과 **Daily Review**를 통해 주기적으로 병합하고,
   - 진행상황과 에러를 빠르게 공유하고 인지함
-** 오전 데일리 스크럼 및 오후 리뷰 **
-![스크린샷](https://github.com/user-attachments/assets/b3dad9e4-0335-48d3-9d04-ceb305dda623)
-** 데일리 스크럼 예시 **
-![스크린샷](https://github.com/user-attachments/assets/6e23b692-b759-4c1c-9e31-73bdb881ccef)
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <strong>🕘 오전 데일리 스크럼 및 오후 리뷰</strong><br/>
+      <img src="https://github.com/user-attachments/assets/b3dad9e4-0335-48d3-9d04-ceb305dda623" width="90%">
+    </td>
+    <td align="center" width="50%">
+      <strong>💬 데일리 스크럼 예시</strong><br/>
+      <img src="https://github.com/user-attachments/assets/6e23b692-b759-4c1c-9e31-73bdb881ccef" width="90%">
+    </td>
+  </tr>
+</table>
+
 
 ## 🔀 브랜치 전략 및 코드 컨벤션
 
