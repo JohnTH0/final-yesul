@@ -42,6 +42,26 @@ public class AlcoholController {
         return "ai/ai-chat";
     }
 
+    @Operation(summary = "전체")
+    @GetMapping("/all")
+    public String all(
+            AlcoholSearchDto condition,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @AuthenticationPrincipal PrincipalDetails principal,
+            Model model
+    ) {
+        Long userId = null;
+        if (principal != null && principal.getUser() != null) {
+            userId = principal.getUser().getId();
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AlcoholDetailDto> alcohols = alcoholService.searchAlcoholsByUserId(condition, pageable, userId);
+        model.addAttribute("alcohols", alcohols);
+        return "alcohol/all";
+    }
+
     @Operation(summary = "탁주 페이지")
     @GetMapping("/unrefined-rice-wine")
     public String unrefinedRiceWine(

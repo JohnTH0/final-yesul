@@ -88,9 +88,10 @@ public class AlcoholService {
         return alcoholRepository.findAlcoholList(pageable);
     }
 
-    public void registAlcohol(AlcoholDetailDto alcohol) {
+    public void registAlcohol(AlcoholDetailDto dto) {
         try{
-            alcoholRepository.save(modelMapper.map(alcohol, Alcohol.class));
+            Alcohol alcohol = modelMapper.map(dto, Alcohol.class);
+            alcoholRepository.save(alcohol);
         } catch (Exception e) {
             throw new RegistrationFailedException("주류 등록에 실패했습니다.", e);
         }

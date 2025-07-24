@@ -139,10 +139,9 @@
 <div th:replace="~{fragments/user/header :: header}"></div>
 
 <!-- Category section -->
+<!-- 카테고리 섹션 가져오기 -->
 <div th:replace="~{alcohol/category :: category}"></div>
 <!-- Category section End -->
-
-
 
 <!-- Alcohol List Section Start -->
 <section class="alcohol-list-section padding-tb-40">
@@ -150,7 +149,7 @@
     <div class="row">
       <div class="col-12">
         <h3 class="mb-4">
-          탁주 목록
+          전체 목록
           <span class="items text-muted" style="font-size: 1rem;" th:text="'(' + ${alcohols.totalElements} + '건)'">(0건)</span>
         </h3>
         <div class="row">
