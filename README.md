@@ -143,38 +143,25 @@
 ** 데일리 스크럼 예시 **
 ![스크린샷](https://github.com/user-attachments/assets/e503d80b-b4f0-4831-a9eb-8302fbfc256e)
 
-## 브랜치 전략 및 코드 컨벤션
 ## 🔀 브랜치 전략 및 코드 컨벤션
 
 ### 📌 Branch & Issue 네이밍 규칙
 
-- **기능 추가 (Feature)**  
-  `feature/{이슈번호}-{간단한설명}`  
-  예: `feature/1-add-login-function`
-
-- **버그 수정 (Bugfix)**  
-  `fix/{이슈번호}-{간단한설명}`  
-  예: `fix/46-correct-typo`
-
-- **리팩토링 (Refactor)**  
-  `refactor/{이슈번호}-{간단한설명}`  
-  예: `refactor/789-update-naming-convention`
-
-- **문서 수정 (Docs)**  
-  `docs/{이슈번호}-{간단한설명}`  
-  예: `docs/125-update-readme`
-
-- **기타 (Misc)**  
-  `misc/{이슈번호}-{간단한설명}`  
-  예: `misc/345-cleanup-code`
+| 타입 (Type) | 설명             | 브랜치 예시                             |
+|-------------|------------------|-----------------------------------------|
+| `feature`   | 새로운 기능 추가 | `feature/1-add-login-function`          |
+| `fix`       | 버그 수정        | `fix/46-correct-typo`                   |
+| `refactor`  | 코드 리팩토링    | `refactor/789-update-naming-convention`|
+| `docs`      | 문서 수정        | `docs/125-update-readme`               |
+| `misc`      | 기타 변경 사항   | `misc/345-cleanup-code`                |
 
 #### ✅ 이슈 작성 기준
-- 하루에 할 수 있는 정도로 쪼개서 작성  
-  예: 로그인 UI 구현, 커뮤니티 글쓰기 기능, 오류 메시지 개선 등
+- 하루 단위로 작업 가능한 수준으로 작성  
+  예: 로그인 UI 구현, 커뮤니티 작성 기능 추가, 오류 메시지 개선 등
 
 #### ✅ 이슈 상태에 따른 PR 전략
-- 이슈 세부 내용이 정리된 경우 → PR 생성 (`dev` 브랜치로)
-- 아직 구체화되지 않은 경우 → 작업 브랜치에서 먼저 진행하고 나중에 PR 생성
+- 세부내용이 정리된 이슈 → 브랜치 생성 후 PR  
+- 미완성 이슈 → 브랜치에서 작업 후 후속 이슈/PR 처리
 
 ---
 
