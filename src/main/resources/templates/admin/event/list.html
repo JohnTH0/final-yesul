@@ -25,36 +25,22 @@
                     <tr>
                         <th style="width: 10%;">번호</th>
                         <th style="width: 20%;">이벤트 제목</th>
-                        <th style="width: 40%;">내용</th>
                         <th style="width: 15%;">작성일</th>
-                        <th style="width: 15%;">첨부파일</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="notice, iterStat : ${noticeListPageable.getContent()}"
-                        th:onclick="|location.href='@{/admin/event/{id}(id=${notice.id})}'|"
+                    <tr th:each="event, iterStat : ${eventListPageable.getContent()}"
+                        th:onclick="|location.href='@{/admin/event/{id}(id=${event.id})}'|"
                         style="cursor: pointer;">
 
-                        <td th:text="${iterStat.count + 10 * (noticeListPageable.number)}"></td>
-                        <td class="text-center text-dark text-decoration-none" th:text="${notice.title}"></td>
-                        <td style="max-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                            th:utext="${#strings.abbreviate(notice.content, 100)}"></td>
+                        <td th:text="${iterStat.count + 10 * (eventListPageable.number)}"></td>
+                        <td class="text-center text-dark text-decoration-none" th:text="${event.title}"></td>
 
-                        <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
-                        <td>
-                            <a th:if="${notice.imageUrl != null && !notice.imageUrl.isEmpty()}"
-                               th:href="${notice.imageUrl}" target="_blank">
-                                <span class="remix-icons ri-attachment-line"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a th:href="@{/admin/notice/delete/{id}(id=${notice.id})}" target="_blank">
-                                <span class="remix-icons ri-delete-bin-5-line"></span>
-                            </a>
-                        </td>
+                        <td th:text="${#temporals.format(event.createdAt, 'yyyy-MM-dd')}"></td>
+
                     </tr>
 
-                    <tr th:if="${noticeListPageable == null or #lists.isEmpty(noticeListPageable)}">
+                    <tr th:if="${eventListPageable == null or #lists.isEmpty(eventListPageable)}">
                         <td colspan="5" class="text-center text-muted">등록된 게시글이 없습니다.</td>
                     </tr>
                     </tbody>
@@ -64,17 +50,17 @@
             <div class="row justify-content-between align-items-center bottom-information mt-auto px-4 py-2 border-top">
                 <div class="row justify-content-between bottom-information">
                     <div class="col-auto dataTables_info" id="product_list_info" role="status" aria-live="polite">
-                     총 [[${noticeListPageable.totalElements}]]건 </div>
+                     총 [[${eventListPageable.totalElements}]]건 </div>
 
-                    <div class="col-auto dataTables_paginate paging_simple_numbers" id="product_list_paginate" th:if="${noticeListPageable.totalPages > 1}">
+                    <div class="col-auto dataTables_paginate paging_simple_numbers" id="product_list_paginate" th:if="${eventListPageable.totalPages > 1}">
                         <ul class="pagination justify-content-end">
-                            <li class="paginate_button page-item previous " th:classappend="${noticeListPageable.first} ? 'disabled'" id="product_list_previous">
-                                <a th:href="@{|/admin/notice?page=${noticeListPageable.number - 1}|}" aria-controls="product_list" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-                            <li class="paginate_button page-item " th:each="i : ${#numbers.sequence(0, noticeListPageable.totalPages - 1)}"
-                                th:classappend="${noticeListPageable.number == i} ? 'active'">
-                                <a th:href="@{|/admin/notice?page=${i}|}" aria-controls="product_list" data-dt-idx="2" tabindex="0" class="page-link" th:text="${i + 1}"></a></li>
-                            <li class="paginate_button page-item next" id="product_list_next" th:classappend="${noticeListPageable.last} ? 'disabled'">
-                            <a th:href="@{|/admin/notice?page=${noticeListPageable.number + 1}|}" aria-controls="product_list" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li>
+                            <li class="paginate_button page-item previous " th:classappend="${eventListPageable.first} ? 'disabled'" id="product_list_previous">
+                                <a th:href="@{|/admin/event?page=${eventListPageable.number - 1}|}" aria-controls="product_list" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                            <li class="paginate_button page-item " th:each="i : ${#numbers.sequence(0, eventListPageable.totalPages - 1)}"
+                                th:classappend="${eventListPageable.number == i} ? 'active'">
+                                <a th:href="@{|/admin/event?page=${i}|}" aria-controls="product_list" data-dt-idx="2" tabindex="0" class="page-link" th:text="${i + 1}"></a></li>
+                            <li class="paginate_button page-item next" id="product_list_next" th:classappend="${eventListPageable.last} ? 'disabled'">
+                            <a th:href="@{|/admin/event?page=${eventListPageable.number + 1}|}" aria-controls="product_list" data-dt-idx="3" tabindex="0" class="page-link">Next</a></li>
                         </ul>
                     </div>
                 </div>

@@ -1,0 +1,86 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/head :: adminHead"></head>
+<body>
+<main class="wrapper sb-default">
+    <div th:replace="fragments/admin/header :: adminHeader"></div>
+    <div th:replace="fragments/admin/sidebar :: adminSidebar"></div>
+    <div th:replace="fragments/admin/notify-sidebar :: adminNotifySidebar"></div>
+
+    <!-- main content -->
+    <div class="gi-main-content">
+        <div class="container-fluid">
+            <!-- Page title & breadcrumb -->
+            <div class="gi-page-title gi-page-title-2">
+                <div class="gi-breadcrumb">
+                    <h5>이벤트 신청자 목록</h5>
+                    <ul>
+                        <li>이벤트 관리</li>
+                        <li>신청자 목록</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="gi-card card-default product-list">
+                        <div class="gi-card-content">
+                            <!--                            <div>신청폼 보러가기</div>-->
+                            <div class="table-responsive">
+                                <!--                                <form th:action="@{/admin/event/approve}" method="post">-->
+                                <table id="product_list" class="table" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center;">이름</th>
+                                        <th style="text-align: center;">아이디</th>
+                                        <th style="text-align: center;">휴대폰</th>
+                                        <th style="text-align: center;">신청일</th>
+                                        <!--                                        <th style="text-align: center;">포인트</th>-->
+<!--                                        <th style="text-align: center;">상태</th>-->
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="event : ${eventListPageable}">
+<!--                                        <td style="text-align: center;">-->
+<!--                                            <input type="checkbox" name="emails"-->
+<!--                                                   th:disabled="${event.status != 'NEW'}"/>-->
+<!--                                            &lt;!&ndash;th:value="${event.userEmail}"&ndash;&gt;-->
+<!--                                        </td>-->
+
+<!--                                        <td style="text-align: center;">-->
+<!--                                            <th:block th:switch="${event.status}">-->
+<!--                                                <th:block th:case="'NEW'">-->
+<!--                                                    <span style="color: blue; font-weight: bold;" th:text="'NEW'"></span>-->
+<!--                                                </th:block>-->
+<!--                                                <th:block th:case="'REJECTED'">-->
+<!--                                                    <span style="color: red; font-weight: bold;" th:text="'신청불가'"></span>-->
+<!--                                                </th:block>-->
+<!--                                                <th:block th:case="'ACCEPTED'">-->
+<!--                                                    <span style="color: green;" th:text="'신청완료'"></span>-->
+<!--                                                </th:block>-->
+<!--                                            </th:block>-->
+<!--                                        </td>-->
+                                        <td style="text-align: center;" th:text="${event.userName}"></td>
+                                        <td style="text-align: center;" th:text="${event.userEmail}"></td>
+                                        <td style="text-align: center;" th:text="${event.phone}"></td>
+                                        <td style="text-align: center;"
+                                            th:text="${#temporals.format(event.createdAt, 'yyyy-MM-dd')}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <!--                                    <button type="submit">선택 항목 승인하기</button>-->
+                                <!--                                </form>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/admin/footer :: adminFooter"></div>
+    <div th:replace="fragments/admin/script :: adminScripts"></div>
+</main>
+</body>
+
+</html>

@@ -5,21 +5,29 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yesul.event.model.dto.EventListDto;
 import com.yesul.event.model.entity.EventList;
+import com.yesul.event.model.enums.EventStatus;
 import com.yesul.event.repository.EventListRepository;
 import com.yesul.exception.handler.EntityNotFoundException;
 import com.yesul.notice.model.dto.NoticeDto;
 import com.yesul.notice.model.entity.Notice;
 import com.yesul.notice.repository.NoticeRepository;
+import com.yesul.user.model.entity.User;
+import com.yesul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +35,7 @@ public class EventService {
 
     private final RestTemplate restTemplate;
     private final NoticeRepository noticeRepository;
+    private final UserRepository userRepository;
     private final EventListRepository eventListRepository;
     private final ModelMapper modelMapper;
 
@@ -130,4 +139,32 @@ public class EventService {
 
         eventListRepository.save(eventList);
     }
+
+    public Page<EventListDto> getEventListByFormId(Pageable pageable, Long id) {
+        Page<EventList> eventListPageable = eventListRepository.findByNoticeId(pageable, id);
+        return eventListPageable.map(event -> modelMapper.map(event, EventListDto.class));
+    }
+
+//    @Transactional
+//    public void approveUser(List<String> selectedEmails) {
+//        for (String email : selectedEmails) {
+//            Optional<User> user = userRepository.findByEmail(email);
+//
+//            if (user.isPresent()) {
+//                // user.getPoint()
+//                eventListDto.setStatus(EventStatus.ACCEPTED);
+//            } else {
+//                event.setStatus(EventStatus.REJECTED);
+//            }
+//
+//            // user가 신청한 이벤트 리스트 가져오기
+//            List<EventList> eventLists = eventListRepository.findByUserEmail(email);
+//
+//            for (EventList event : eventLists) {
+//                if (event.getStatus() == EventStatus.NEW) {
+//                    event.setStatus(EventStatus.ACCEPTED);
+//                }
+//            }
+//        }
+//    }
 }

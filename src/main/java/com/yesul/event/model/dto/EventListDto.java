@@ -4,6 +4,8 @@ import com.yesul.event.model.enums.EventStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -17,4 +19,5 @@ public class EventListDto {
     private String phone;
     private EventStatus status;
     private Long eventId;
+    private LocalDateTime createdAt;
 }

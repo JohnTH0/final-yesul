@@ -9,6 +9,7 @@ import lombok.*;
 @Entity
 @Table(name = "event_list")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder

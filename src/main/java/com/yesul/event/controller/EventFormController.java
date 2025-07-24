@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -30,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -121,7 +123,7 @@ public class EventFormController {
     @GetMapping
     public String eventPage(Pageable pageable, Model model) {
         Page<NoticeDto> noticeEventListPageable = noticeService.findNoticeEventList(pageable);
-        model.addAttribute("noticeListPageable", noticeEventListPageable);
+        model.addAttribute("eventListPageable", noticeEventListPageable);
         return "admin/event/list";
     }
 
@@ -136,14 +138,16 @@ public class EventFormController {
         String phone = null;
 
         for (QuestionRequestDto question : request.getResults()) {
-            String title = question.getTitle();
-            String response = question.getResponse().toString();
-            if (title.contains("성함")) {
-                userName = response;
-            } else if (title.contains("아이디")) {
-                userEmail = response;
-            } else if (title.contains("연락처")) {
-                phone = response;
+            if("TEXT".equalsIgnoreCase(question.getType())){
+                String title = question.getTitle();
+                String response = question.getResponse().toString();
+                if (title.contains("성함")) {
+                    userName = response;
+                } else if (title.contains("아이디")) {
+                    userEmail = response;
+                } else if (title.contains("연락처")) {
+                    phone = response;
+                }
             }
         }
 
@@ -161,4 +165,16 @@ public class EventFormController {
         return ResponseEntity.ok("데이터 수신 성공");
     }
 
+    @GetMapping("/{id}")
+    public String eventPage(@PathVariable("id") Long id, @PageableDefault(size = 10) Pageable pageable, Model model) {
+        Page<EventListDto> pageableEventList = eventService.getEventListByFormId(pageable, id);
+        model.addAttribute("eventListPageable", pageableEventList);
+        return "admin/event/event-application";
+    }
+
+//    @PostMapping("/approve")
+//    public String approveSelected(@RequestParam("emails") List<EventListDto> eventList) {
+//        eventService.approveUser(selectedEmails);
+//        return "redirect:/admin/event/event-application";
+//        }
 }
