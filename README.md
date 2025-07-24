@@ -76,7 +76,7 @@
     <td align="center" width="20%">
       <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/ce046ad0-9ec1-4bc6-9d1f-88b0c0642714"  /><br/>
       <strong>황정연</strong><br/>
-       Full Stack Developer & QA<br/>
+       Full Stack Developer<br/>
       <a href="https://github.com/ibe6">📧 GitHub</a><br/>
       <sub>커뮤니티 기능<br/>댓글 및 좋아요<br/>포인트 기능</sub>
     </td>
