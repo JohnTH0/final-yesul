@@ -129,3 +129,6 @@
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ-000000?style=flat&logo=intellijidea&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white)
 ![ERDCloud](https://img.shields.io/badge/ERDCloud-00C389?style=flat&logo=data&logoColor=white)
+
+### ☁️ 서버 아키텍처
+![스크린샷]("https://github.com/user-attachments/assets/1b5d25f8-88cf-4d5c-9be5-6fa52fb6f531" )
