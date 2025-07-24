@@ -60,7 +60,8 @@
       <sub>회원가입 및 로그인<br/>소셜로그인 및 메일 발송<br/>erd 설계</sub>
     </td>
     <td align="center" width="20%">
-      <img src="./images/gayoung.jpeg" width="80"><br/>
+      <img src="<img width="389" height="507" alt="Image" src="https://github.com/user-attachments/assets/0030deef-fca0-4aed-92d7-a58075cf2b3f" />
+" width="80"><br/>
       <strong>이가영</strong><br/>
       Full Stack Developer<br/>
       <a href="https://github.com/YoungGaLee">📧 Email</a><br/>
