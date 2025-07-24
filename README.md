@@ -286,7 +286,7 @@ public class ChatImageServiceImpl implements ChatImageService {
 역할에 따른 명확한 클래스 분리
 요청(Request DTO)과 응답(Response DTO)을 별도 클래스로 분리함으로써, 각각의 **관심사(SOC: Separation of Concerns)**를 분명히 합니다.
 → Request DTO는 클라이언트로부터 데이터를 받는 역할, Response DTO는 클라이언트에게 보여주는 역할
-![스크린샷](https://github.com/user-attachments/assets/ac81a80e-f491-4cd8-9ee5-34aa1765e952)
+<img src="https://github.com/user-attachments/assets/ac81a80e-f491-4cd8-9ee5-34aa1765e952" width="500"/>
 
 
 
