@@ -46,7 +46,7 @@
 <table>
   <tr>
     <td align="center" width="20%">
-      <img src="./images/seungjoo.jpg" width="80"><br/>
+       <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/4119ea15-d157-46a7-814c-a33469e2fded"/><br/>
       <strong>이승주</strong><br/>
       Team Lead<br/>
       <a href="https://github.com/Leeseung-joo">📧 GitHub</a><br/>
@@ -60,7 +60,7 @@
   <sub>회원가입 및 로그인<br/>소셜로그인 및 메일 발송<br/>erd 설계</sub>
 </td>
     <td align="center" width="20%">
-      <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/5b9526bf-79dd-46b5-b94f-8e6d42176adb" /><br/>
+      <img width="300" height="400" alt="Image"  src="https://github.com/user-attachments/assets/b014cef6-20b4-464b-b8a0-f1bc06d89166" /><br/>
       <strong>이가영</strong><br/>
       Full Stack Developer<br/>
       <a href="https://github.com/YoungGaLee">📧 Email</a><br/>
