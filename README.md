@@ -1,20 +1,29 @@
-# final-yesul
-파이널 1팀 프로젝트 저장소
+# 🍶 Yesul - 우리의 전통주를 소개하고 추천하는 플랫폼
 
-**브랜치 네이밍 규칙 예시:**
-브랜치 예시: feat/1-admin-post
+> AI 기반 맞춤형 추천을 통해 전통주를 접할 수 있는 플랫폼
 
-- **기능 추가 (Feature):** `feature/{이슈 번호}-{간단한 설명}` 예: `feature/1-add-login-function`
-- **버그 수정 (Bugfix):** `fix/{이슈 번호}-{간단한 설명}` 예: `fix/46-correct-typo`
-- **리팩토링 (Refactor):** `refactor/{이슈 번호}-{간단한 설명}` 예: `refactor/789-update-naming-convention`
-- **문서 수정 (Docs):** `docs/{이슈 번호}-{간단한 설명}` 예: `docs/2-update-readme`
-- **기타 (Misc):** `misc/{이슈 번호}-{간단한 설명}` 예: `misc/345-cleanup-code`
+## 🛠️ 기술 스택
 
-**이슈 생성 기준:** 하루에 할 수 있는 정도를 예상해서 작성
-이슈 예시: 로그인 UI 구현
-          커뮤니티 글생성 기능 구현
-          로그인 시, 비밀번호 오류 메시지 개선
-
-- **이슈생성내용 보다 더 진척된 경우** : 추가구현한 기능까지 이슈Edit 후 PR생성
-- **이슈 세부내용까지 완료된 경우** : PR생성 (feat to dev)
-- **이슈 세부내용이 미완료된 경우** : PR생성X, 회의때 진척도 설명
+| 분야         | 기술 스택                                                                 |
+|--------------|----------------------------------------------------------------------------|
+| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)  
+               ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)  
+               ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)  
+               ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white) |
+| **Backend**  | ![Java](https://img.shields.io/badge/Java-007396?style=flat&logo=openjdk&logoColor=white)  
+               ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white)  
+               ![JPA](https://img.shields.io/badge/JPA-59666C?style=flat&logo=hibernate&logoColor=white)  
+               ![QueryDSL](https://img.shields.io/badge/QueryDSL-00B4B3?style=flat&logo=apache&logoColor=white)  
+               ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)  
+               ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white) |
+| **Infra**    | ![Naver Cloud](https://img.shields.io/badge/Naver%20Cloud-03C75A?style=flat&logo=naver&logoColor=white)  
+               ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)  
+               ![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white)  
+               ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat&logo=github-actions&logoColor=white) |
+| **AI API**   | ![Clova](https://img.shields.io/badge/Naver%20Clova-0AAE4F?style=flat&logo=naver&logoColor=white) |
+| **ETC**      | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)  
+               ![Notion](https://img.shields.io/badge/Notion-000000?style=flat&logo=notion&logoColor=white)  
+               ![Google Authenticator](https://img.shields.io/badge/2FA%20Tool-3A3A3A?style=flat&logo=google&logoColor=white)  
+               ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ-000000?style=flat&logo=intellijidea&logoColor=white)  
+               ![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white)  
+               ![ERDCloud](https://img.shields.io/badge/ERDCloud-00C389?style=flat&logo=data&logoColor=white) |
