@@ -46,14 +46,14 @@
 <table>
   <tr>
     <td align="center" width="20%">
-       <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/4119ea15-d157-46a7-814c-a33469e2fded"/><br/>
+       <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/245fc11a-a37b-4962-9b91-613b2d93d6cd"/><br/>
       <strong>이승주</strong><br/>
       Team Lead<br/>
       <a href="https://github.com/Leeseung-joo">📧 GitHub</a><br/>
       <sub>1:1 문의 채팅<br/>알림 기능<br/>프로젝트 세팅 및 설계</sub>
     </td>
    <td align="center" width="20%">
- <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/4119ea15-d157-46a7-814c-a33469e2fded" /><br/>
+ <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/b834c120-79f4-43c6-91cf-d4bc132fdfad" /><br/>
   <strong>대태호</strong><br/>
   Full Stack Developer<br/>
   <a href="https://github.com/JohnTH0">📧 GitHub</a><br/>
