@@ -35,7 +35,7 @@
 
 #### 🔐 간편한 인증
 - **Kakao, Naver로그인**: 복잡한 회원가입 없이 간편 시작
-- **2Fa를 이용한 강력한 보안**: Google T-OTP를 통한 2차 보안 기능 제공
+- **2FA를 이용한 강력한 보안**: Google T-OTP를 통한 2차 보안 기능 제공
 - 추가예정
 
 ##  👥 팀원 소개
@@ -43,6 +43,56 @@
 ### Team 🦕주락이들 - SSG I&C 자바 기반 개발자 양성과정
 
 <div align="center">
+
+<table>
+  <tr>
+    <!-- 1 -->
+    <td align="center" width="20%">
+      <img src="./images/profile-dongkyu.jpg" width="80"><br/>
+      <strong>이승주</strong><br/>
+      Team Lead<br/>
+      <a href="https://github.com/Leeseung-joo">📧 GitHub</a><br/>
+      <sub>1:1 문의<br/>알림 기능<br/>프로젝트 세팅 및 설계</sub>
+    </td>
+
+    <!-- 2 -->
+    <td align="center" width="20%">
+      <img src="./images/profile-seungju.jpeg" width="80"><br/>
+      <strong>대태호</strong><br/>
+      Full Stack Developer<br/>
+      <a href="https://github.com/JohnTH0">📧 GitHub</a><br/>
+      <sub>회원가입 및 로그인<br/>소셜로그인 및 메일 발송<br/>erd 설계</sub>
+    </td>
+
+    <!-- 3 -->
+    <td align="center" width="20%">
+      <img src="./images/profile-nayoung.jpeg" width="80"><br/>
+      <strong>이가영</strong><br/>
+       Full Stack Developer<br/>
+      <a href="https://github.com/YoungGaLee">📧 Email</a><br/>
+      <sub>어드민 페이지 개발<br/>실시간 모니터링 기능<br/>OTP 보안 인증</sub>
+    </td>
+
+    <!-- 4 -->
+    <td align="center" width="20%">
+      <img src="./images/profile-minjae.jpeg" width="80"><br/>
+      <strong>정인용</strong><br/>
+       Full Stack Developer<br/>
+      <a href="https://github.com/iysh321">📧 GitHub</a><br/>
+      <sub>AI기반 추천 시스템<br/>메인 페이지 개발<br/>술 검색 기능</sub>
+    </td>
+
+    <!-- 5 -->
+    <td align="center" width="20%">
+      <img src="./images/profile-soomin.jpeg" width="80"><br/>
+      <strong>황정연</strong><br/>
+      Planner & QA<br/>
+      <a href="https://github.com/ibe6">📧 Email</a><br/>
+      <sub>커뮤니티 기능<br/>댓글 및 좋아요<br/>포인트 기능</sub>
+    </td>
+  </tr>
+</table>
+
 
 
 
