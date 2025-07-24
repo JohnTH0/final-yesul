@@ -52,13 +52,13 @@
       <a href="https://github.com/Leeseung-joo">📧 GitHub</a><br/>
       <sub>1:1 문의 채팅<br/>알림 기능<br/>프로젝트 세팅 및 설계</sub>
     </td>
-    <td align="center" width="20%">
-      <img src="./images/taeho.jpeg" width="80"><br/>
-      <strong>대태호</strong><br/>
-      Full Stack Developer<br/>
-      <a href="https://github.com/JohnTH0">📧 GitHub</a><br/>
-      <sub>회원가입 및 로그인<br/>소셜로그인 및 메일 발송<br/>erd 설계</sub>
-    </td>
+   <td align="center" width="20%">
+  <img width="300" height="400" alt="Image" src="https://github.com/user-attachments/assets/e6456f1a-ec99-4080-a568-7518ee568daa" /><br/>
+  <strong>대태호</strong><br/>
+  Full Stack Developer<br/>
+  <a href="https://github.com/JohnTH0">📧 GitHub</a><br/>
+  <sub>회원가입 및 로그인<br/>소셜로그인 및 메일 발송<br/>erd 설계</sub>
+</td>
     <td align="center" width="20%">
       <img src="<img width="389" height="507" alt="Image" src="https://github.com/user-attachments/assets/0030deef-fca0-4aed-92d7-a58075cf2b3f" />
 " width="80"><br/>
