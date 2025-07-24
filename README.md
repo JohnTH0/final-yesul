@@ -159,11 +159,11 @@
 
 | 타입 (Type) | 설명             | 브랜치 예시                             |
 |-------------|------------------|-----------------------------------------|
-| `feature`   | 새로운 기능 추가 | `feature/1-add-login-function`          |
+| `feat`   | 새로운 기능 추가 | `feature/1-add-login-function`          |
 | `fix`       | 버그 수정        | `fix/46-correct-typo`                   |
 | `refactor`  | 코드 리팩토링    | `refactor/789-update-naming-convention`|
 | `docs`      | 문서 수정        | `docs/125-update-readme`               |
-| `misc`      | 기타 변경 사항   | `misc/345-cleanup-code`                |
+| `chore`      | 기타 변경 사항   | `chore/345-cleanup-code`                |
 
 #### ✅ 이슈 작성 기준
 - 하루 단위로 작업 가능한 수준으로 작성  
@@ -177,9 +177,116 @@
 
 ### 💬 커밋 메시지 컨벤션
 
-#### 기본 구조
+| 타입       | 설명                                         |
+|------------|----------------------------------------------|
+| `feat`     | 새로운 기능 추가                             |
+| `fix`      | 버그 수정                                    |
+| `refactor` | 코드 리팩토링 (기능 변화 없음)               |
+| `docs`     | 문서 수정 (README 등)                        |
+| `chore`    | 빌드 업무, 패키지 매니저 설정 등 기타 수정   |
+| `config`   | 설정 파일 수정                               |
 
+---
+### 🧑‍💻 코드 컨벤션
+```java
+✅ 적절한 필드 네이밍 – messageContext, messageType 등 도메인 관점에서 직관적인 이름
 
+✅ Builder 패턴 + protected 생성자 – 불변성 유지 및 객체 생성 제어
+
+✅ BaseTimeEntity 상속 – createdAt, updatedAt 공통 관리에 적절한 선택
+
+@Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Message extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sender_type", nullable = false)
+    private Type senderType;
+
+    @Column(name = "message_context",length = 5000, nullable = false)
+    private String messageContext;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "message_type", nullable = false, columnDefinition = "TEXT")
+    private MessageType messageType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatRoom_id", nullable = false)
+    private ChatRoom chatRoom;
+
+}
+
+```
+
+```java
+✅ 좋은 예시 – @Tag, @Operation으로 Swagger 문서화를 통한 API 명세 관리
+
+✅ View 기반의 반환 – REST가 아닌 HTML 렌더링에 맞게 Model 사용
+
+✅ 명확한 역할 분리 – ChatRoomService는 채팅방 조회만 책임, View 로직과 분리됨
+@Tag(name = "관리자 채팅방", description = "관리자 채팅방 관련 API")
+@Controller
+@RequestMapping("/admin/chatroom")
+@RequiredArgsConstructor
+public class AdminChatRoomController {
+
+    private final ChatRoomService chatRoomService;
+    private final MessageService messageService;
+
+    @GetMapping
+    @Operation(summary = "관리자 기준 채팅방 목록 조회", description = "관리자가 참여하고 있는 채팅방 목록을 조회합니다.")
+    public String getAdminChatRooms(
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "8") int size,
+            Model model
+    ) {
+        AdminChatRoomsResponse response = chatRoomService.getAdminChatRooms(cursor, size);
+
+        model.addAttribute("chatRooms", response.getChatRooms());
+        model.addAttribute("totalUnreadCount", response.getTotalUnreadCount());
+        model.addAttribute("nextCursor", response.getNextCursor());
+
+        return "admin/admin-chat";
+    }
+```
+
+```java
+✅ 좋은 예시 – 외부 서비스 연동을 전략화(uploadMode)하여 유연성 확보
+
+✅ 단일 책임 원칙 준수 – 업로드 처리만 책임지고, 실제 구현은 ImageUpload에게 위임
+
+✅ 명확한 예외 처리 – UnsupportedOperationException으로 예외 상황 명시
+@Service
+@RequiredArgsConstructor
+public class ChatImageServiceImpl implements ChatImageService {
+
+    private final ImageUpload imageUpload;
+
+    @Value("${app.image-upload.mode}")
+    private String uploadMode;
+
+    @Override
+    public String uploadChatImage(MultipartFile image) {
+        if ("ncp".equalsIgnoreCase(uploadMode)) {
+            return imageUpload.uploadAndGetUrl("chat", image);
+        } else {
+            throw new UnsupportedOperationException("지원하지 않는 동작입니다.");
+        }
+    }
+}
+```
+## 응답 및 요청 DTO 분리 – 계층 간 책임 분리의 기본
+역할에 따른 명확한 클래스 분리
+요청(Request DTO)과 응답(Response DTO)을 별도 클래스로 분리함으로써, 각각의 **관심사(SOC: Separation of Concerns)**를 분명히 합니다.
+→ Request DTO는 클라이언트로부터 데이터를 받는 역할, Response DTO는 클라이언트에게 보여주는 역할
+![스크린샷](https://github.com/user-attachments/assets/ac81a80e-f491-4cd8-9ee5-34aa1765e952)
 
 
 
