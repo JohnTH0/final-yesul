@@ -129,6 +129,85 @@
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ-000000?style=flat&logo=intellijidea&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white)
 ![ERDCloud](https://img.shields.io/badge/ERDCloud-00C389?style=flat&logo=data&logoColor=white)
-
+---
 ### ☁️ 서버 아키텍처
 ![스크린샷](https://github.com/user-attachments/assets/3d81e7ea-9c71-4931-8517-f6d951fc49c1)
+
+## 🤝 협업 방식
+
+- **Agile development**
+  - 매일 **Daily Scrum**과 **Daily Review**를 통해 주기적으로 병합하고,
+  - 진행상황과 에러를 빠르게 공유하고 인지함
+**오전 데일리 스크럼 및 오후 리뷰**
+![스크린샷](https://github.com/user-attachments/assets/a7da4358-cef2-45a7-8182-80ddb80ddfce")
+** 데일리 스크럼 예시 **
+![스크린샷](https://github.com/user-attachments/assets/e503d80b-b4f0-4831-a9eb-8302fbfc256e)
+
+## 브랜치 전략 및 코드 컨벤션
+## 🔀 브랜치 전략 및 코드 컨벤션
+
+### 📌 Branch & Issue 네이밍 규칙
+
+- **기능 추가 (Feature)**  
+  `feature/{이슈번호}-{간단한설명}`  
+  예: `feature/1-add-login-function`
+
+- **버그 수정 (Bugfix)**  
+  `fix/{이슈번호}-{간단한설명}`  
+  예: `fix/46-correct-typo`
+
+- **리팩토링 (Refactor)**  
+  `refactor/{이슈번호}-{간단한설명}`  
+  예: `refactor/789-update-naming-convention`
+
+- **문서 수정 (Docs)**  
+  `docs/{이슈번호}-{간단한설명}`  
+  예: `docs/125-update-readme`
+
+- **기타 (Misc)**  
+  `misc/{이슈번호}-{간단한설명}`  
+  예: `misc/345-cleanup-code`
+
+#### ✅ 이슈 작성 기준
+- 하루에 할 수 있는 정도로 쪼개서 작성  
+  예: 로그인 UI 구현, 커뮤니티 글쓰기 기능, 오류 메시지 개선 등
+
+#### ✅ 이슈 상태에 따른 PR 전략
+- 이슈 세부 내용이 정리된 경우 → PR 생성 (`dev` 브랜치로)
+- 아직 구체화되지 않은 경우 → 작업 브랜치에서 먼저 진행하고 나중에 PR 생성
+
+---
+
+### 💬 커밋 메시지 컨벤션
+
+#### 기본 구조
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 🖥️ 시연 영상
+
+
+
+
+
+
+
+
+
+
+
+
+## 🔍 트러블 슈팅
+
