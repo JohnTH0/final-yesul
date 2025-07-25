@@ -292,16 +292,16 @@ public class ChatImageServiceImpl implements ChatImageService {
 
 
 
-
-
-
-
-
-
-
-
-
 ## 🖥️ 주요 기능 및 시연 영상
+
+**술 메인 화면**
+<img src="https://github.com/user-attachments/assets/ac81a80e-f491-4cd8-9ee5-34aa1765e952" width="500"/>
+
+
+
+
+
+
 
 
 
