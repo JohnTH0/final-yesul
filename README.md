@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=https://github.com/user-attachments/assets/f481f09c-0cec-4a40-be4e-740d719d706f" alt="Yesul 메인 배너" width="100%" />
+  <alt="Image" src="https://github.com/user-attachments/assets/f481f09c-0cec-4a40-be4e-740d719d706f">
 </p>
 
 
