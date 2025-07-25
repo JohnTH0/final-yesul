@@ -133,7 +133,7 @@
 ![ERDCloud](https://img.shields.io/badge/ERDCloud-00C389?style=flat&logo=data&logoColor=white)
 ---
 ### ☁️ 서버 아키텍처
-![스크린샷](https://github.com/user-attachments/assets/3d81e7ea-9c71-4931-8517-f6d951fc49c1)
+![스크린샷](https://github.com/user-attachments/assets/319bd78c-818e-4b5d-af9e-ec31ef27dda0)
 
 ## 🤝 협업 방식
 
@@ -286,7 +286,7 @@ public class ChatImageServiceImpl implements ChatImageService {
 ```
 ## 응답 및 요청 DTO 분리 – 계층 간 책임 분리의 기본
 역할에 따른 명확한 클래스 분리
-요청(Request DTO)과 응답(Response DTO)을 별도 클래스로 분리함으로써, 각각의 **관심사(SOC: Separation of Concerns)**를 분명히 합니다.
+요청(Request DTO)과 응답(Response DTO)을 별도 클래스로 분리함으로써, 각각의 **관심사를 분리**
 <img src="https://github.com/user-attachments/assets/ac81a80e-f491-4cd8-9ee5-34aa1765e952" width="500"/>
 
 
