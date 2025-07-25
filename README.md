@@ -413,10 +413,10 @@ AI 추천, 채팅, 커뮤니티, 인증 등 다양한 기술 스택을 유기적
 | 구분             | 설명                            | 링크 |
 |------------------|----------------------------------|------|
 | 🔗 Notion         | 프로젝트 정리 노션 페이지           | [바로가기](https://www.notion.so/ohgiraffers/Final-Project-184649136c11812b8c60cb272737008d?p=20d649136c118063b57afe867db6f263&pm=s) |
-| 📋 Sprint Board   | 칸반 보드 (Sprint 관리)           | [바로가기](https://your-sprint-board-link.com) |
-| 🧭 Milestone & Issue | 마일스톤 및 이슈 관리 페이지     | [바로가기](https://your-milestone-link.com) |
-| 🗂 WBS 문서        | 작업 분할 구조 (WBS)              | [바로가기](https://your-wbs-link.com) |
-| 🗺 ERD             | 데이터베이스 설계 (ERDCloud)      | [바로가기](https://your-erd-link.com) |
+| 📋 Sprint Board   | 칸반 보드 (Sprint 관리)           | [바로가기](https://github.com/orgs/20250123-SSG/projects/4) |
+| 🧭 Milestone & Issue | 마일스톤 및 이슈 관리 페이지     | [바로가기](https://github.com/20250123-SSG/final-yesul/milestones) |
+| 🗂 WBS 문서        | 작업 분할 구조 (WBS)              | [바로가기](https://docs.google.com/spreadsheets/d/1lVn4F8-InFX-8smThALmWsbF2Gd85DXV/edit?gid=694979324#gid=694979324) |
+| 🗺 ERD             | 데이터베이스 설계 (ERDCloud)      | [바로가기](https://www.erdcloud.com/d/bMw3yD7duyJPZuBrT) |
 
 
 
