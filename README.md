@@ -313,17 +313,9 @@ public class ChatImageServiceImpl implements ChatImageService {
 <img src="https://github.com/user-attachments/assets/5dfe6c48-efc8-4fd2-a473-5eb350faae00">
 
 
-# 시연 영상
-<img src="https://www.youtube.com/watch?v=IY32V1HoiFE"/>
+## 🎥 시연 영상
 
-
-
-
-
-
-
-
-
+[![시연 영상 바로가기](https://img.youtube.com/vi/IY32V1HoiFE/0.jpg)](https://www.youtube.com/watch?v=IY32V1HoiFE)
 
 
 
