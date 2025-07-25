@@ -1,4 +1,7 @@
-![스크린샷](https://github.com/user-attachments/assets/a4614ef5-6518-451a-b315-b3d8ed7de7e7)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a4614ef5-6518-451a-b315-b3d8ed7de7e7" width="900" height="400" alt="스크린샷">
+</p>
+
 
 # 🍶 Yesul - 우리의 전통주를 소개하고 추천하는 플랫폼
 
