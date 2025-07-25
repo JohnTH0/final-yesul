@@ -315,7 +315,7 @@ public class ChatImageServiceImpl implements ChatImageService {
 
 ## 🎥 시연 영상
 
-[![시연 영상 바로가기](https://img.youtube.com/vi/IY32V1HoiFE/0.jpg)](https://www.youtube.com/watch?v=IY32V1HoiFE)
+[![시연 영상 바로가기](https://www.youtube.com/watch?v=IY32V1HoiFE)
 
 
 
