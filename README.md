@@ -303,6 +303,19 @@ public class ChatImageServiceImpl implements ChatImageService {
   <img src="https://github.com/user-attachments/assets/6b3df560-d44e-495f-858b-cc8e572116a3" width="49%" />
 </p>
 
+## 커뮤니티: 다양한 정보를 제공하고 소통할 수 있는 공간
+<img src="https://github.com/user-attachments/assets/9d0d35c5-a4e4-428d-8f7a-5176ae74a832"/>
+
+## 1:1문의: 궁금한 점이나 문의 내용을 실시간으로 질문할 수 있는 공간
+<img src="https://github.com/user-attachments/assets/4895ce4a-f03e-4750-bbe4-ec5762d4437b"/>
+
+## 관리자 페이지: 실시간 모니터링 및 이벤트 관리 및 등록 관리까지!
+<img src="https://github.com/user-attachments/assets/5dfe6c48-efc8-4fd2-a473-5eb350faae00">
+
+
+# 시연 영상
+<img src=""/>
+
 
 
 
