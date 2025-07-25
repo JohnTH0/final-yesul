@@ -1,5 +1,4 @@
-![스크린샷](https://github.com/user-attachments/assets/75518346-8aa5-4491-acf4-a45aad6dc289)
-
+![스크린샷](https://github.com/user-attachments/assets/5777a2a8-38c2-4550-aab3-8d274ca2a6f2)
 
 
 # 🍶 Yesul - 우리의 전통주를 소개하고 추천하는 플랫폼
