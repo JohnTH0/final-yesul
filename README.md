@@ -1,6 +1,4 @@
-<p align="center">
-  <alt="Image" src="https://github.com/user-attachments/assets/f481f09c-0cec-4a40-be4e-740d719d706f">
-</p>
+![스크린샷](https://github.com/user-attachments/assets/f481f09c-0cec-4a40-be4e-740d719d706f)
 
 
 
