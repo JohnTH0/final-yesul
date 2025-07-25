@@ -1,7 +1,10 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a223786e-c6f9-47f0-887c-79888437bbd5" width="900" height="400" alt="스크린샷">
+  <svg width="100%" height="300">
+    <polygon points="0,0 1000,0 0,300" style="fill:#e9cba1;" />
+    <text x="520" y="130" font-size="60" font-weight="bold" fill="#3e2b1a" transform="rotate(20 520,130)">Yesul</text>
+    <text x="540" y="180" font-size="24" fill="#3e2b1a" transform="rotate(20 520,130)">우리 전통의 매력을 담다</text>
+  </svg>
 </p>
-
 
 # 🍶 Yesul - 우리의 전통주를 소개하고 추천하는 플랫폼
 
