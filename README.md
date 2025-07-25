@@ -1,4 +1,4 @@
-![스크린샷](https://github.com/user-attachments/assets/f481f09c-0cec-4a40-be4e-740d719d706f)
+![스크린샷](https://github.com/user-attachments/assets/75518346-8aa5-4491-acf4-a45aad6dc289)
 
 
 
