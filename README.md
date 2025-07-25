@@ -314,7 +314,7 @@ public class ChatImageServiceImpl implements ChatImageService {
 
 
 # 시연 영상
-<img src=""/>
+<img src="https://www.youtube.com/watch?v=IY32V1HoiFE"/>
 
 
 
