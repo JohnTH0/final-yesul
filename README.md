@@ -384,7 +384,7 @@ public class ChatImageServiceImpl implements ChatImageService {
 
 > JPA의 지연 로딩 이슈에 대해 실제 운영 수준에서 문제를 인지하고 해결한 경험으로 이어짐
 
-
+---
 
 
 ### 🔍 회고 및 배운 점
