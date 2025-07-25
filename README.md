@@ -294,8 +294,15 @@ public class ChatImageServiceImpl implements ChatImageService {
 
 ## 🖥️ 주요 기능 및 시연 영상
 
-## 술 메인 화면
+## 술 메인 화면: 다양한 주류의 술 정보 및 이미지 제공
 <img src="https://github.com/user-attachments/assets/9beaeffe-a5e4-4681-a7e4-dc39883368f0"/>
+
+## AI 기반 술 추천 및 여행지 추천: 니즈에 맞는 술 추천 및 관련된 여행지 추천까지!
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3e2d7e75-de7a-4a00-9071-837696796142" width="49%" />
+  <img src="https://github.com/user-attachments/assets/6b3df560-d44e-495f-858b-cc8e572116a3" width="49%" />
+</p>
+
 
 
 
