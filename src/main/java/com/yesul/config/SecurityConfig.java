@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/admin/login", "/asserts/**", "/admin/event/list", "/admin/event"
                         ).permitAll()
-                        .requestMatchers("/admin/otp","/admin/otp/verify", "/admin/login-log").hasAuthority("ADMIN_PENDING_OTP")
+                        //.requestMatchers("/admin/otp","/admin/otp/verify", "/admin/login-log").hasAuthority("ADMIN_PENDING_OTP")
                         .requestMatchers("/admin/**", "/oauth2/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )

@@ -63,14 +63,20 @@
                 </div>
 
                 <div sec:authorize="isAuthenticated()" class="gi-acc-drop">
-                  <!-- 2.2) 닉네임 + “님” / 로그아웃 -->
                   <a th:href="@{/logout}" class="gi-header-btn gi-header-user" title="Logout">
                     <div class="header-icon">
                       <i class="fi-rr-user"></i>
                     </div>
                     <div class="gi-btn-desc">
                       <!-- principal.user.nickname 에서 닉네임 가져오기 -->
-                      <span class="gi-btn-title" sec:authentication="principal.user.nickname"></span>
+                      <span th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                            class="gi-btn-title">ADMIN</span>
+
+                      <!-- USER 권한일 때만 principal.user.nickname 을 읽어옵니다 -->
+                      <span th:if="${#authorization.expression('hasAuthority(''USER'')')}"
+                            class="gi-btn-title"
+                            th:text="${#authentication.principal.user.nickname}">닉네임</span>
+
                       <span class="gi-btn-stitle">Logout</span>
                     </div>
                   </a>
@@ -542,7 +548,7 @@
                 }
 </p>
         </div>
-        <span class="close-alert-btn"></span>
+        <span class="close-alert-btn">&times;</span>
       </div>
     `;
 
@@ -666,7 +672,7 @@
                 }
 </p>
         </div>
-        <span class="close-alert-btn" data-id="${msg.id}"></span>
+        <span class="close-alert-btn" data-id="${msg.id}">&times;</span>
       </div>
     `;
                 // alertList.insertBefore(li, alertList.firstChild);

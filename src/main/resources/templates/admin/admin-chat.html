@@ -351,7 +351,7 @@
 
     const nameSpan = document.createElement("span");
     nameSpan.className = 'sender-name';
-    nameSpan.textContent = msg.receiverType === 'ADMIN' ? '관리자' : chatPartnerName;
+    nameSpan.textContent = msg.receiverType === 'ADMIN' ? '' : chatPartnerName;
     li.appendChild(nameSpan);
 
     const bubble = document.createElement("div");

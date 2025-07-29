@@ -252,6 +252,7 @@
       const img = document.createElement('img');
       img.src = msg.messageContext;
       img.style.maxWidth = '100%';
+      img.onload = scrollToBottom;
       bubble.appendChild(img);
     } else {
       bubble.textContent = msg.messageContext;

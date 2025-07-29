@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new AdminNotFoundException("해당 관리자가 존재하지 않습니다."));
 
         List<GrantedAuthority> authorityList =
-                List.of(new SimpleGrantedAuthority("ADMIN_PENDING_OTP"));
+                List.of(new SimpleGrantedAuthority("ADMIN")); //ADMIN_PENDING_OTP
 
         LoginAdmin admin = LoginAdmin.builder()
                 .id(fetchedAdmin.getId())
