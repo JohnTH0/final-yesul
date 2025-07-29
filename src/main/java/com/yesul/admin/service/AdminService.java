@@ -7,6 +7,7 @@ import com.yesul.alcohol.model.dto.AlcoholDto;
 import com.yesul.alcohol.repository.AlcoholRepository;
 import com.yesul.community.model.dto.response.PostResponseDto;
 import com.yesul.community.repository.PostRepository;
+import com.yesul.config.RedisConfig;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.redis.core.Cursor;
@@ -18,11 +19,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.yesul.common.constants.RedisConstants.SYSTEM_MONITORING_DB_INDEX;
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisConfig redisConfig;
     private final AdminLoginLogRepository logRepository;
     private final PostRepository postRepository;
     private final PostRepository userRepository;
@@ -30,12 +33,14 @@ public class AdminService {
     private final ModelMapper modelMapper;
 
     public int getTodayVisitorCount() {
+        RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(SYSTEM_MONITORING_DB_INDEX);
         String todayKey = "visitors:" + LocalDate.now();
         Long count = redisTemplate.opsForSet().size(todayKey);
         return count != null ? count.intValue() : 0;
     }
 
     public int getRealTimeUserCount() {
+        RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(SYSTEM_MONITORING_DB_INDEX);
         ScanOptions options = ScanOptions.scanOptions() //SCAN 설정
                 .match("online-users:*")
                 .count(1000)

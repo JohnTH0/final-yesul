@@ -1,5 +1,6 @@
 package com.yesul.common.filter;
 
+import com.yesul.config.RedisConfig;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,11 +14,13 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static com.yesul.common.constants.RedisConstants.SYSTEM_MONITORING_DB_INDEX;
+
 @RequiredArgsConstructor
 @Component
 public class SystemMonitoringFilter implements Filter {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisConfig redisConfig;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -29,6 +32,8 @@ public class SystemMonitoringFilter implements Filter {
         String visitorId = getOrCreateVisitorId(req, res); //UUID 쿠키 발급 및 조회
 
         //Redis에 저장하기 (Set)
+        RedisTemplate<String, String> redisTemplate = redisConfig.getRedisTemplate(SYSTEM_MONITORING_DB_INDEX);
+
         String todayKey = "visitors:" + LocalDate.now();
         redisTemplate.opsForSet().add(todayKey, visitorId);
 
