@@ -286,7 +286,7 @@ public class ChatImageServiceImpl implements ChatImageService {
 ```
 ## 응답 및 요청 DTO 분리 – 계층 간 책임 분리의 기본
 역할에 따른 명확한 클래스 분리
-요청(Request DTO)과 응답(Response DTO)을 별도 클래스로 분리함으로써, 각각의 **관심사를 분리**
+요청(Request DTO)과 응답(Response DTO)을 별도 클래스로 분리하여 **관심사를 분리**
 <img src="https://github.com/user-attachments/assets/ac81a80e-f491-4cd8-9ee5-34aa1765e952" width="500"/>
 
 
