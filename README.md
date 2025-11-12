@@ -133,7 +133,7 @@
 ![ERDCloud](https://img.shields.io/badge/ERDCloud-00C389?style=flat&logo=data&logoColor=white)
 ---
 ### ☁️ 서버 아키텍처
-![스크린샷](https://github.com/user-attachments/assets/319bd78c-818e-4b5d-af9e-ec31ef27dda0)
+![스크린샷](https://github.com/user-attachments/assets/03ae536b-fd6a-41b2-9310-18fe5930cca9)
 
 ## 🤝 협업 방식
 
